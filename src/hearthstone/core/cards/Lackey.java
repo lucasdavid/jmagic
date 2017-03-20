@@ -1,16 +1,16 @@
-package core.cards;
+package hearthstone.core.cards;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Lackey extends Card {
 
-    protected int attack;
-    protected int life;
-    protected int maxLife;
-    protected Collection<Buff> buffs;
+    private int attack;
+    private int life;
+    private int maxLife;
+    private Collection<Buff> buffs;
 
     public static Collection<Lackey> DEFAULT_CARDS = Arrays.asList(
             new Lackey("Frodo Baggins", 2, 1, 1),
@@ -23,12 +23,12 @@ public class Lackey extends Card {
         this(name, attack, life, life, manaCost);
     }
 
-    public Lackey(String name, int attack, int life, int manaCost, Collection<Buff> buffs) {
-        this(name, attack, life, life, manaCost, buffs);
+    public Lackey(String name, int attack, int life, int maxLife, int manaCost) {
+        this(UUID.randomUUID(), name, attack, life, maxLife, manaCost);
     }
 
-    public Lackey(String name, int attack, int life, int maxLife, int manaCost) {
-        this(name, attack, life, maxLife, manaCost, new LinkedList<>());
+    public Lackey(String name, int attack, int life, int manaCost, Collection<Buff> buffs) {
+        this(name, attack, life, life, manaCost, buffs);
     }
 
     public Lackey(String name, int attack, int life, int maxLife, int manaCost, Collection<Buff> buffs) {
@@ -40,7 +40,7 @@ public class Lackey extends Card {
     }
 
     public Lackey(UUID id, String name, int attack, int life, int maxLife, int manaCost) {
-        this(id, name, attack, life, maxLife, manaCost, new LinkedList<>());
+        this(id, name, attack, life, maxLife, manaCost, new ArrayList<>());
     }
 
     public Lackey(UUID id, String name, int attack, int life, int maxLife, int manaCost, Collection<Buff> buffs) {
@@ -49,7 +49,11 @@ public class Lackey extends Card {
         this.attack = attack;
         this.life = life;
         this.maxLife = maxLife;
-        this.buffs = new LinkedList<>(buffs);
+        this.buffs = new ArrayList<>(buffs);
+    }
+
+    public Collection<Buff> getBuffs() {
+        return new ArrayList<>(buffs);
     }
 
     @Override
@@ -57,15 +61,14 @@ public class Lackey extends Card {
         return (life == maxLife
                 ? String.format("%s (atk %d/def %d)", super.toString(), attack, life)
                 : String.format("%s (atk %d/def %d from %d)", super.toString(), attack, life, maxLife))
-                +
-               (buffs.isEmpty()
+                + (buffs.isEmpty()
                 ? String.format(" {%s}", buffs)
                 : "");
     }
 
     @Override
     public Lackey copy() {
-        return new Lackey(id, name, attack, life, maxLife, manaCost, buffs);
+        return new Lackey(getId(), getName(), attack, life, maxLife, getManaCost(), buffs);
     }
 
 }

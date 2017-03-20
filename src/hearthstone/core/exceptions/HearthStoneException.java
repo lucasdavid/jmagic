@@ -1,4 +1,4 @@
-package core.exceptions;
+package hearthstone.core.exceptions;
 
 /**
  *

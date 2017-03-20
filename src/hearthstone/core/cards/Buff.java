@@ -1,4 +1,4 @@
-package core.cards;
+package hearthstone.core.cards;
 
 /**
  *

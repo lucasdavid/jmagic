@@ -1,10 +1,9 @@
-package runner;
+package hearthstone.runner;
 
+import hearthstone.core.Game;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Logger;
-
-import core.Game;
-import java.util.LinkedList;
 
 public class Runner {
 
@@ -17,7 +16,7 @@ public class Runner {
 
     public static void main(String[] args) {
         new Runner(NUMBER_OF_MATCHES, NUMBER_OF_PLAYERS,
-                   NUMBER_OF_CARDS_FOR_EACH_PLAYER, SEED)
+                NUMBER_OF_CARDS_FOR_EACH_PLAYER, SEED)
                 .startUp()
                 .run()
                 .tearDown();
@@ -28,11 +27,11 @@ public class Runner {
     private final int numberOfCardsForEachPlayer;
     private final int seed;
 
-    private LinkedList<Game> games;
+    private ArrayList<Game> games;
     private boolean running;
 
     Runner(int numberOfMatches, int numberOfPlayers,
-           int numberOfCardsForEachPlayer, int seed) {
+            int numberOfCardsForEachPlayer, int seed) {
         this.numberOfMatches = numberOfMatches;
         this.numberOfPlayers = numberOfPlayers;
         this.numberOfCardsForEachPlayer = numberOfCardsForEachPlayer;
@@ -49,8 +48,8 @@ public class Runner {
 
     public Runner run() {
         this.running = true;
-        games = new LinkedList<>();
-        Random randomState = new Random(SEED);
+        games = new ArrayList<>();
+        Random randomState = new Random(seed);
 
         for (int matchId = 0; matchId < numberOfMatches; matchId++) {
             Game game = Game.random(numberOfPlayers, numberOfCardsForEachPlayer, randomState);

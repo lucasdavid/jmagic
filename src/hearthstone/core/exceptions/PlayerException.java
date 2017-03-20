@@ -1,16 +1,16 @@
-package core.exceptions;
+package hearthstone.core.exceptions;
 
 /**
  *
  * @author ldavid
  */
-public class InvalidActionException extends HearthStoneException {
+public class PlayerException extends HearthStoneException {
 
     /**
      * Creates a new instance of <code>NullActionException</code> without detail
      * message.
      */
-    public InvalidActionException() {
+    public PlayerException() {
     }
 
     /**
@@ -19,7 +19,7 @@ public class InvalidActionException extends HearthStoneException {
      *
      * @param msg the detail message.
      */
-    public InvalidActionException(String msg) {
+    public PlayerException(String msg) {
         super(msg);
     }
 }
