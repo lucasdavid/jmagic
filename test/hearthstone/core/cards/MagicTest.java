@@ -1,4 +1,4 @@
-package core.cards;
+package hearthstone.core.cards;
 
 import org.junit.After;
 import org.junit.AfterClass;

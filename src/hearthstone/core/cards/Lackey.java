@@ -13,7 +13,7 @@ public class Lackey extends Card {
     private final int maxLife;
     private final Collection<Buff> buffs;
 
-    public static final Collection<Lackey> DEFAULT_CARDS = Collections.unmodifiableList(Arrays.asList(
+    public static final Collection<Lackey> DEFAULT_CARDS = Collections.unmodifiableCollection(Arrays.asList(
             new Lackey("Frodo Baggins", 2, 1, 1),
             new Lackey("Aragorn", 5, 7, 6, Arrays.asList(Buff.PROVOKE)),
             new Lackey("Legolas", 8, 4, 6, Arrays.asList(Buff.WIND_FURY)),

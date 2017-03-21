@@ -2,6 +2,7 @@ package hearthstone.core.cards;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
 
 public class Magic extends Card {
@@ -9,9 +10,9 @@ public class Magic extends Card {
     private int damage;
     private boolean affectsMany;
 
-    public static Collection<Magic> DEFAULT_CARDS = Arrays.asList(
+    public static Collection<Magic> DEFAULT_CARDS = Collections.unmodifiableCollection(Arrays.asList(
             new Magic("You shall not pass", 4, true, 7),
-            new Magic("Telekinesis", 3, false, 2));
+            new Magic("Telekinesis", 3, false, 2)));
 
     public Magic(String name, int damage, Boolean affectsMany, int manaCost) {
         this(UUID.randomUUID(), name, damage, affectsMany, manaCost);
