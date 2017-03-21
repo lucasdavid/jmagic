@@ -1,22 +1,25 @@
 package hearthstone.core;
 
 import hearthstone.core.State.PlayerInfo;
-import hearthstone.core.actions.Action;
+import hearthstone.core.actions.*;
 import hearthstone.core.cards.Cards;
 import hearthstone.core.exceptions.HearthStoneException;
+import hearthstone.core.exceptions.IllegalActionException;
 import hearthstone.core.exceptions.InvalidActionException;
 import hearthstone.core.exceptions.PlayerException;
-import hearthstone.infrastructure.collectors.ImmutableListCollector;
+import hearthstone.infrastructure.collectors.CustomCollectors;
 import hearthstone.players.RandomPlayer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -25,6 +28,9 @@ import java.util.stream.Collectors;
 public class Game {
 
     public static final Logger LOG = Logger.getLogger(Game.class.getName());
+
+    public final static Collection<Class<? extends Action>> LEGAL_ACTIONS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+            DrawAction.class, PassAction.class, PlayAction.class)));
 
     private UUID id;
     private Date startedAt;
@@ -62,10 +68,12 @@ public class Game {
             try {
                 Action action = playerInfo.player.act(currentState);
 
+                if (!LEGAL_ACTIONS.contains(action.getClass())) {
+                    throw new IllegalActionException("action " + action + "is not defined as legal by the game rules");
+                }
                 if (action == null) {
                     throw new InvalidActionException("actions cannot be null");
                 }
-
                 action.validActionOrRaisesException(currentState);
 
                 currentState = action.update(currentState);
@@ -77,7 +85,9 @@ public class Game {
                 currentState = new State(currentState, true);
                 winners = players.stream()
                         .filter(p -> !p.equals(playerInfo.player))
-                        .collect(Collectors.toList());
+                        .collect(CustomCollectors.toImmutableList());
+                this.finishedAt = new Date();
+                return this;
 
             } catch (HearthStoneException ex) {
                 LOG.log(Level.SEVERE, null, ex);
@@ -88,7 +98,7 @@ public class Game {
         winners = currentState.getPlayerInfos().stream()
                 .filter(i -> i.life > 0)
                 .map(i -> i.player)
-                .collect(ImmutableListCollector.toImmutableList());
+                .collect(CustomCollectors.toImmutableList());
 
         this.finishedAt = new Date();
         return this;
@@ -164,7 +174,7 @@ public class Game {
         return currentState;
     }
 
-    public Collection<Player> getWinner() {
+    public Collection<Player> getWinners() {
         return winners;
     }
 }

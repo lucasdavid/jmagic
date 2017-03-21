@@ -47,21 +47,22 @@ public class Runner {
     }
 
     public Runner run() {
-        this.running = true;
+        running = true;
         games = new ArrayList<>();
         Random randomState = new Random(seed);
-
+        
         for (int matchId = 0; matchId < numberOfMatches; matchId++) {
             Game game = Game.random(numberOfPlayers, numberOfCardsForEachPlayer, randomState);
+            
             games.add(game);
 
             LOG.info(String.format("Game #%d started", matchId));
             game.run();
-            LOG.info(String.format("Game started at %s and finished at %s.\n",
-                    game.getStartedAt(), game.getFinishedAt()));
+            LOG.info(String.format("Game started at %s and finished at %s. Winners: %s\n",
+                    game.getStartedAt(), game.getFinishedAt(), game.getWinners()));
         }
 
-        this.running = false;
+        running = false;
 
         return this;
     }

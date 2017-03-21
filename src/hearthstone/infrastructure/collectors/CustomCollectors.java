@@ -10,7 +10,7 @@ import java.util.stream.Collector;
  *
  * @author ldavid
  */
-public class ImmutableListCollector {
+public class CustomCollectors {
 
     public static <T, A extends List<T>> Collector<T, A, List<T>> toImmutableList(Supplier<A> collectionFactory) {
         return Collector.of(collectionFactory, List::add, (left, right) -> {

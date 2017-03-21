@@ -2,6 +2,7 @@ package hearthstone.core.actions;
 
 import hearthstone.core.State;
 import hearthstone.core.exceptions.HearthStoneException;
+import java.util.Objects;
 
 /**
  *
@@ -22,4 +23,14 @@ public abstract class Action {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return o != null && getClass().equals(o.getClass());
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash * Objects.hashCode(getClass());
+    }
 }

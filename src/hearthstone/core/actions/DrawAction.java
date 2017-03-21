@@ -24,7 +24,9 @@ public final class DrawAction extends Action {
 
         hand.add(deck.remove(0));
 
-        playerInfo = new PlayerInfo(playerInfo.player, playerInfo.life, new Cards(deck), new Cards(hand), playerInfo.graveyard);
+        playerInfo = new PlayerInfo(playerInfo.player, playerInfo.life,
+                new Cards(deck), new Cards(hand),
+                playerInfo.field, playerInfo.graveyard);
         playerInfos.add(state.turnsCurrentPlayerId, playerInfo);
 
         return new State(playerInfos, state.turn, state.done,
@@ -33,11 +35,16 @@ public final class DrawAction extends Action {
 
     @Override
     public void validActionOrRaisesException(State state) throws HearthStoneException {
+        // Check if deck has cards to be drawn.
+        if (state.turnsCurrentPlayerInfo().deck.isEmpty()) {
+            throw new InvalidActionException("cannot draw from empty deck.");
+        }
+
         // Validate that Player is drawing only once in a turn!
         Action actionExecutedInPrevious = state.actionThatLedToThisState;
-        State previous = state;
+        State previous = state.parent;
 
-        while (previous.turn == state.turn) {
+        while (previous != null && previous.turn == state.turn) {
             if (previous.turnsCurrentPlayerId == state.turnsCurrentPlayerId
                     && actionExecutedInPrevious instanceof DrawAction) {
                 throw new InvalidActionException("cannot draw more than once in a turn.");

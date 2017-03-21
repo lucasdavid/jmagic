@@ -5,9 +5,9 @@ import java.util.UUID;
 
 public abstract class Card {
 
-    private UUID id;
-    private String name;
-    private int manaCost;
+    private final UUID id;
+    private final String name;
+    private final int manaCost;
 
     public Card(UUID id, String name, int manaCost) {
         this.id = id;
@@ -19,21 +19,21 @@ public abstract class Card {
         this(UUID.randomUUID(), name, manaCost);
     }
 
-    UUID getId() {
+    public UUID getId() {
         return id;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    int getManaCost() {
+    public int getManaCost() {
         return manaCost;
     }
 
     @Override
     public String toString() {
-        return String.format("%s (%s) cost: %d", name, id, manaCost);
+        return String.format("%s cost: %d", name, id, manaCost);
     }
 
     public abstract Card copy();

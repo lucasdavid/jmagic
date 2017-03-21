@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -48,11 +49,30 @@ public class Cards {
         return new Cards(cardsInNewDeck);
     }
 
+    public boolean isEmpty() {
+        return cards.isEmpty();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        try {
+            return cards.equals(((Cards) o).cards);
+        } catch (ClassCastException | NullPointerException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.cards);
+        return hash;
+    }
+
     @Override
     public String toString() {
         return "  " + String.join("\n  ", cards.stream()
                 .map(c -> c.toString())
                 .collect(Collectors.toList()));
     }
-
 }

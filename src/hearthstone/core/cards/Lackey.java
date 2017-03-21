@@ -3,21 +3,22 @@ package hearthstone.core.cards;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.UUID;
 
 public class Lackey extends Card {
 
-    private int attack;
-    private int life;
-    private int maxLife;
-    private Collection<Buff> buffs;
+    private final int attack;
+    private final int life;
+    private final int maxLife;
+    private final Collection<Buff> buffs;
 
-    public static Collection<Lackey> DEFAULT_CARDS = Arrays.asList(
+    public static final Collection<Lackey> DEFAULT_CARDS = Collections.unmodifiableList(Arrays.asList(
             new Lackey("Frodo Baggins", 2, 1, 1),
             new Lackey("Aragorn", 5, 7, 6, Arrays.asList(Buff.PROVOKE)),
             new Lackey("Legolas", 8, 4, 6, Arrays.asList(Buff.WIND_FURY)),
             new Lackey("Sauron", 10, 10, 10, Arrays.asList(Buff.values()))
-    );
+    ));
 
     public Lackey(String name, int attack, int life, int manaCost) {
         this(name, attack, life, life, manaCost);

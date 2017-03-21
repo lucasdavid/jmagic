@@ -21,29 +21,30 @@ public class State {
 
         public final int life;
         public final Player player;
-        public final Cards deck, graveyard, hand;
+        public final Cards deck, hand, field, graveyard;
 
         PlayerInfo(Player player, Cards deck) {
-            this(player, DEFAULT_INITIAL_LIFE, deck, Cards.EMPTY, Cards.EMPTY);
+            this(player, DEFAULT_INITIAL_LIFE, deck, Cards.EMPTY, Cards.EMPTY, Cards.EMPTY);
         }
 
         PlayerInfo(PlayerInfo playerInfo) {
             this(playerInfo.player, playerInfo.life, playerInfo.deck,
-                    playerInfo.hand, playerInfo.graveyard);
+                    playerInfo.hand, playerInfo.field, playerInfo.graveyard);
         }
 
-        public PlayerInfo(Player player, int life, Cards deck, Cards hand, Cards graveyard) {
+        public PlayerInfo(Player player, int life, Cards deck, Cards hand, Cards field, Cards graveyard) {
             this.player = player;
             this.life = life;
             this.deck = deck;
             this.hand = hand;
+            this.field = field;
             this.graveyard = graveyard;
         }
 
         @Override
         public String toString() {
             return String.format("%s {\n  life: %d,\n  hand: %s,\n  deck: %s\n}", player, life,
-                    hand, graveyard);
+                    hand, deck);
         }
     }
 
@@ -69,8 +70,8 @@ public class State {
                 state.actionThatLedToThisState, state.parent);
     }
 
-    public State(State state, int turnsCurrentPlayer, Action actionThatLedToThisState) {
-        this(state.playerInfos, state.turn, state.done, turnsCurrentPlayer,
+    public State(State state, int turnsCurrentPlayerId, Action actionThatLedToThisState) {
+        this(state.playerInfos, state.turn, state.done, turnsCurrentPlayerId,
                 actionThatLedToThisState, state);
     }
 
@@ -90,10 +91,10 @@ public class State {
     }
 
     public State(List<PlayerInfo> playerInfos, int turn, boolean done,
-            int turnsCurrentPlayer, Action action, State parent) {
+            int turnsCurrentPlayerId, Action action, State parent) {
         this.turn = turn;
         this.done = done;
-        this.turnsCurrentPlayerId = turnsCurrentPlayer;
+        this.turnsCurrentPlayerId = turnsCurrentPlayerId;
         this.playerInfos = playerInfos;
         this.parent = parent;
         this.actionThatLedToThisState = action;
