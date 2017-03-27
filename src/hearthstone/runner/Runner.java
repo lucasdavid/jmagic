@@ -50,10 +50,10 @@ public class Runner {
         running = true;
         games = new ArrayList<>();
         Random randomState = new Random(seed);
-        
+
         for (int matchId = 0; matchId < numberOfMatches; matchId++) {
             Game game = Game.random(numberOfPlayers, numberOfCardsForEachPlayer, randomState);
-            
+
             games.add(game);
 
             LOG.info(String.format("Game #%d started", matchId));

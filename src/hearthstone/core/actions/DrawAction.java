@@ -36,7 +36,7 @@ public final class DrawAction extends Action {
     @Override
     public void validActionOrRaisesException(State state) throws HearthStoneException {
         // Check if deck has cards to be drawn.
-        if (state.turnsCurrentPlayerInfo().deck.isEmpty()) {
+        if (state.currentPlayerInfo().deck.isEmpty()) {
             throw new InvalidActionException("cannot draw from empty deck.");
         }
 

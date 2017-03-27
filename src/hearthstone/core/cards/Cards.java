@@ -52,6 +52,10 @@ public class Cards {
     public boolean isEmpty() {
         return cards.isEmpty();
     }
+    
+    public boolean contains(Card card) {
+        return cards.contains(card);
+    }
 
     @Override
     public boolean equals(Object o) {

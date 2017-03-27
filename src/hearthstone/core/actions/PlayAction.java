@@ -39,9 +39,9 @@ public class PlayAction extends Action {
 
     @Override
     public void validActionOrRaisesException(State state) throws HearthStoneException {
-        // Check if hand has cards to be played.
-        if (state.turnsCurrentPlayerInfo().hand.isEmpty()) {
-            throw new InvalidActionException("cannot play from empty hand.");
+        // Check if hand has the card.
+        if (!state.currentPlayerInfo().hand.contains(card)) {
+            throw new InvalidActionException("card isn\'t in the player\'s hand");
         }
     }
 }

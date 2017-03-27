@@ -60,10 +60,10 @@ public class Game {
         LOG.log(Level.INFO, "Initial state: {0}", currentState);
 
         while (!currentState.done) {
-            PlayerInfo playerInfo = currentState.turnsCurrentPlayerInfo();
+            PlayerInfo playerInfo = currentState.currentPlayerInfo();
 
             try {
-                Action action = playerInfo.player.act(currentState);
+                Action action = playerInfo.player.act(currentState.currentPlayerViewModel());
 
                 if (!LEGAL_ACTIONS.contains(action.getClass())) {
                     throw new IllegalActionException("action " + action + "is not defined as legal by the game rules");
@@ -79,7 +79,10 @@ public class Game {
                 // This player's thrown a very problematic error. Define all other players
                 // as winners and keep playing.
                 LOG.log(Level.SEVERE, null, ex);
-                currentState = new State(currentState, true);
+
+                currentState = new State(currentState.getPlayerInfos(), currentState.turn, true,
+                        currentState.turnsCurrentPlayerId, currentState.actionThatLedToThisState, currentState);
+
                 winners = players.stream()
                         .filter(p -> !p.equals(playerInfo.player))
                         .collect(CustomCollectors.toImmutableList());
@@ -88,7 +91,8 @@ public class Game {
 
             } catch (HearthStoneException ex) {
                 LOG.log(Level.SEVERE, null, ex);
-                currentState = new State(currentState, true);
+                currentState = new State(currentState.getPlayerInfos(), currentState.turn, true,
+                        currentState.turnsCurrentPlayerId, currentState.actionThatLedToThisState, currentState);
             }
         }
 
