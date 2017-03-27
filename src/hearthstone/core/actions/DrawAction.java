@@ -6,6 +6,7 @@ import hearthstone.core.cards.Card;
 import hearthstone.core.cards.Cards;
 import hearthstone.core.exceptions.HearthStoneException;
 import hearthstone.core.exceptions.InvalidActionException;
+
 import java.util.List;
 
 /**
@@ -15,8 +16,8 @@ import java.util.List;
 public final class DrawAction extends Action {
 
     @Override
-    public State update(State state) throws HearthStoneException {
-        List<PlayerInfo> playerInfos = state.getPlayerInfos();
+    public State update(State state) {
+        List<PlayerInfo> playerInfos = state.getPlayersInfo();
         PlayerInfo playerInfo = playerInfos.remove(state.turnsCurrentPlayerId);
 
         List<Card> hand = playerInfo.hand.getCards();

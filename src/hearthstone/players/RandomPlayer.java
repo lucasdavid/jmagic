@@ -7,11 +7,13 @@ import hearthstone.core.actions.DrawAction;
 import hearthstone.core.actions.PassAction;
 import java.util.UUID;
 
+/**
+ * RandomPlayer.
+ * Executes random actions independent from the current state of the game.
+ *
+ * @author ldavid
+ */
 public class RandomPlayer extends Player {
-
-    public RandomPlayer() {
-        super();
-    }
 
     public RandomPlayer(String name) {
         super(name);

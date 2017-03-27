@@ -1,10 +1,17 @@
 package hearthstone.runner;
 
 import hearthstone.core.Game;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
+/**
+ * Game Runner.
+ * <p>
+ * Runs games and store their history inside an array.
+ */
 public class Runner {
 
     public static final int NUMBER_OF_MATCHES = 1;
@@ -31,7 +38,7 @@ public class Runner {
     private boolean running;
 
     Runner(int numberOfMatches, int numberOfPlayers,
-            int numberOfCardsForEachPlayer, int seed) {
+           int numberOfCardsForEachPlayer, int seed) {
         this.numberOfMatches = numberOfMatches;
         this.numberOfPlayers = numberOfPlayers;
         this.numberOfCardsForEachPlayer = numberOfCardsForEachPlayer;
@@ -39,20 +46,22 @@ public class Runner {
     }
 
     public Runner startUp() {
+        games = new ArrayList<>();
         return this;
     }
 
     public Runner tearDown() {
+        games = null;
         return this;
     }
 
     public Runner run() {
         running = true;
-        games = new ArrayList<>();
         Random randomState = new Random(seed);
 
         for (int matchId = 0; matchId < numberOfMatches; matchId++) {
-            Game game = Game.random(numberOfPlayers, numberOfCardsForEachPlayer, randomState);
+            Game game = Game.random(numberOfPlayers, numberOfCardsForEachPlayer, true,
+                    randomState);
 
             games.add(game);
 
@@ -63,7 +72,6 @@ public class Runner {
         }
 
         running = false;
-
         return this;
     }
 
@@ -71,4 +79,7 @@ public class Runner {
         return running;
     }
 
+    public List<Game> getGames() {
+        return new ArrayList<>(games);
+    }
 }

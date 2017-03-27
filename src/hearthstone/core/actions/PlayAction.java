@@ -21,8 +21,8 @@ public class PlayAction extends Action {
     }
 
     @Override
-    public State update(State state) throws HearthStoneException {
-        List<PlayerInfo> infos = state.getPlayerInfos();
+    public State update(State state) {
+        List<PlayerInfo> infos = state.getPlayersInfo();
         PlayerInfo info = infos.remove(state.turnsCurrentPlayerId);
         List<Card> hand = info.hand.getCards();
         List<Card> field = info.field.getCards();

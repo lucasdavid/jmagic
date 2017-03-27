@@ -6,5 +6,5 @@ package hearthstone.core.cards;
  */
 public enum Buff {
 
-    PROVOKE, HASTE, WIND_FURY;
+    PROVOKE, HASTE, WIND_FURY
 }
