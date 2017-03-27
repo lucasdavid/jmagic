@@ -1,14 +1,19 @@
-package hearthstone.core.cards;
+package hearthstone.core;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import hearthstone.core.cards.Card;
+import hearthstone.core.cards.Lackey;
+import hearthstone.core.cards.magics.AreaBurn;
+import hearthstone.core.cards.magics.Burn;
+import hearthstone.core.cards.magics.Effect;
 
+import java.util.*;
+
+/**
+ * Cards.
+ * <p>
+ * Hides a collection of cards. Can be used to represent
+ * decks, hands, fields and graveyards.
+ */
 public class Cards {
 
     public static final Cards EMPTY = new Cards();
@@ -32,9 +37,12 @@ public class Cards {
     }
 
     public static Cards random(int numberOfCardsInNewDeck, Random random) {
-        List<Card> cardsAvailable = Stream
-                .concat(Lackey.DEFAULT_CARDS.stream(), Magic.DEFAULT_CARDS.stream())
-                .collect(Collectors.toList());
+        List<Card> cardsAvailable = new ArrayList<>();
+
+        cardsAvailable.addAll(Lackey.DEFAULT_CARDS);
+        cardsAvailable.addAll(Burn.DEFAULT_CARDS);
+        cardsAvailable.addAll(AreaBurn.DEFAULT_CARDS);
+        cardsAvailable.addAll(Effect.DEFAULT_CARDS);
 
         return random(cardsAvailable, numberOfCardsInNewDeck, random);
     }
@@ -52,7 +60,7 @@ public class Cards {
     public boolean isEmpty() {
         return cards.isEmpty();
     }
-    
+
     public boolean contains(Card card) {
         return cards.contains(card);
     }
@@ -75,8 +83,6 @@ public class Cards {
 
     @Override
     public String toString() {
-        return "  " + String.join("\n  ", cards.stream()
-                .map(c -> c.toString())
-                .collect(Collectors.toList()));
+        return cards.toString();
     }
 }

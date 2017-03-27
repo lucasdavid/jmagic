@@ -1,7 +1,6 @@
 package hearthstone.core;
 
 import hearthstone.core.actions.Action;
-import hearthstone.core.cards.Cards;
 
 import java.util.ArrayList;
 import java.util.List;

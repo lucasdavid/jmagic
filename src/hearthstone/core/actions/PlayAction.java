@@ -3,7 +3,7 @@ package hearthstone.core.actions;
 import hearthstone.core.State;
 import hearthstone.core.State.PlayerInfo;
 import hearthstone.core.cards.Card;
-import hearthstone.core.cards.Cards;
+import hearthstone.core.Cards;
 import hearthstone.core.exceptions.HearthStoneException;
 import hearthstone.core.exceptions.InvalidActionException;
 import java.util.List;

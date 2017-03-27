@@ -3,7 +3,7 @@ package hearthstone.core.actions;
 import hearthstone.core.State;
 import hearthstone.core.State.PlayerInfo;
 import hearthstone.core.cards.Card;
-import hearthstone.core.cards.Cards;
+import hearthstone.core.Cards;
 import hearthstone.core.exceptions.HearthStoneException;
 import hearthstone.core.exceptions.InvalidActionException;
 
@@ -38,7 +38,7 @@ public final class DrawAction extends Action {
     public void validActionOrRaisesException(State state) throws HearthStoneException {
         // Check if deck has cards to be drawn.
         if (state.currentPlayerInfo().deck.isEmpty()) {
-            throw new InvalidActionException("cannot draw from empty deck.");
+            throw new InvalidActionException("cannot draw from empty deck");
         }
 
         // Validate that Player is drawing only once in a turn!
@@ -48,7 +48,7 @@ public final class DrawAction extends Action {
         while (previous != null && previous.turn == state.turn) {
             if (previous.turnsCurrentPlayerId == state.turnsCurrentPlayerId
                     && actionExecutedInPrevious instanceof DrawAction) {
-                throw new InvalidActionException("cannot draw more than once in a turn.");
+                throw new InvalidActionException("cannot draw more than once in a turn");
             }
 
             actionExecutedInPrevious = previous.actionThatLedToThisState;

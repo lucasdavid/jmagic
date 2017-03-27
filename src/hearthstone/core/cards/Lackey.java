@@ -1,23 +1,22 @@
 package hearthstone.core.cards;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.UUID;
+import hearthstone.core.ITargetable;
+import hearthstone.core.State;
+
+import java.util.*;
 
 public class Lackey extends Card {
 
     private final int attack;
     private final int life;
     private final int maxLife;
-    private final Collection<Buff> buffs;
+    private final Collection<LackeyAttributes> buffs;
 
     public static final Collection<Lackey> DEFAULT_CARDS = Collections.unmodifiableCollection(Arrays.asList(
             new Lackey("Frodo Baggins", 2, 1, 1),
-            new Lackey("Aragorn", 5, 7, 6, Arrays.asList(Buff.PROVOKE)),
-            new Lackey("Legolas", 8, 4, 6, Arrays.asList(Buff.WIND_FURY)),
-            new Lackey("Sauron", 10, 10, 10, Arrays.asList(Buff.values()))
+            new Lackey("Aragorn", 5, 7, 6, Arrays.asList(LackeyAttributes.PROVOKE)),
+            new Lackey("Legolas", 8, 4, 6, Arrays.asList(LackeyAttributes.WIND_FURY)),
+            new Lackey("Sauron", 10, 10, 10, Arrays.asList(LackeyAttributes.values()))
     ));
 
     public Lackey(String name, int attack, int life, int manaCost) {
@@ -28,11 +27,11 @@ public class Lackey extends Card {
         this(UUID.randomUUID(), name, attack, life, maxLife, manaCost);
     }
 
-    public Lackey(String name, int attack, int life, int manaCost, Collection<Buff> buffs) {
+    public Lackey(String name, int attack, int life, int manaCost, Collection<LackeyAttributes> buffs) {
         this(name, attack, life, life, manaCost, buffs);
     }
 
-    public Lackey(String name, int attack, int life, int maxLife, int manaCost, Collection<Buff> buffs) {
+    public Lackey(String name, int attack, int life, int maxLife, int manaCost, Collection<LackeyAttributes> buffs) {
         this(UUID.randomUUID(), name, attack, life, maxLife, manaCost, buffs);
     }
 
@@ -44,7 +43,7 @@ public class Lackey extends Card {
         this(id, name, attack, life, maxLife, manaCost, new ArrayList<>());
     }
 
-    public Lackey(UUID id, String name, int attack, int life, int maxLife, int manaCost, Collection<Buff> buffs) {
+    public Lackey(UUID id, String name, int attack, int life, int maxLife, int manaCost, Collection<LackeyAttributes> buffs) {
         super(id, name, manaCost);
 
         this.attack = attack;
@@ -53,7 +52,12 @@ public class Lackey extends Card {
         this.buffs = new ArrayList<>(buffs);
     }
 
-    public Collection<Buff> getBuffs() {
+    @Override
+    public State use(State state, List<ITargetable> targets) {
+        return null;
+    }
+
+    public Collection<LackeyAttributes> getBuffs() {
         return new ArrayList<>(buffs);
     }
 
@@ -66,10 +70,4 @@ public class Lackey extends Card {
                 ? String.format(" {%s}", buffs)
                 : "");
     }
-
-    @Override
-    public Lackey copy() {
-        return new Lackey(getId(), getName(), attack, life, maxLife, getManaCost(), buffs);
-    }
-
 }
