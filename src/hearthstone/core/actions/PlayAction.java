@@ -3,7 +3,7 @@ package hearthstone.core.actions;
 import hearthstone.core.State;
 import hearthstone.core.State.PlayerInfo;
 import hearthstone.core.cards.Card;
-import hearthstone.core.cards.Cards;
+import hearthstone.core.Cards;
 import hearthstone.core.exceptions.HearthStoneException;
 import hearthstone.core.exceptions.InvalidActionException;
 import java.util.List;
@@ -21,8 +21,8 @@ public class PlayAction extends Action {
     }
 
     @Override
-    public State update(State state) throws HearthStoneException {
-        List<PlayerInfo> infos = state.getPlayerInfos();
+    public State update(State state) {
+        List<PlayerInfo> infos = state.getPlayersInfo();
         PlayerInfo info = infos.remove(state.turnsCurrentPlayerId);
         List<Card> hand = info.hand.getCards();
         List<Card> field = info.field.getCards();

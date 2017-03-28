@@ -4,7 +4,7 @@ package hearthstone.core.cards;
  *
  * @author ldavid
  */
-public enum Buff {
+public enum LackeyAttributes {
 
-    PROVOKE, HASTE, WIND_FURY;
+    PROVOKE, HASTE, WIND_FURY
 }

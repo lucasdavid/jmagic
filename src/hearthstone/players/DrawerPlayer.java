@@ -9,10 +9,6 @@ import java.util.UUID;
 
 public class DrawerPlayer extends Player {
 
-    public DrawerPlayer() {
-        super();
-    }
-
     public DrawerPlayer(String name) {
         super(name);
     }
@@ -23,7 +19,8 @@ public class DrawerPlayer extends Player {
 
     @Override
     public Action act(State s) {
-        if (s.parent.actionThatLedToThisState instanceof DrawAction
+        if (s.parent != null
+                && s.parent.actionThatLedToThisState instanceof DrawAction
                 && s.parent.turnsCurrentPlayerId == s.turnsCurrentPlayerId) {
             return new PassAction();
         }

@@ -1,5 +1,6 @@
 package hearthstone.core.cards;
 
+import hearthstone.core.cards.magics.Magic;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

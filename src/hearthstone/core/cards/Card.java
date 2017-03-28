@@ -1,9 +1,16 @@
 package hearthstone.core.cards;
 
+import hearthstone.core.ITargetable;
+import hearthstone.core.State;
+
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Card {
+
+    public static Collection<Card> DEFAULT_CARDS;
 
     private final UUID id;
     private final String name;
@@ -19,6 +26,10 @@ public abstract class Card {
         this(UUID.randomUUID(), name, manaCost);
     }
 
+    public abstract State use(State state, List<ITargetable> targets);
+
+    public abstract void validUseOrRaisesException(State state, List<ITargetable> targets);
+
     public UUID getId() {
         return id;
     }
@@ -33,10 +44,8 @@ public abstract class Card {
 
     @Override
     public String toString() {
-        return String.format("%s cost: %d", name, id, manaCost);
+        return String.format("%s (mana cost: %d)", name, id, manaCost);
     }
-
-    public abstract Card copy();
 
     @Override
     public boolean equals(Object o) {

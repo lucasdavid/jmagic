@@ -50,14 +50,14 @@ public class LackeyTest {
 
     @Test
     public void testBuffsAreImmutable() {
-        Lackey lackey = new Lackey("Joe", 10, 4, 5, Arrays.asList(Buff.HASTE));
+        Lackey lackey = new Lackey("Joe", 10, 4, 5, Arrays.asList(LackeyAttributes.HASTE));
 
-        Collection<Buff> buffs = lackey.getBuffs();
-        buffs.add(Buff.PROVOKE);
-        buffs.add(Buff.WIND_FURY);
+        Collection<LackeyAttributes> buffs = lackey.getBuffs();
+        buffs.add(LackeyAttributes.PROVOKE);
+        buffs.add(LackeyAttributes.WIND_FURY);
 
         assertEquals(lackey.getBuffs().size(), 1);
-        assertTrue(lackey.getBuffs().contains(Buff.HASTE));
+        assertTrue(lackey.getBuffs().contains(LackeyAttributes.HASTE));
     }
 
 }
