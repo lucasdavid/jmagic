@@ -26,7 +26,7 @@ public class Game {
 
     public final static Collection<Class<? extends Action>> LEGAL_ACTIONS_FOR_PLAYERS
             = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-                    DrawAction.class, PassAction.class, PlayAction.class)));
+            DrawAction.class, PassAction.class, PlayAction.class)));
 
     private final boolean disqualifyOnInvalidAction;
     private final UUID id;
@@ -78,12 +78,16 @@ public class Game {
             } catch (InvalidActionException ex) {
                 // This player's attempted an invalid action.
                 LOG.log(Level.WARNING, null, ex);
-                if (!disqualifyAndPassMaybeFinish(disqualifyOnInvalidAction)) { return this; }
+                if (!passAndMaybeFinish(disqualifyOnInvalidAction)) {
+                    return this;
+                }
 
             } catch (IllegalActionException ex) {
                 // This player's attempted to use an illegal action. Disqualify them.
                 LOG.log(Level.SEVERE, null, ex);
-                if (!disqualifyAndPassMaybeFinish(true)) { return this; }
+                if (!passAndMaybeFinish(true)) {
+                    return this;
+                }
 
             } catch (HearthStoneException ex) {
                 // A very serious exception has been raised. Stops the game altogether.
@@ -103,9 +107,16 @@ public class Game {
         return this;
     }
 
-    private boolean disqualifyAndPassMaybeFinish(boolean disqualifyCurrentPlayer) {
+    /**
+     * @param disqualifyCurrentPlayer flag whether or not the current player
+     *                                should be disqualified.
+     * @return true if the game has passed onto the next player.
+     * False if there's no other player to pass the game onto.
+     */
+    private boolean passAndMaybeFinish(boolean disqualifyCurrentPlayer) {
         if (disqualifyCurrentPlayer) {
-            currentState = new DisqualifyAction(currentState.turnsCurrentPlayerId).update(currentState);
+            currentState = new DisqualifyAction(currentState.turnsCurrentPlayerId)
+                    .update(currentState);
         }
 
         boolean passing = new PassAction().isValid(currentState);

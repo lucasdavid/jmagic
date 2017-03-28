@@ -2,13 +2,14 @@ package hearthstone.core.cards;
 
 import hearthstone.core.ITargetable;
 import hearthstone.core.State;
+import hearthstone.core.exceptions.HearthStoneException;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public abstract class Card {
+public abstract class Card implements ITargetable {
 
     public static Collection<Card> DEFAULT_CARDS;
 
@@ -28,7 +29,7 @@ public abstract class Card {
 
     public abstract State use(State state, List<ITargetable> targets);
 
-    public abstract void validUseOrRaisesException(State state, List<ITargetable> targets);
+    public abstract void validUseOrRaisesException(State state, List<ITargetable> targets) throws HearthStoneException;
 
     public UUID getId() {
         return id;
