@@ -1,6 +1,8 @@
 package hearthstone.core;
 
 import hearthstone.core.actions.Action;
+import hearthstone.core.cards.Card;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,7 @@ public class State {
      * <p>
      * Holds information on the players' current statuses.
      */
-    public static class PlayerInfo {
+    public static class PlayerInfo implements IDamageable {
 
         public static final int DEFAULT_INITIAL_LIFE = 20;
 
@@ -53,6 +55,11 @@ public class State {
             this.field = field;
             this.graveyard = graveyard;
             this.playing = playing;
+        }
+
+        @Override
+        public IDamageable takeDamage(int damage) {
+            return new PlayerInfo(player, life - damage, deck, hand, field, graveyard);
         }
 
         @Override
@@ -96,6 +103,11 @@ public class State {
         this.playersInfo = playersInfo;
         this.parent = null;
         this.actionThatLedToThisState = null;
+    }
+
+    public State(List<PlayerInfo> playersInfo, int turn, boolean done,
+                 int turnsCurrentPlayerId) {
+        this(playersInfo, turn, done, turnsCurrentPlayerId, null, null);
     }
 
     /**

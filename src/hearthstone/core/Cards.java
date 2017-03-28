@@ -65,6 +65,22 @@ public class Cards {
         return cards.contains(card);
     }
 
+    public int indexOf(Card card) {
+        return cards.indexOf(card);
+    }
+
+    public Cards removeAll(List<Card> cards) {
+        List<Card> newCards = getCards();
+        newCards.removeAll(cards);
+        return new Cards(newCards);
+    }
+
+    public Cards addAll(List<Card> cards) {
+        List<Card> newCards = getCards();
+        newCards.addAll(cards);
+        return new Cards(newCards);
+    }
+
     @Override
     public boolean equals(Object o) {
         try {

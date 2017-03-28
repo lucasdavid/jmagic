@@ -1,11 +1,13 @@
 package hearthstone.core.cards.magics;
 
+import hearthstone.core.cards.Harmful;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
-public class AreaBurn extends Burn {
+public class AreaBurn extends Harmful {
 
     public static Collection<AreaBurn> DEFAULT_CARDS
             = Collections.unmodifiableCollection(Arrays.asList(
