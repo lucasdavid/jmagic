@@ -27,16 +27,16 @@ public class PlayAction extends Action {
     @Override
     public State update(State state) {
         List<PlayerInfo> playersInfo = state.getPlayersInfo();
-        PlayerInfo info = playersInfo.remove(state.turnsCurrentPlayerId);
-        List<Card> hand = info.hand.getCards();
-        List<Card> field = info.field.getCards();
+        PlayerInfo p = playersInfo.remove(state.turnsCurrentPlayerId);
+        List<Card> hand = p.hand.getCards();
+        List<Card> field = p.field.getCards();
 
         hand.remove(card);
         field.add(card);
 
-        info = new PlayerInfo(info.player, info.life,
-                info.deck, new Cards(hand), new Cards(field), info.graveyard);
-        playersInfo.add(state.turnsCurrentPlayerId, info);
+        p = new PlayerInfo(p.player, p.life, p.maxLife,
+                p.deck, new Cards(hand), new Cards(field), p.graveyard);
+        playersInfo.add(state.turnsCurrentPlayerId, p);
 
         return new State(playersInfo, state.turn, state.done, state.turnsCurrentPlayerId,
                 this, state);

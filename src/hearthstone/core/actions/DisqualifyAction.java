@@ -21,10 +21,10 @@ public class DisqualifyAction extends Action {
     @Override
     public State update(State state) {
         List<State.PlayerInfo> players = state.getPlayersInfo();
-        State.PlayerInfo info = players.remove(playerId);
-        info = new State.PlayerInfo(info.player, info.life,
-                info.deck, info.hand, info.field, info.graveyard, false);
-        players.add(playerId, info);
+        State.PlayerInfo p = players.remove(playerId);
+        p = new State.PlayerInfo(p.player, p.life, p.maxLife,
+                p.deck, p.hand, p.field, p.graveyard, false);
+        players.add(playerId, p);
 
         return new State(players, state.turn, state.done,
                 state.turnsCurrentPlayerId, this, state);

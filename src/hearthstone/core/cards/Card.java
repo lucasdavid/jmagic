@@ -1,6 +1,6 @@
 package hearthstone.core.cards;
 
-import hearthstone.core.ITargetable;
+import hearthstone.core.contracts.ITargetable;
 import hearthstone.core.State;
 import hearthstone.core.exceptions.HearthStoneException;
 

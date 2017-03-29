@@ -17,20 +17,20 @@ public final class DrawAction extends Action {
 
     @Override
     public State update(State state) {
-        List<PlayerInfo> playerInfos = state.getPlayersInfo();
-        PlayerInfo playerInfo = playerInfos.remove(state.turnsCurrentPlayerId);
+        List<PlayerInfo> playersInfo = state.getPlayersInfo();
+        PlayerInfo p = playersInfo.remove(state.turnsCurrentPlayerId);
 
-        List<Card> hand = playerInfo.hand.getCards();
-        List<Card> deck = playerInfo.deck.getCards();
+        List<Card> hand = p.hand.getCards();
+        List<Card> deck = p.deck.getCards();
 
         hand.add(deck.remove(0));
 
-        playerInfo = new PlayerInfo(playerInfo.player, playerInfo.life,
+        p = new PlayerInfo(p.player, p.life, p.maxLife,
                 new Cards(deck), new Cards(hand),
-                playerInfo.field, playerInfo.graveyard);
-        playerInfos.add(state.turnsCurrentPlayerId, playerInfo);
+                p.field, p.graveyard);
+        playersInfo.add(state.turnsCurrentPlayerId, p);
 
-        return new State(playerInfos, state.turn, state.done,
+        return new State(playersInfo, state.turn, state.done,
                 state.turnsCurrentPlayerId, this, state);
     }
 

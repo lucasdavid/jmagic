@@ -1,8 +1,7 @@
 package hearthstone.core;
 
 import hearthstone.core.actions.Action;
-import hearthstone.core.cards.Card;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import hearthstone.core.contracts.IDamageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,22 +33,25 @@ public class State {
         public static final int DEFAULT_INITIAL_LIFE = 20;
 
         public final int life;
+        public final int maxLife;
+
         public final Player player;
         public final Cards deck, hand, field, graveyard;
         public final boolean playing;
 
         PlayerInfo(Player player, Cards deck) {
-            this(player, DEFAULT_INITIAL_LIFE, deck, Cards.EMPTY, Cards.EMPTY, Cards.EMPTY);
+            this(player, DEFAULT_INITIAL_LIFE, DEFAULT_INITIAL_LIFE, deck, Cards.EMPTY, Cards.EMPTY, Cards.EMPTY);
         }
 
-        public PlayerInfo(Player player, int life, Cards deck, Cards hand, Cards field, Cards graveyard) {
-            this(player, life, deck, hand, field, graveyard, true);
+        public PlayerInfo(Player player, int life, int maxLife, Cards deck, Cards hand, Cards field, Cards graveyard) {
+            this(player, life, maxLife, deck, hand, field, graveyard, true);
         }
 
-        public PlayerInfo(Player player, int life, Cards deck, Cards hand, Cards field, Cards graveyard,
+        public PlayerInfo(Player player, int life, int maxLife, Cards deck, Cards hand, Cards field, Cards graveyard,
                           boolean playing) {
             this.player = player;
             this.life = life;
+            this.maxLife = maxLife;
             this.deck = deck;
             this.hand = hand;
             this.field = field;
@@ -59,7 +61,17 @@ public class State {
 
         @Override
         public IDamageable takeDamage(int damage) {
-            return new PlayerInfo(player, life - damage, deck, hand, field, graveyard);
+            return new PlayerInfo(player, life - damage, maxLife, deck, hand, field, graveyard);
+        }
+
+        @Override
+        public int getLife() {
+            return life;
+        }
+
+        @Override
+        public int getMaxLife() {
+            return maxLife;
         }
 
         @Override
@@ -69,11 +81,11 @@ public class State {
         }
 
         private PlayerInfo opponentViewModel() {
-            return new PlayerInfo(player, life, null, null, field, graveyard);
+            return new PlayerInfo(player, life, maxLife, null, null, field, graveyard);
         }
 
         private PlayerInfo playerViewModel() {
-            return new PlayerInfo(player, life, null, hand, field, graveyard);
+            return new PlayerInfo(player, life, maxLife, null, hand, field, graveyard);
         }
     }
 

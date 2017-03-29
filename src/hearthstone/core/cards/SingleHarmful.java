@@ -1,6 +1,6 @@
 package hearthstone.core.cards;
 
-import hearthstone.core.ITargetable;
+import hearthstone.core.contracts.ITargetable;
 import hearthstone.core.State;
 import hearthstone.core.exceptions.HearthStoneException;
 import hearthstone.core.exceptions.IllegalCardUsageException;
@@ -24,8 +24,7 @@ public abstract class SingleHarmful extends Harmful {
         super.validUseOrRaisesException(state, targets);
 
         if (targets.size() != 1) {
-            throw new IllegalCardUsageException(this
-                    + " can burn exactly one target");
+            throw new IllegalCardUsageException(this + " can burn exactly one target");
         }
     }
 }

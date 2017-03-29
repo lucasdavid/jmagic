@@ -1,4 +1,4 @@
-package hearthstone.core;
+package hearthstone.core.contracts;
 
 /**
  * Targetable Interface.

@@ -1,8 +1,8 @@
 package hearthstone.core.cards;
 
-import hearthstone.core.IDamageable;
-import hearthstone.core.ITargetable;
 import hearthstone.core.State;
+import hearthstone.core.contracts.IDamageable;
+import hearthstone.core.contracts.ITargetable;
 import hearthstone.core.exceptions.HearthStoneException;
 import hearthstone.core.exceptions.IllegalCardUsageException;
 
@@ -45,7 +45,7 @@ public abstract class Harmful extends Card {
                 .collect(Collectors.toList());
 
         List<State.PlayerInfo> playersInfoWithUpdatedCards = playersInfoWithUpdatedPlayersLife.stream()
-                .map(p -> new State.PlayerInfo(p.player, p.life, p.deck, p.hand,
+                .map(p -> new State.PlayerInfo(p.player, p.life, p.maxLife, p.deck, p.hand,
                         p.field.removeAll(updatedCards).addAll(updatedCards),
                         p.graveyard))
                 .collect(Collectors.toList());
