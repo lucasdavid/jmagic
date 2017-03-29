@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class SingleHarmful extends Harmful {
+public abstract class SingleHarmful extends Harmful {
     public SingleHarmful(String name, int damage, int manaCost) {
         super(name, damage, manaCost);
     }
