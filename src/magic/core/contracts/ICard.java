@@ -12,17 +12,13 @@ import java.util.UUID;
  *
  * @author ldavid
  */
-public interface ICard extends ITargetable {
+public interface ICard extends ITargetable, IIdentifiable {
 
     State use(State state, List<ITargetable> targets);
 
     void validUseOrRaisesException(State state, List<ITargetable> targets) throws MagicException;
 
     ICard duplicate();
-
-    UUID id();
-
-    String name();
 
     int cost();
 }

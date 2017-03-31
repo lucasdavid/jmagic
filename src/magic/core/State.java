@@ -66,13 +66,23 @@ public class State {
         }
 
         @Override
-        public int effectiveLife() {
+        public int life() {
             return life;
         }
 
         @Override
-        public int effectiveMaxLife() {
+        public int effectiveLife() {
+            return life();
+        }
+
+        @Override
+        public int maxLife() {
             return maxLife;
+        }
+
+        @Override
+        public int effectiveMaxLife() {
+            return maxLife();
         }
 
         @Override

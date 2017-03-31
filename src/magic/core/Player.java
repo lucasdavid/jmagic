@@ -1,6 +1,7 @@
 package magic.core;
 
 import magic.core.actions.Action;
+import magic.core.contracts.IIdentifiable;
 import magic.core.exceptions.MagicException;
 
 import java.util.Objects;
@@ -12,7 +13,7 @@ import java.util.UUID;
  * Basic interface for a Hearth Stone's player.
  * Check its sub-classes.
  */
-public abstract class Player {
+public abstract class Player implements IIdentifiable {
 
     public static final String[] DEFAULT_PLAYER_NAMES = new String[]{
             "Jane", "John", "Michael", "Lilliam", "Hellen", "Gus", "Josephine", "Richard",
@@ -35,11 +36,13 @@ public abstract class Player {
 
     public abstract Action act(State state) throws MagicException;
 
-    public UUID getId() {
+    @Override
+    public UUID id() {
         return id;
     }
 
-    public String getName() {
+    @Override
+    public String name() {
         return name;
     }
 
