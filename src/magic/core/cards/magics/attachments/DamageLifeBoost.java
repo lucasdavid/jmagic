@@ -44,16 +44,16 @@ public class DamageLifeBoost extends Card implements IDamageBoost, ILifeBoost {
 
     @Override
     public State use(State state, List<ITargetable> targets) {
-        List<State.PlayerInfo> playersInfo = state.getPlayersInfo();
+        List<State.PlayerState> playersInfo = state.playerStates();
 
         targets.stream()
                 .map(t -> ((IAttachable) t).attach(this))
                 .forEach(t -> {
-                    State.PlayerInfo p = playersInfo.stream()
+                    State.PlayerState p = playersInfo.stream()
                             .filter(_p -> _p.field.contains(t))
                             .findFirst()
                             .get();
-                    List<ICard> fieldCards = p.field.getCards();
+                    List<ICard> fieldCards = p.field.cards();
 
                     int indexOfCard = fieldCards.indexOf(t);
                     fieldCards.remove(indexOfCard);
@@ -70,7 +70,7 @@ public class DamageLifeBoost extends Card implements IDamageBoost, ILifeBoost {
         }
 
         if (targets.stream().anyMatch(t ->
-                state.getPlayersInfo().stream().noneMatch(p ->
+                state.playerStates().stream().noneMatch(p ->
                         p.field.contains((Card) t)))) {
             throw new IllegalCardUsageException("can only attach to a card in the field");
         }

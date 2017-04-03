@@ -1,11 +1,13 @@
 package magic.runner;
 
 import magic.core.Game;
+import magic.core.GameBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
+import java.util.stream.IntStream;
 
 /**
  * Game Runner.
@@ -18,7 +20,6 @@ public class Runner {
     public static final int NUMBER_OF_PLAYERS = 2;
     public static final int NUMBER_OF_CARDS_FOR_EACH_PLAYER = 10;
     public static final int SEED = 48;
-
     public static final Logger LOG = Logger.getLogger(Runner.class.getName());
 
     public static void main(String[] args) {
@@ -57,19 +58,20 @@ public class Runner {
 
     public Runner run() {
         running = true;
-        Random randomState = new Random(seed);
 
-        for (int matchId = 0; matchId < numberOfMatches; matchId++) {
-            Game game = Game.random(numberOfPlayers, numberOfCardsForEachPlayer, true,
-                    randomState);
+        GameBuilder gb = new GameBuilder(numberOfPlayers, numberOfCardsForEachPlayer,
+                true, new Random(seed));
 
-            games.add(game);
+        IntStream.range(0, numberOfMatches).forEach(matchId -> {
+            Game g = gb.build();
+
+            games.add(g);
 
             LOG.info(String.format("Game #%d started", matchId));
-            game.run();
+            g.run();
             LOG.info(String.format("Game started at %s and finished at %s. Winners: %s\n",
-                    game.startedAt(), game.finishedAt(), game.winners()));
-        }
+                    g.startedAt(), g.finishedAt(), g.winners()));
+        });
 
         running = false;
         return this;
@@ -79,7 +81,7 @@ public class Runner {
         return running;
     }
 
-    public List<Game> getGames() {
+    public List<Game> games() {
         return new ArrayList<>(games);
     }
 }

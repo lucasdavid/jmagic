@@ -2,8 +2,10 @@ package magic.core.contracts;
 
 
 import magic.core.State;
+import magic.core.cards.lands.BasicLands;
 import magic.core.exceptions.MagicException;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,5 +22,5 @@ public interface ICard extends ITargetable, IIdentifiable {
 
     ICard duplicate();
 
-    int cost();
+    Collection<BasicLands> cost();
 }

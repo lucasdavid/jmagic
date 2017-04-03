@@ -1,7 +1,10 @@
 package magic.core.cards;
 
+import magic.core.cards.lands.BasicLands;
 import magic.core.contracts.ICard;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -9,9 +12,9 @@ public abstract class Card implements ICard {
 
     private final UUID id;
     private final String name;
-    private final int cost;
+    private final Collection<BasicLands> cost;
 
-    public Card(UUID id, String name, int cost) {
+    public Card(UUID id, String name, Collection<BasicLands> cost) {
         this.id = id;
         this.name = name;
         this.cost = cost;
@@ -28,8 +31,8 @@ public abstract class Card implements ICard {
     }
 
     @Override
-    public int cost() {
-        return cost;
+    public Collection<BasicLands> cost() {
+        return new ArrayList<>(cost);
     }
 
     @Override
@@ -39,7 +42,7 @@ public abstract class Card implements ICard {
 
     public String toString(boolean longDescription) {
         return longDescription
-                ? String.format("\"%s\" c:%d", name, cost)
+                ? String.format("\"%s\" c:%s", name, cost)
                 : String.format("\"%s\"", name);
     }
 

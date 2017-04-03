@@ -1,11 +1,14 @@
 package magic.core.actions;
 
-import magic.core.contracts.ITargetable;
 import magic.core.State;
+import magic.core.actions.validation.PlayerHasCardInField;
+import magic.core.actions.validation.ValidationRule;
 import magic.core.cards.Card;
-import magic.core.exceptions.MagicException;
-import magic.core.exceptions.InvalidActionException;
+import magic.core.contracts.ITargetable;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,30 +22,29 @@ public class UseAction extends Action {
     private final List<ITargetable> targets;
 
     public UseAction(Card card) {
-        this(card, null);
+        this(card, Collections.emptyList());
     }
 
     public UseAction(Card card, List<ITargetable> targets) {
         this.card = card;
-        this.targets = targets;
+        this.targets = Collections.unmodifiableList(targets);
     }
 
     @Override
     public State update(State state) {
-        State t = this.card.use(state, targets);
-
-        // Override the state to make it look like
-        // this action modified it instead of the card.
-        return new State(t.getPlayersInfo(), t.turn, t.done, t.turnsCurrentPlayerId,
-                this, state);
+        throw new NotImplementedException();
+//        State t = this.card.use(state, targets);
+//
+//        // Override the state to make it look like
+//        // this action modified it instead of the card.
+//        return new State(t.playersState(), t.turn, t.done, t.turnsCurrentPlayerIndex,
+//                this, state);
     }
 
     @Override
-    public void raiseForErrors(State state) throws MagicException {
-        if (!state.currentPlayerInfo().field.contains(card)) {
-            throw new InvalidActionException("cannot use a card that's not on the field");
-        }
-
-        this.card.validUseOrRaisesException(state, targets);
+    protected Collection<ValidationRule> validationRules() {
+        return List.of(
+                new PlayerHasCardInField(card)
+        );
     }
 }

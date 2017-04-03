@@ -16,7 +16,7 @@ public class CurrentPlayerHasCardsInTheirDeck extends ValidationRule {
 
     @Override
     public void onValidate(State state) {
-        if (state.currentPlayerInfo().deck.isEmpty()) {
+        if (state.currentPlayerState().deck.isEmpty()) {
             errors.add(message);
         }
     }

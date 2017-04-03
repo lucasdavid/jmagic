@@ -23,7 +23,7 @@ public class HasNotAlreadyDrawnInThisTurn extends ValidationRule {
         State previous = state.parent;
 
         while (previous != null && previous.turn == state.turn) {
-            if (previous.turnsCurrentPlayerId == state.turnsCurrentPlayerId
+            if (previous.turnsCurrentPlayerIndex == state.turnsCurrentPlayerIndex
                     && actionExecutedInPrevious instanceof DrawAction) {
                 errors.add(message);
             }

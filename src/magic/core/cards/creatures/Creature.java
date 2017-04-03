@@ -1,6 +1,7 @@
 package magic.core.cards.creatures;
 
 import magic.core.cards.SingleHarmful;
+import magic.core.cards.lands.BasicLands;
 import magic.core.cards.magics.attachments.DamageLifeBoost;
 import magic.core.contracts.ICard;
 import magic.core.contracts.IDamageable;
@@ -19,13 +20,14 @@ public class Creature extends SingleHarmful implements IDamageable, IAttachable 
     private final Collection<Abilities> abilities;
     private final Collection<DamageLifeBoost> attachments;
 
-    public Creature(String name, int damage, int life, int cost,
+    public Creature(String name, int damage, int life, Collection<BasicLands> cost,
                     Collection<Abilities> abilities,
                     Collection<DamageLifeBoost> attachments) {
         this(UUID.randomUUID(), name, damage, life, life, cost, abilities, attachments);
     }
 
-    public Creature(UUID id, String name, int damage, int life, int maxLife, int cost,
+    public Creature(UUID id, String name, int damage, int life, int maxLife,
+                    Collection<BasicLands> cost,
                     Collection<Abilities> abilities,
                     Collection<DamageLifeBoost> attachments) {
         super(id, name, damage, cost);
@@ -104,7 +106,7 @@ public class Creature extends SingleHarmful implements IDamageable, IAttachable 
         return effectiveLife() > 0;
     }
 
-    public Collection<Abilities> getAbilities() {
+    public Collection<Abilities> abilities() {
         return abilities;
     }
 

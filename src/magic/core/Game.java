@@ -1,19 +1,16 @@
 package magic.core;
 
-import magic.core.State.PlayerInfo;
+import magic.core.State.PlayerState;
 import magic.core.actions.*;
 import magic.core.cards.Cards;
-import magic.core.cards.DeckBuilder;
 import magic.core.exceptions.MagicException;
 import magic.core.exceptions.IllegalActionException;
 import magic.core.exceptions.InvalidActionException;
 import magic.infrastructure.collectors.CustomCollectors;
-import magic.players.RandomPlayer;
 
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * Game.
@@ -60,10 +57,10 @@ public class Game {
         LOG.log(Level.INFO, "Initial state: {0}", currentState);
 
         while (!currentState.done) {
-            PlayerInfo playerInfo = currentState.currentPlayerInfo();
+            PlayerState playerState = currentState.currentPlayerState();
 
             try {
-                Action action = playerInfo.player.act(currentState.playerViewModel());
+                Action action = playerState.player.act(currentState.playerViewModel());
 
                 if (!LEGAL_ACTIONS_FOR_PLAYERS.contains(action.getClass())) {
                     throw new IllegalActionException("action " + action + "is not defined as legal by the game rules");
@@ -100,7 +97,7 @@ public class Game {
             }
         }
 
-        winners = currentState.getPlayersInfo().stream()
+        winners = currentState.playerStates().stream()
                 .filter(i -> i.playing && i.life > 0)
                 .map(i -> i.player)
                 .collect(CustomCollectors.toImmutableList());
@@ -117,7 +114,7 @@ public class Game {
      */
     private boolean passAndMaybeFinish(boolean disqualifyCurrentPlayer) {
         if (disqualifyCurrentPlayer) {
-            currentState = new DisqualifyAction(currentState.turnsCurrentPlayerId)
+            currentState = new DisqualifyAction(currentState.currentPlayerState().player)
                     .update(currentState);
         }
 
@@ -129,63 +126,6 @@ public class Game {
             finishedAt = new Date();
         }
         return passing;
-    }
-
-    /**
-     * Generate a random game.
-     *
-     * @param numberOfPlayers            number of players in the new randomly generated game.
-     * @param numberOfCardsForEachPlayer number of random cards distributed to each player.
-     * @param seed:                      the seed used to create a new <code>Random</code> state.
-     * @return new Game object.
-     */
-    public static Game random(int numberOfPlayers, int numberOfCardsForEachPlayer,
-                              boolean disqualifyOnInvalidAction, int seed) {
-        return random(numberOfPlayers, numberOfCardsForEachPlayer, disqualifyOnInvalidAction, new Random(seed));
-    }
-
-    /**
-     * Generate a random game.
-     * <p>
-     * The game will have <param>numberOfPlayers</param> players, each withal
-     * <param>numberOfCardsForEachPlayer</param> cards.
-     *
-     * @param numberOfPlayers            number of players in the new randomly generated game.
-     * @param numberOfCardsForEachPlayer number of random cards distributed to each player.
-     * @param randomState                a random state used for reproducibility.
-     * @return new Game object
-     */
-    public static Game random(int numberOfPlayers, int numberOfCardsForEachPlayer,
-                              boolean disqualifyOnInvalidAction, Random randomState) {
-        List<Player> players = new ArrayList<>();
-
-        for (int i = 0; i < numberOfPlayers; i++) {
-            players.add(new RandomPlayer(Player.DEFAULT_PLAYER_NAMES[i % Player.DEFAULT_PLAYER_NAMES.length]));
-        }
-
-        return random(players, numberOfCardsForEachPlayer, disqualifyOnInvalidAction, randomState);
-    }
-
-    /**
-     * Generate a random game.
-     * <p>
-     * The game will have the players passed, each with <param>numberOfCardsForEachPlayer</param>
-     * cards.
-     *
-     * @param players                    the players in the new randomly generated game.
-     * @param numberOfCardsForEachPlayer number of random cards distributed to each player.
-     * @param randomState                a random state used for reproducibility.
-     * @return a new Game object
-     */
-    public static Game random(List<Player> players, int numberOfCardsForEachPlayer,
-                              boolean disqualifyOnInvalidAction, Random randomState) {
-        DeckBuilder b = new DeckBuilder(numberOfCardsForEachPlayer, randomState);
-
-        List<Cards> playersCards = players.stream()
-                .map(p -> b.random())
-                .collect(Collectors.toList());
-
-        return new Game(players, playersCards, disqualifyOnInvalidAction);
     }
 
     @Override

@@ -21,7 +21,7 @@ public class DrawerPlayer extends Player {
     public Action act(State s) {
         if (s.parent != null
                 && s.parent.actionThatLedToThisState instanceof DrawAction
-                && s.parent.turnsCurrentPlayerId == s.turnsCurrentPlayerId) {
+                && s.parent.turnsCurrentPlayerIndex == s.turnsCurrentPlayerIndex) {
             return new PassAction();
         }
 

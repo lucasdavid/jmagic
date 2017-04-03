@@ -31,7 +31,7 @@ public class Cards {
         this.cards = new ArrayList<>(cards);
     }
 
-    public List<ICard> getCards() {
+    public List<ICard> cards() {
         return new ArrayList<>(cards);
     }
 
@@ -48,13 +48,13 @@ public class Cards {
     }
 
     public Cards removeAll(List<ICard> cards) {
-        List<ICard> newCards = getCards();
+        List<ICard> newCards = cards();
         newCards.removeAll(cards);
         return new Cards(newCards);
     }
 
     public Cards addAll(List<ICard> cards) {
-        List<ICard> newCards = getCards();
+        List<ICard> newCards = cards();
         newCards.addAll(cards);
         return new Cards(newCards);
     }

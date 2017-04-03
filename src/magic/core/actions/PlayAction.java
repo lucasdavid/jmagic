@@ -1,17 +1,20 @@
 package magic.core.actions;
 
-import magic.core.cards.Cards;
 import magic.core.State;
-import magic.core.State.PlayerInfo;
+import magic.core.State.PlayerState;
+import magic.core.actions.validation.PlayerHasCardInHand;
+import magic.core.actions.validation.PlayerHasLandsToPlay;
+import magic.core.actions.validation.ValidationRule;
 import magic.core.cards.Card;
-import magic.core.exceptions.MagicException;
-import magic.core.exceptions.InvalidActionException;
+import magic.core.cards.Cards;
+import magic.core.contracts.ICard;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
  * Play Action.
- *
+ * <p>
  * Play a card from the player's hand.
  *
  * @author ldavid
@@ -26,26 +29,28 @@ public class PlayAction extends Action {
 
     @Override
     public State update(State state) {
-        List<PlayerInfo> playersInfo = state.getPlayersInfo();
-        PlayerInfo p = playersInfo.remove(state.turnsCurrentPlayerId);
-        List<Card> hand = p.hand.getCards();
-        List<Card> field = p.field.getCards();
+        List<PlayerState> playerStates = state.playerStates();
+        State.PlayerState p = playerStates.remove(state.turnsCurrentPlayerIndex);
+        List<ICard> hand = p.hand.cards();
+        List<ICard> field = p.field.cards();
 
-        hand.remove(card);
-        field.add(card);
+        ICard validCard = hand.remove(hand.indexOf(card));
+        field.add(validCard);
 
-        p = new PlayerInfo(p.player, p.life, p.maxLife,
+        // TODO: waste lands!
+
+        p = new State.PlayerState(p.player, p.life, p.maxLife,
                 p.deck, new Cards(hand), new Cards(field), p.graveyard);
-        playersInfo.add(state.turnsCurrentPlayerId, p);
+        playerStates.add(state.turnsCurrentPlayerIndex, p);
 
-        return new State(playersInfo, state.turn, state.done, state.turnsCurrentPlayerId,
+        return new State(playerStates, state.turn, state.done, state.turnsCurrentPlayerIndex,
                 this, state);
     }
 
     @Override
-    public void raiseForErrors(State state) throws MagicException {
-        if (!state.currentPlayerInfo().hand.contains(card)) {
-            throw new InvalidActionException("card isn't in the player's hand");
-        }
+    protected Collection<ValidationRule> validationRules() {
+        return List.of(
+                new PlayerHasCardInHand(card),
+                new PlayerHasLandsToPlay(card));
     }
 }

@@ -25,7 +25,7 @@ public class RandomPlayer extends Player {
 
     @Override
     public Action act(State s) {
-        if (s.parent == null || s.parent.turnsCurrentPlayerId != s.turnsCurrentPlayerId) {
+        if (s.parent == null || s.parent.turnsCurrentPlayerIndex != s.turnsCurrentPlayerIndex) {
             return new DrawAction();
         }
 
