@@ -1,5 +1,6 @@
 package magic.core.cards.creatures;
 
+import magic.core.cards.lands.BasicLands;
 import magic.core.cards.magics.attachments.DamageLifeBoost;
 import magic.core.contracts.ICard;
 import magic.core.contracts.IDamageable;
@@ -8,10 +9,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -20,7 +23,7 @@ class CreatureTest {
 
     @BeforeEach
     void beforeEach() {
-        this.a = new Creature("mocked-creature-1", 1, 10, 1,
+        this.a = new Creature("mocked-creature-1", 1, 10, List.of(BasicLands.SWAMP),
                 Collections.emptyList(), Collections.emptyList());
     }
 
@@ -47,7 +50,7 @@ class CreatureTest {
                 initialEffectiveLife = a.effectiveLife();
 
         DamageLifeBoost attachment = new DamageLifeBoost("mocked-attachment-1",
-                3, 2, 1);
+                3, 2, List.of(BasicLands.FOREST));
 
         Creature b = (Creature) a.attach(attachment);
 
@@ -66,7 +69,7 @@ class CreatureTest {
     @Test
     void detach() {
         DamageLifeBoost attachment = new DamageLifeBoost("mocked-attachment-1",
-                3, 2, 1);
+                3, 2, List.of(BasicLands.MOUNTAIN));
         a = (Creature) a.attach(attachment);
 
         int initialDamage = a.damage(),
@@ -83,9 +86,9 @@ class CreatureTest {
         assertEquals(initialEffectiveLife, a.effectiveLife());
 
         assertEquals(initialDamage, b.damage());
-        assertEquals(initialDamage - 3, b.effectiveDamage());
+        assertEquals(initialEffectiveDamage - 3, b.effectiveDamage());
         assertEquals(initialLife, b.life());
-        assertEquals(initialLife - 2, b.effectiveLife());
+        assertEquals(initialEffectiveLife - 2, b.effectiveLife());
     }
 
     @Test
@@ -101,20 +104,6 @@ class CreatureTest {
 
         assertTrue(a.isAlive());
         assertFalse(b.isAlive());
-    }
-
-    /**
-     * Check for immutability.
-     */
-    @Test
-    void getAbilities() {
-        Collection<Abilities> abilities = a.getAbilities();
-
-        abilities.add(Abilities.DEATH_TOUCH);
-        abilities.add(Abilities.LIFE_LINK);
-        abilities.add(Abilities.FEAR);
-
-        assertEquals(abilities.size() - 3, a.getAbilities().size());
     }
 
     @Test

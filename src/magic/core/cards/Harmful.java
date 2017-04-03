@@ -15,14 +15,16 @@ import java.util.UUID;
 public abstract class Harmful extends Card {
 
     private final int damage;
-
-    public Harmful(String name, int damage, Collection<BasicLands> cost) {
-        this(UUID.randomUUID(), name, damage, cost);
-    }
+    private final int maxTargetCount;
 
     public Harmful(UUID id, String name, int damage, Collection<BasicLands> cost) {
+        this(id, name, damage, 1, cost);
+    }
+
+    public Harmful(UUID id, String name, int damage, int maxTargetCount, Collection<BasicLands> cost) {
         super(id, name, cost);
         this.damage = damage;
+        this.maxTargetCount = maxTargetCount;
     }
 
     @Override
@@ -67,7 +69,7 @@ public abstract class Harmful extends Card {
     }
 
     @Override
-    public void validUseOrRaisesException(State state, List<ITargetable> targets)
+    public void raiseForErrors(State state, List<ITargetable> targets)
             throws MagicException {
         if (targets.isEmpty()) {
             throw new IllegalCardUsageException("must target at least one enemy");
@@ -91,6 +93,10 @@ public abstract class Harmful extends Card {
                                 i.field.contains(c)))) {
             throw new IllegalCardUsageException("can only target cards that are on the field");
         }
+
+        if (targets.size() > maxTargetCount) {
+            throw new IllegalCardUsageException(String.format("can only target %d entities", maxTargetCount));
+        }
     }
 
     public int damage() {
@@ -99,5 +105,9 @@ public abstract class Harmful extends Card {
 
     public int effectiveDamage() {
         return damage();
+    }
+
+    public int maxTargetCount() {
+        return maxTargetCount;
     }
 }

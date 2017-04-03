@@ -40,7 +40,7 @@ public class Land extends Card {
     }
 
     @Override
-    public void validUseOrRaisesException(State state, List<ITargetable> targets) throws MagicException {
+    public void raiseForErrors(State state, List<ITargetable> targets) throws MagicException {
 
     }
 

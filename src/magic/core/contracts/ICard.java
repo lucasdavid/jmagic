@@ -18,7 +18,7 @@ public interface ICard extends ITargetable, IIdentifiable {
 
     State use(State state, List<ITargetable> targets);
 
-    void validUseOrRaisesException(State state, List<ITargetable> targets) throws MagicException;
+    void raiseForErrors(State state, List<ITargetable> targets) throws MagicException;
 
     ICard duplicate();
 

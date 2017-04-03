@@ -7,10 +7,12 @@ import magic.core.actions.validation.PlayerHasLandsToPlay;
 import magic.core.actions.validation.ValidationRule;
 import magic.core.cards.Card;
 import magic.core.cards.Cards;
+import magic.core.cards.lands.Land;
 import magic.core.contracts.ICard;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Play Action.
@@ -37,7 +39,14 @@ public class PlayAction extends Action {
         ICard validCard = hand.remove(hand.indexOf(card));
         field.add(validCard);
 
-        // TODO: waste lands!
+        List<ICard> landsToUse = field.stream()
+                .filter(c -> c instanceof Land && !((Land) c).used())
+                .map(c -> (Land) c)
+                .map(l -> new Land(l.id(), l.kind(), true))
+                .collect(Collectors.toList());
+
+        field.removeAll(landsToUse);
+        field.addAll(landsToUse);
 
         p = new State.PlayerState(p.player, p.life, p.maxLife,
                 p.deck, new Cards(hand), new Cards(field), p.graveyard);

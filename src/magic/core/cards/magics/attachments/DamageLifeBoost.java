@@ -2,6 +2,7 @@ package magic.core.cards.magics.attachments;
 
 import magic.core.State;
 import magic.core.cards.Card;
+import magic.core.cards.lands.BasicLands;
 import magic.core.contracts.ICard;
 import magic.core.contracts.ITargetable;
 import magic.core.contracts.attachments.IAttachable;
@@ -16,18 +17,14 @@ import java.util.UUID;
 
 public class DamageLifeBoost extends Card implements IDamageBoost, ILifeBoost {
 
-    public static Collection<DamageLifeBoost> DEFAULT_CARDS = List.of(
-            new DamageLifeBoost("Sword of Dawn", 2, 0, 1),
-            new DamageLifeBoost("Heavenly Blessing", 4, 2, 4));
-
     private final int damageIncrease;
     private final int lifeIncrease;
 
-    public DamageLifeBoost(String name, int damageIncrease, int lifeIncrease, int cost) {
+    public DamageLifeBoost(String name, int damageIncrease, int lifeIncrease, Collection<BasicLands> cost) {
         this(UUID.randomUUID(), name, damageIncrease, lifeIncrease, cost);
     }
 
-    public DamageLifeBoost(UUID id, String name, int damageIncrease, int lifeIncrease, int cost) {
+    public DamageLifeBoost(UUID id, String name, int damageIncrease, int lifeIncrease, Collection<BasicLands> cost) {
         super(id, name, cost);
 
         this.damageIncrease = damageIncrease;
@@ -64,7 +61,7 @@ public class DamageLifeBoost extends Card implements IDamageBoost, ILifeBoost {
     }
 
     @Override
-    public void validUseOrRaisesException(State state, List<ITargetable> targets) throws MagicException {
+    public void raiseForErrors(State state, List<ITargetable> targets) throws MagicException {
         if (targets.stream().anyMatch(t -> !(t instanceof IAttachable))) {
             throw new IllegalCardUsageException("can only attach to attachable entity");
         }

@@ -5,7 +5,6 @@ import magic.core.actions.validation.PlayerHasCardInField;
 import magic.core.actions.validation.ValidationRule;
 import magic.core.cards.Card;
 import magic.core.contracts.ITargetable;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -32,7 +31,7 @@ public class UseAction extends Action {
 
     @Override
     public State update(State state) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 //        State t = this.card.use(state, targets);
 //
 //        // Override the state to make it look like

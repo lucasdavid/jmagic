@@ -74,6 +74,8 @@ public class Game {
 
                 currentState = action.update(currentState);
 
+                LOG.info(String.format("%s performed %s", playerState.player, action));
+
             } catch (InvalidActionException ex) {
                 // This player's attempted an invalid action.
                 LOG.log(Level.WARNING, null, ex);

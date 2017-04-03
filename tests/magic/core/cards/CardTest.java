@@ -1,11 +1,13 @@
 package magic.core.cards;
 
 import magic.core.State;
+import magic.core.cards.lands.BasicLands;
 import magic.core.contracts.ICard;
 import magic.core.contracts.ITargetable;
 import magic.core.exceptions.MagicException;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,11 +20,11 @@ class CardTest {
 
     class MockedCard extends Card {
 
-        public MockedCard(String name, int cost) {
+        public MockedCard(String name, Collection<BasicLands> cost) {
             this(UUID.randomUUID(), name, cost);
         }
 
-        public MockedCard(UUID id, String name, int cost) {
+        public MockedCard(UUID id, String name, Collection<BasicLands> cost) {
             super(id, name, cost);
         }
 
@@ -32,7 +34,7 @@ class CardTest {
         }
 
         @Override
-        public void validUseOrRaisesException(State state, List<ITargetable> targets) throws MagicException {
+        public void raiseForErrors(State state, List<ITargetable> targets) throws MagicException {
         }
 
         @Override
@@ -43,8 +45,8 @@ class CardTest {
 
     @Test
     void getId() {
-        ICard a = new MockedCard("mocked-card-a", 1);
-        ICard b = new MockedCard("mocked-card-b", 4);
+        ICard a = new MockedCard("mocked-card-a", List.of(BasicLands.PLAINS));
+        ICard b = new MockedCard("mocked-card-b", List.of(BasicLands.ISLAND));
 
         assertNotNull(a.id());
         assertNotEquals(a.id(), b.id());
@@ -53,7 +55,7 @@ class CardTest {
 
     @Test
     void equals() {
-        ICard a = new MockedCard("mocked-card-a", 1);
+        ICard a = new MockedCard("mocked-card-a", List.of(BasicLands.SWAMP));
         assertEquals(a, new MockedCard(a.id(), a.name(), a.cost()));
     }
 }
