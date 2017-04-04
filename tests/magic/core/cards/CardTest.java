@@ -2,9 +2,9 @@ package magic.core.cards;
 
 import magic.core.State;
 import magic.core.cards.lands.BasicLands;
-import magic.core.contracts.ICard;
+import magic.core.contracts.cards.ICard;
 import magic.core.contracts.ITargetable;
-import magic.core.exceptions.MagicException;
+import magic.core.exceptions.JMagicException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
@@ -34,7 +34,7 @@ class CardTest {
         }
 
         @Override
-        public void raiseForErrors(State state, List<ITargetable> targets) throws MagicException {
+        public void raiseForErrors(State state, List<ITargetable> targets) throws JMagicException {
         }
 
         @Override

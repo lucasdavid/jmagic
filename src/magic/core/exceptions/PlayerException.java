@@ -4,7 +4,7 @@ package magic.core.exceptions;
  *
  * @author ldavid
  */
-public class PlayerException extends MagicException {
+public class PlayerException extends JMagicException {
 
     /**
      * Creates a new instance of <code>NullActionException</code> without detail

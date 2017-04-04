@@ -1,6 +1,8 @@
 package magic.core.actions;
 
+import magic.core.Player;
 import magic.core.State;
+import magic.core.actions.validation.ActorIsCurrentPlayer;
 import magic.core.actions.validation.PlayerHasCardInField;
 import magic.core.actions.validation.ValidationRule;
 import magic.core.cards.Card;
@@ -30,7 +32,7 @@ public class UseAction extends Action {
     }
 
     @Override
-    public State update(State state) {
+    public State update(State state, Player actor) {
         throw new UnsupportedOperationException();
 //        State t = this.card.use(state, targets);
 //
@@ -43,7 +45,7 @@ public class UseAction extends Action {
     @Override
     protected Collection<ValidationRule> validationRules() {
         return List.of(
-                new PlayerHasCardInField(card)
-        );
+                new ActorIsCurrentPlayer(),
+                new PlayerHasCardInField(card));
     }
 }

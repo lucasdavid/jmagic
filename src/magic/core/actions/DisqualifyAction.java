@@ -15,18 +15,12 @@ import java.util.List;
  */
 public class DisqualifyAction extends Action {
 
-    private final Player player;
-
-    public DisqualifyAction(Player player) {
-        this.player = player;
-    }
-
     @Override
-    public State update(State state) {
+    public State update(State state, Player actor) {
         List<State.PlayerState> players = state.playerStates();
-        State.PlayerState p = state.playerState(player);
+        State.PlayerState p = state.playerState(actor);
 
-        p = new State.PlayerState(p.player, p.life, p.maxLife,
+        p = new State.PlayerState(p.player, p.life(), p.maxLife(),
                 p.deck, p.hand, p.field, p.graveyard, false);
         players.set(players.indexOf(p), p);
 
@@ -37,7 +31,6 @@ public class DisqualifyAction extends Action {
     @Override
     protected Collection<ValidationRule> validationRules() {
         return List.of(
-                new IsPlaying(player)
-        );
+                new IsPlaying());
     }
 }

@@ -1,31 +1,22 @@
 package magic.core.actions.validation;
 
+import magic.core.Player;
 import magic.core.State;
 import magic.core.actions.Action;
 import magic.core.actions.DrawAction;
 
 public class HasNotAlreadyDrawnInThisTurn extends ValidationRule {
 
-    private final String message;
-
-    public HasNotAlreadyDrawnInThisTurn() {
-        this("cannot draw more than once in a turn");
-    }
-
-    public HasNotAlreadyDrawnInThisTurn(String message) {
-        this.message = message;
-    }
-
     @Override
-    public void onValidate(State state) {
+    public void onValidate(State state, Player actor) {
         // Validate that Player is drawing only once in a turn!
         Action actionExecutedInPrevious = state.actionThatLedToThisState;
         State previous = state.parent;
 
         while (previous != null && previous.turn == state.turn) {
-            if (previous.turnsCurrentPlayerIndex == state.turnsCurrentPlayerIndex
+            if (actor.equals(previous.currentPlayerState().player)
                     && actionExecutedInPrevious instanceof DrawAction) {
-                errors.add(message);
+                errors.add(String.format("%s already drew this turn", actor));
             }
 
             actionExecutedInPrevious = previous.actionThatLedToThisState;

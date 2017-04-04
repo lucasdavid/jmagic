@@ -1,7 +1,8 @@
 package magic.core.actions.validation;
 
+import magic.core.Player;
 import magic.core.State;
-import magic.core.contracts.ICard;
+import magic.core.contracts.cards.ICard;
 
 public class PlayerHasCardInField extends ValidationRule {
 
@@ -12,10 +13,9 @@ public class PlayerHasCardInField extends ValidationRule {
     }
 
     @Override
-    public void onValidate(State state) {
-        if (state.currentPlayerState().field.contains(card)) {
-            errors.add(String.format("Player {%s} doesn't have {%s} in their field",
-                    state.currentPlayerState(), card));
+    public void onValidate(State state, Player actor) {
+        if (state.playerState(actor).field.contains(card)) {
+            errors.add(String.format("Player {%s} doesn't have {%s} in their field", actor, card));
         }
     }
 }

@@ -3,9 +3,9 @@ package magic.core.cards.creatures;
 import magic.core.cards.Harmful;
 import magic.core.cards.lands.BasicLands;
 import magic.core.cards.magics.attachments.DamageLifeBoost;
-import magic.core.contracts.ICard;
 import magic.core.contracts.IDamageable;
-import magic.core.contracts.attachments.IAttachable;
+import magic.core.contracts.cards.ICard;
+import magic.core.contracts.cards.attachments.IAttachable;
 
 import java.util.ArrayList;
 import java.util.Collection;

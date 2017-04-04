@@ -3,9 +3,10 @@ package magic.core.cards;
 import magic.core.cards.creatures.Abilities;
 import magic.core.cards.creatures.Creature;
 import magic.core.cards.lands.BasicLands;
+import magic.core.cards.lands.Land;
 import magic.core.cards.magics.Burn;
 import magic.core.cards.magics.attachments.DamageLifeBoost;
-import magic.core.contracts.ICard;
+import magic.core.contracts.cards.ICard;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +49,14 @@ public class DeckBuilder {
             new DamageLifeBoost("Sword of Dawn", 2, 0,
                     List.of(BasicLands.PLAINS)),
             new DamageLifeBoost("Heavenly Blessing", 4, 2,
-                    List.of(BasicLands.PLAINS, BasicLands.PLAINS, BasicLands.WASTES)));
+                    List.of(BasicLands.PLAINS, BasicLands.PLAINS, BasicLands.WASTES)),
+
+            new Land(BasicLands.FOREST),
+            new Land(BasicLands.ISLAND),
+            new Land(BasicLands.MOUNTAIN),
+            new Land(BasicLands.PLAINS),
+            new Land(BasicLands.SWAMP),
+            new Land(BasicLands.WASTES));
 
     private final int numberOfCards;
     private final Random random;
@@ -68,6 +76,10 @@ public class DeckBuilder {
         List<Integer> cardIndices = IntStream.range(0, possibleCards.size())
                 .boxed()
                 .collect(Collectors.toList());
+
+        while (cardIndices.size() < numberOfCards) {
+            cardIndices.addAll(cardIndices);
+        }
 
         Collections.shuffle(cardIndices, random);
 

@@ -2,9 +2,9 @@ package magic.core.cards.lands;
 
 import magic.core.State;
 import magic.core.cards.Card;
-import magic.core.contracts.ICard;
+import magic.core.contracts.cards.ICard;
 import magic.core.contracts.ITargetable;
-import magic.core.exceptions.MagicException;
+import magic.core.exceptions.JMagicException;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +19,10 @@ public class Land extends Card {
 
     private final BasicLands kind;
     private final boolean used;
+
+    public Land(BasicLands kind) {
+        this(kind, false);
+    }
 
     public Land(BasicLands kind, boolean used) {
         this(UUID.randomUUID(), kind, used);
@@ -40,7 +44,7 @@ public class Land extends Card {
     }
 
     @Override
-    public void raiseForErrors(State state, List<ITargetable> targets) throws MagicException {
+    public void raiseForErrors(State state, List<ITargetable> targets) throws JMagicException {
 
     }
 

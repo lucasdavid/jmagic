@@ -1,7 +1,7 @@
-package magic.core.contracts.attachments;
+package magic.core.contracts.cards.attachments;
 
 import magic.core.cards.magics.attachments.DamageLifeBoost;
-import magic.core.contracts.ICard;
+import magic.core.contracts.cards.ICard;
 
 /**
  * Attachable Interface.

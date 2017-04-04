@@ -1,7 +1,7 @@
 package magic.core.cards;
 
 import magic.core.cards.lands.BasicLands;
-import magic.core.contracts.ICard;
+import magic.core.contracts.cards.ICard;
 
 import java.util.ArrayList;
 import java.util.Collection;

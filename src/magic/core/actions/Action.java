@@ -1,8 +1,11 @@
 package magic.core.actions;
 
+import magic.core.Player;
 import magic.core.State;
 import magic.core.actions.validation.ValidationRule;
-import magic.core.exceptions.MagicException;
+import magic.core.exceptions.InvalidActionException;
+import magic.core.exceptions.JMagicException;
+import magic.core.exceptions.ValidationException;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -16,7 +19,7 @@ import java.util.Objects;
  */
 public abstract class Action {
 
-    public abstract State update(State state);
+    public abstract State update(State state, Player actor);
 
     /**
      * Checks if the application of this action will bring the game to an invalid
@@ -26,13 +29,19 @@ public abstract class Action {
      * as it dependents on the domain and logic of each and every specific action.
      *
      * @param state the state in which this action will be applied.
-     * @throws MagicException raised when the application of this
-     *                              action results in an invalid state for the game.
+     * @throws JMagicException raised when the application of this
+     *                         action results in an invalid state for the game.
      */
-    public void raiseForErrors(State state) throws MagicException {
+    public Action raiseForErrors(State state, Player actor) throws InvalidActionException {
         for (ValidationRule r : validationRules()) {
-            r.validate(state).raiseForErrors();
+            try {
+                r.validate(state, actor).raiseForErrors();
+            } catch (ValidationException e) {
+                throw new InvalidActionException(e.getMessage());
+            }
         }
+
+        return this;
     }
 
     protected abstract Collection<ValidationRule> validationRules();
@@ -43,9 +52,9 @@ public abstract class Action {
      * @param state the state that will have its integrity verified.
      * @return true, if the action's application results in a valid state. False, otherwise.
      */
-    public boolean isValid(State state) {
+    public boolean isValid(State state, Player actor) {
         return validationRules().stream()
-                .allMatch(r -> r.validate(state).isValid());
+                .allMatch(r -> r.validate(state, actor).isValid());
     }
 
     @Override

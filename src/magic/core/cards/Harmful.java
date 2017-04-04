@@ -2,11 +2,11 @@ package magic.core.cards;
 
 import magic.core.State;
 import magic.core.cards.lands.BasicLands;
-import magic.core.contracts.ICard;
+import magic.core.contracts.cards.ICard;
 import magic.core.contracts.IDamageable;
 import magic.core.contracts.ITargetable;
 import magic.core.exceptions.IllegalCardUsageException;
-import magic.core.exceptions.MagicException;
+import magic.core.exceptions.JMagicException;
 
 import java.util.Collection;
 import java.util.List;
@@ -58,7 +58,7 @@ public abstract class Harmful extends Card {
                 int indexOfPlayer = playersInfo.indexOf(p);
                 playersInfo.remove(indexOfPlayer);
                 playersInfo.add(indexOfPlayer,
-                        new State.PlayerState(p.player, p.life, p.maxLife,
+                        new State.PlayerState(p.player, p.life(), p.maxLife(),
                                 p.deck, p.hand, new Cards(fieldCards), p.graveyard,
                                 p.playing));
             }
@@ -70,7 +70,7 @@ public abstract class Harmful extends Card {
 
     @Override
     public void raiseForErrors(State state, List<ITargetable> targets)
-            throws MagicException {
+            throws JMagicException {
         if (targets.isEmpty()) {
             throw new IllegalCardUsageException("must target at least one enemy");
         }

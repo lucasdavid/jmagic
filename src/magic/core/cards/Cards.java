@@ -1,6 +1,6 @@
 package magic.core.cards;
 
-import magic.core.contracts.ICard;
+import magic.core.contracts.cards.ICard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +57,10 @@ public class Cards {
         List<ICard> newCards = cards();
         newCards.addAll(cards);
         return new Cards(newCards);
+    }
+
+    public int size() {
+        return cards.size();
     }
 
     @Override

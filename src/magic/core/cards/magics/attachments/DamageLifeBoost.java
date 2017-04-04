@@ -3,12 +3,12 @@ package magic.core.cards.magics.attachments;
 import magic.core.State;
 import magic.core.cards.Card;
 import magic.core.cards.lands.BasicLands;
-import magic.core.contracts.ICard;
+import magic.core.contracts.cards.ICard;
 import magic.core.contracts.ITargetable;
-import magic.core.contracts.attachments.IAttachable;
-import magic.core.contracts.attachments.IDamageBoost;
-import magic.core.contracts.attachments.ILifeBoost;
-import magic.core.exceptions.MagicException;
+import magic.core.contracts.cards.attachments.IAttachable;
+import magic.core.contracts.cards.attachments.IDamageBoost;
+import magic.core.contracts.cards.attachments.ILifeBoost;
+import magic.core.exceptions.JMagicException;
 import magic.core.exceptions.IllegalCardUsageException;
 
 import java.util.Collection;
@@ -61,7 +61,7 @@ public class DamageLifeBoost extends Card implements IDamageBoost, ILifeBoost {
     }
 
     @Override
-    public void raiseForErrors(State state, List<ITargetable> targets) throws MagicException {
+    public void raiseForErrors(State state, List<ITargetable> targets) throws JMagicException {
         if (targets.stream().anyMatch(t -> !(t instanceof IAttachable))) {
             throw new IllegalCardUsageException("can only attach to attachable entity");
         }

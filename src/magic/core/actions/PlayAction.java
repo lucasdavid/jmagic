@@ -1,14 +1,16 @@
 package magic.core.actions;
 
+import magic.core.Player;
 import magic.core.State;
 import magic.core.State.PlayerState;
+import magic.core.actions.validation.ActorIsCurrentPlayer;
 import magic.core.actions.validation.PlayerHasCardInHand;
 import magic.core.actions.validation.PlayerHasLandsToPlay;
 import magic.core.actions.validation.ValidationRule;
 import magic.core.cards.Card;
 import magic.core.cards.Cards;
 import magic.core.cards.lands.Land;
-import magic.core.contracts.ICard;
+import magic.core.contracts.cards.ICard;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,7 +32,7 @@ public class PlayAction extends Action {
     }
 
     @Override
-    public State update(State state) {
+    public State update(State state, Player actor) {
         List<PlayerState> playerStates = state.playerStates();
         State.PlayerState p = playerStates.remove(state.turnsCurrentPlayerIndex);
         List<ICard> hand = p.hand.cards();
@@ -48,7 +50,7 @@ public class PlayAction extends Action {
         field.removeAll(landsToUse);
         field.addAll(landsToUse);
 
-        p = new State.PlayerState(p.player, p.life, p.maxLife,
+        p = new State.PlayerState(p.player, p.life(), p.maxLife(),
                 p.deck, new Cards(hand), new Cards(field), p.graveyard);
         playerStates.add(state.turnsCurrentPlayerIndex, p);
 
@@ -59,6 +61,7 @@ public class PlayAction extends Action {
     @Override
     protected Collection<ValidationRule> validationRules() {
         return List.of(
+                new ActorIsCurrentPlayer(),
                 new PlayerHasCardInHand(card),
                 new PlayerHasLandsToPlay(card));
     }

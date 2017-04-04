@@ -22,24 +22,29 @@ public class GameBuilder {
     private final List<Player> players;
     private final int numberOfCardsForEachPlayer;
     private final boolean disqualifyOnInvalidAction;
+    private final boolean disqualifyOnIllegalAction;
     private final Random randomState;
 
     public GameBuilder(int numberOfPlayers, int numberOfCardsForEachPlayer,
-                       boolean disqualifyOnInvalidAction, Random randomState) {
+                       boolean disqualifyOnInvalidAction, boolean disqualifyOnIllegalAction,
+                       Random randomState) {
         this(IntStream
                         .range(0, numberOfPlayers)
                         .mapToObj(i -> new RandomPlayer(Player.DEFAULT_PLAYER_NAMES[i % Player.DEFAULT_PLAYER_NAMES.length]))
                         .collect(CustomCollectors.toImmutableList()),
                 numberOfCardsForEachPlayer,
                 disqualifyOnInvalidAction,
+                disqualifyOnIllegalAction,
                 randomState);
     }
 
     public GameBuilder(List<Player> players, int numberOfCardsForEachPlayer,
-                       boolean disqualifyOnInvalidAction, Random randomState) {
+                       boolean disqualifyOnInvalidAction, boolean disqualifyOnIllegalAction,
+                       Random randomState) {
         this.players = players;
         this.numberOfCardsForEachPlayer = numberOfCardsForEachPlayer;
         this.disqualifyOnInvalidAction = disqualifyOnInvalidAction;
+        this.disqualifyOnIllegalAction = disqualifyOnIllegalAction;
         this.randomState = randomState;
     }
 
@@ -58,6 +63,6 @@ public class GameBuilder {
                 .map(p -> b.random())
                 .collect(Collectors.toList());
 
-        return new Game(players, playersCards, disqualifyOnInvalidAction);
+        return new Game(players, playersCards, disqualifyOnInvalidAction, disqualifyOnIllegalAction);
     }
 }

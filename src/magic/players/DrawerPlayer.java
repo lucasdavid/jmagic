@@ -3,9 +3,10 @@ package magic.players;
 import magic.core.Player;
 import magic.core.State;
 import magic.core.actions.Action;
+import magic.core.actions.DiscardAction;
 import magic.core.actions.DrawAction;
 import magic.core.actions.PassAction;
-import java.util.UUID;
+import magic.core.actions.validation.HasNotAlreadyDrawnInThisTurn;
 
 public class DrawerPlayer extends Player {
 
@@ -13,18 +14,21 @@ public class DrawerPlayer extends Player {
         super(name);
     }
 
-    public DrawerPlayer(UUID id, String name) {
-        super(id, name);
-    }
-
     @Override
-    public Action act(State s) {
-        if (s.parent != null
-                && s.parent.actionThatLedToThisState instanceof DrawAction
-                && s.parent.turnsCurrentPlayerIndex == s.turnsCurrentPlayerIndex) {
-            return new PassAction();
+    public Action act(State state) {
+        if (state.currentPlayerState().player != this) {
+            // Not my turn to play.
+            return null;
         }
 
-        return new DrawAction();
+        State.PlayerState myState = state.playerState(this);
+
+        if (myState.hand.size() > 7) {
+            return new DiscardAction(myState.hand.cards().get(0));
+        }
+
+        return new HasNotAlreadyDrawnInThisTurn().validate(state, this).isValid()
+                ? new DrawAction()
+                : new PassAction();
     }
 }

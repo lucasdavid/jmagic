@@ -3,9 +3,6 @@ package magic.players;
 import magic.core.Player;
 import magic.core.State;
 import magic.core.actions.Action;
-import magic.core.actions.DrawAction;
-import magic.core.actions.PassAction;
-import java.util.UUID;
 
 /**
  * RandomPlayer.
@@ -19,16 +16,8 @@ public class RandomPlayer extends Player {
         super(name);
     }
 
-    public RandomPlayer(UUID id, String name) {
-        super(id, name);
-    }
-
     @Override
     public Action act(State s) {
-        if (s.parent == null || s.parent.turnsCurrentPlayerIndex != s.turnsCurrentPlayerIndex) {
-            return new DrawAction();
-        }
-
-        return new PassAction();
+        throw new UnsupportedOperationException("not implemented yet");
     }
 }

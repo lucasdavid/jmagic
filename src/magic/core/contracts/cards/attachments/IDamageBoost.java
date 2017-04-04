@@ -1,4 +1,4 @@
-package magic.core.contracts.attachments;
+package magic.core.contracts.cards.attachments;
 
 /**
  * Damage Boost Interface.

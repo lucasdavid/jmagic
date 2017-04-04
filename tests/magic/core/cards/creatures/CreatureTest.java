@@ -2,19 +2,17 @@ package magic.core.cards.creatures;
 
 import magic.core.cards.lands.BasicLands;
 import magic.core.cards.magics.attachments.DamageLifeBoost;
-import magic.core.contracts.ICard;
+import magic.core.contracts.cards.ICard;
 import magic.core.contracts.IDamageable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 

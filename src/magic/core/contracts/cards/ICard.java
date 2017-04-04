@@ -1,13 +1,14 @@
-package magic.core.contracts;
+package magic.core.contracts.cards;
 
 
 import magic.core.State;
 import magic.core.cards.lands.BasicLands;
-import magic.core.exceptions.MagicException;
+import magic.core.contracts.IIdentifiable;
+import magic.core.contracts.ITargetable;
+import magic.core.exceptions.JMagicException;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Card Interface.
@@ -18,8 +19,11 @@ public interface ICard extends ITargetable, IIdentifiable {
 
     State use(State state, List<ITargetable> targets);
 
-    void raiseForErrors(State state, List<ITargetable> targets) throws MagicException;
+    void raiseForErrors(State state, List<ITargetable> targets) throws JMagicException;
 
+    /**
+     * @return an exact duplicate of the card, except for the id.
+     */
     ICard duplicate();
 
     Collection<BasicLands> cost();

@@ -1,14 +1,24 @@
 package magic.core;
 
-import magic.core.State.PlayerState;
-import magic.core.actions.*;
+import magic.core.actions.Action;
+import magic.core.actions.DiscardAction;
+import magic.core.actions.DisqualifyAction;
+import magic.core.actions.DrawAction;
+import magic.core.actions.FinishGameAction;
+import magic.core.actions.PassAction;
+import magic.core.actions.PlayAction;
+import magic.core.actions.UseAction;
 import magic.core.cards.Cards;
-import magic.core.exceptions.MagicException;
 import magic.core.exceptions.IllegalActionException;
 import magic.core.exceptions.InvalidActionException;
+import magic.core.exceptions.JMagicException;
 import magic.infrastructure.collectors.CustomCollectors;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,9 +35,11 @@ public class Game {
     public static final Logger LOG = Logger.getLogger(Game.class.getName());
 
     public final static Collection<Class<? extends Action>> LEGAL_ACTIONS_FOR_PLAYERS = Set.of(
-            DrawAction.class, PassAction.class, PlayAction.class);
+            DiscardAction.class, DrawAction.class, PassAction.class, PlayAction.class,
+            UseAction.class);
 
     private final boolean disqualifyOnInvalidAction;
+    private final boolean disqualifyOnIllegalAction;
     private final UUID id;
 
     private Date startedAt;
@@ -36,19 +48,25 @@ public class Game {
     private Collection<Player> players;
     private Collection<Player> winners;
 
-    public Game(List<Player> players, List<Cards> playersCards, boolean disqualifyOnInvalidAction) {
-        this(UUID.randomUUID(), players, new State(players, playersCards), disqualifyOnInvalidAction);
+    public Game(List<Player> players, List<Cards> playersCards,
+                boolean disqualifyOnInvalidAction, boolean disqualifyOnIllegalAction) {
+        this(UUID.randomUUID(), players, new State(players, playersCards),
+                disqualifyOnInvalidAction, disqualifyOnIllegalAction);
     }
 
-    public Game(List<Player> players, State initialState, boolean disqualifyOnInvalidAction) {
-        this(UUID.randomUUID(), players, initialState, disqualifyOnInvalidAction);
+    public Game(List<Player> players, State initialState,
+                boolean disqualifyOnInvalidAction, boolean disqualifyOnIllegalAction) {
+        this(UUID.randomUUID(), players, initialState,
+                disqualifyOnInvalidAction, disqualifyOnIllegalAction);
     }
 
-    public Game(UUID id, List<Player> players, State initialState, boolean disqualifyOnInvalidAction) {
+    public Game(UUID id, List<Player> players, State initialState,
+                boolean disqualifyOnInvalidAction, boolean disqualifyOnIllegalAction) {
         this.id = id;
         this.players = players;
         this.currentState = initialState;
         this.disqualifyOnInvalidAction = disqualifyOnInvalidAction;
+        this.disqualifyOnIllegalAction = disqualifyOnIllegalAction;
     }
 
     public Game run() {
@@ -57,50 +75,45 @@ public class Game {
         LOG.log(Level.INFO, "Initial state: {0}", currentState);
 
         while (!currentState.done) {
-            PlayerState playerState = currentState.currentPlayerState();
+            for (Player player : players) {
+                try {
+                    Action action = player.act(currentState.playerViewModel(player));
 
-            try {
-                Action action = playerState.player.act(currentState.playerViewModel());
+                    if (action == null) {
+                        continue;
+                    }
 
-                if (!LEGAL_ACTIONS_FOR_PLAYERS.contains(action.getClass())) {
-                    throw new IllegalActionException("action " + action + "is not defined as legal by the game rules");
+                    if (!LEGAL_ACTIONS_FOR_PLAYERS.contains(action.getClass())) {
+                        throw new IllegalActionException("action " + action
+                                + "is not defined as legal by the game rules");
+                    }
+
+                    action.raiseForErrors(currentState, player);
+                    currentState = action.update(currentState, player);
+                    LOG.info(String.format("%s performed %s", player, action));
+
+                } catch (InvalidActionException ex) {
+                    // This player's attempted an invalid action.
+                    LOG.log(Level.WARNING, null, ex);
+                    passOrFinish(player, disqualifyOnInvalidAction);
+                } catch (IllegalActionException ex) {
+                    // This player's attempted to use an illegal action. Disqualify them.
+                    LOG.log(Level.SEVERE, null, ex);
+                    passOrFinish(player, disqualifyOnIllegalAction);
+                } catch (Exception ex) {
+                    // A very serious exception has been raised. Stops the game altogether.
+                    LOG.log(Level.SEVERE, null, ex);
+                    currentState = new FinishGameAction().update(currentState, player);
                 }
 
-                if (action == null) {
-                    throw new InvalidActionException("actions cannot be null");
+                if (currentState.done) {
+                    break;
                 }
-
-                action.raiseForErrors(currentState);
-
-                currentState = action.update(currentState);
-
-                LOG.info(String.format("%s performed %s", playerState.player, action));
-
-            } catch (InvalidActionException ex) {
-                // This player's attempted an invalid action.
-                LOG.log(Level.WARNING, null, ex);
-                if (!passAndMaybeFinish(disqualifyOnInvalidAction)) {
-                    return this;
-                }
-
-            } catch (IllegalActionException ex) {
-                // This player's attempted to use an illegal action. Disqualify them.
-                LOG.log(Level.SEVERE, null, ex);
-                if (!passAndMaybeFinish(true)) {
-                    return this;
-                }
-
-            } catch (MagicException ex) {
-                // A very serious exception has been raised. Stops the game altogether.
-                LOG.log(Level.SEVERE, null, ex);
-                currentState = new FinishGameAction().update(currentState);
-                this.finishedAt = new Date();
-                return this;
             }
         }
 
         winners = currentState.playerStates().stream()
-                .filter(i -> i.playing && i.life > 0)
+                .filter(State.PlayerState::isAlive)
                 .map(i -> i.player)
                 .collect(CustomCollectors.toImmutableList());
 
@@ -109,25 +122,21 @@ public class Game {
     }
 
     /**
-     * @param disqualifyCurrentPlayer flag whether or not the current player
-     *                                should be disqualified.
-     * @return true if the game has passed onto the next player.
-     * False if there's no other player to pass the game onto.
+     * @param player           player that may be disqualified and will pass.
+     * @param disqualifyPlayer flag whether or not the player should be disqualified.
      */
-    private boolean passAndMaybeFinish(boolean disqualifyCurrentPlayer) {
-        if (disqualifyCurrentPlayer) {
-            currentState = new DisqualifyAction(currentState.currentPlayerState().player)
-                    .update(currentState);
+    private void passOrFinish(Player player, boolean disqualifyPlayer) {
+        if (disqualifyPlayer) {
+            currentState = new DisqualifyAction().update(currentState, player);
         }
 
-        boolean passing = new PassAction().isValid(currentState);
-        if (passing) {
-            currentState = new PassAction().update(currentState);
-        } else {
-            currentState = new FinishGameAction().update(currentState);
-            finishedAt = new Date();
+        try {
+            currentState = new PassAction()
+                    .raiseForErrors(currentState, player)
+                    .update(currentState, player);
+        } catch (JMagicException e) {
+            currentState = new FinishGameAction().update(currentState, player);
         }
-        return passing;
     }
 
     @Override
