@@ -2,7 +2,7 @@ package magic.core.cards.magics;
 
 import magic.core.cards.Harmful;
 import magic.core.cards.lands.BasicLands;
-import magic.core.contracts.cards.ICard;
+import magic.core.cards.ICard;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -27,8 +27,8 @@ public class Burn extends Harmful {
     }
 
     @Override
-    public String toString(boolean longDescription) {
+    public String toString(boolean detailed) {
         return String.format("%s d:%d (%d enemies)",
-                super.toString(longDescription), maxTargetCount(), effectiveDamage());
+                super.toString(detailed), maxTargetCount(), effectiveDamage());
     }
 }

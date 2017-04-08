@@ -1,4 +1,4 @@
-package magic.core.contracts.cards.attachments;
+package magic.core.cards.magics.attachments;
 
 /**
  * Life Boost Interface.

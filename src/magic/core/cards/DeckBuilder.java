@@ -6,7 +6,6 @@ import magic.core.cards.lands.BasicLands;
 import magic.core.cards.lands.Land;
 import magic.core.cards.magics.Burn;
 import magic.core.cards.magics.attachments.DamageLifeBoost;
-import magic.core.contracts.cards.ICard;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,14 +23,14 @@ import java.util.stream.IntStream;
 public class DeckBuilder {
 
     public static final List<ICard> AVAILABLE_CARDS = List.of(
-            new Creature("Frodo Baggins", 2, 1,
+            new Creature("Frodo Baggins", 2, 1, false,
                     List.of(BasicLands.MOUNTAIN), Collections.emptyList(),
                     Collections.emptyList()),
-            new Creature("Aragorn", 5, 7,
+            new Creature("Aragorn", 5, 7, false,
                     List.of(BasicLands.PLAINS, BasicLands.PLAINS, BasicLands.WASTES), List.of(Abilities.PROVOKE), Collections.emptyList()),
-            new Creature("Legolas", 8, 4,
+            new Creature("Legolas", 8, 4, false,
                     List.of(BasicLands.PLAINS, BasicLands.PLAINS, BasicLands.WASTES), List.of(Abilities.DOUBLE_STRIKE), Collections.emptyList()),
-            new Creature("Sauron", 10, 10,
+            new Creature("Sauron", 10, 10, false,
                     List.of(BasicLands.SWAMP, BasicLands.SWAMP, BasicLands.SWAMP,
                             BasicLands.WASTES, BasicLands.WASTES),
                     List.of(Abilities.HASTE, Abilities.PROVOKE, Abilities.DOUBLE_STRIKE),

@@ -1,14 +1,19 @@
 package magic.players;
 
 import magic.core.Player;
-import magic.core.State;
 import magic.core.actions.Action;
+import magic.core.actions.AdvanceGameAction;
 import magic.core.actions.DiscardAction;
 import magic.core.actions.DrawAction;
-import magic.core.actions.PassAction;
-import magic.core.actions.validation.HasNotAlreadyDrawnInThisTurn;
+import magic.core.actions.validation.rules.ActivePlayerHasNotAlreadyDrawnInThisTurn;
+import magic.core.states.State;
+import magic.core.states.TurnStep;
 
 public class DrawerPlayer extends Player {
+
+    public DrawerPlayer() {
+        super();
+    }
 
     public DrawerPlayer(String name) {
         super(name);
@@ -16,19 +21,24 @@ public class DrawerPlayer extends Player {
 
     @Override
     public Action act(State state) {
-        if (state.currentPlayerState().player != this) {
-            // Not my turn to play.
-            return null;
+        if (!state.turnsPlayerState().player.equals(this)) {
+            // Don't intercept other people's turns.
+            return new AdvanceGameAction();
         }
 
         State.PlayerState myState = state.playerState(this);
 
-        if (myState.hand.size() > 7) {
+        if (state.step == TurnStep.DRAW &&
+            new ActivePlayerHasNotAlreadyDrawnInThisTurn().isValid(state)) {
+            return new DrawAction();
+        }
+
+        if (state.step == TurnStep.CLEANUP &&
+            myState.hand.size() > 7) {
             return new DiscardAction(myState.hand.cards().get(0));
         }
 
-        return new HasNotAlreadyDrawnInThisTurn().validate(state, this).isValid()
-                ? new DrawAction()
-                : new PassAction();
+        // Just keep going.
+        return new AdvanceGameAction();
     }
 }

@@ -1,7 +1,6 @@
 package magic.core;
 
-import magic.core.contracts.IGameEventListener;
-import magic.core.contracts.IIdentifiable;
+import magic.core.states.IGameEventListener;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -15,18 +14,27 @@ import java.util.UUID;
 public abstract class Player implements IIdentifiable, IGameEventListener {
 
     public static final String[] DEFAULT_PLAYER_NAMES = new String[]{
-            "Jane", "John", "Michael", "Lilliam", "Hellen", "Gus", "Josephine", "Richard",
-            "Kyle", "Wendy", "Lucas", "Barbara", "Joe", "Ceres", "Pat", "Maximilian", "Maria",
-            "Meredith", "Tully", "Tath", "Nathan", "Norton", "Olaf", "Olga", "Patrick", "Parker",
-            "Ruth", "Rick", "Rosa", "Rudy", "Rupert", "Sully", "Sigfried", "Simon", "Silvia",
-            "Cecilia", "Ursula", "Usla"};
+        "Jane", "John", "Michael", "Lilliam", "Hellen", "Gus", "Josephine", "Richard",
+        "Kyle", "Wendy", "Lucas", "Barbara", "Joe", "Ceres", "Pat", "Maximilian", "Maria",
+        "Meredith", "Tully", "Tath", "Nathan", "Norton", "Olaf", "Olga", "Patrick", "Parker",
+        "Ruth", "Rick", "Rosa", "Rudy", "Rupert", "Sully", "Sigfried", "Simon", "Silvia",
+        "Cecilia", "Ursula", "Usla"};
 
+    private static int instantiatedCount = 0;
     private final UUID id;
     private final String name;
 
-    public Player(String name) {
-        this.id = UUID.randomUUID();
+    protected Player(UUID id, String name) {
+        this.id = id;
         this.name = name;
+    }
+
+    public Player(String name) {
+        this(UUID.randomUUID(), name);
+    }
+
+    public Player() {
+        this(DEFAULT_PLAYER_NAMES[(instantiatedCount++) % DEFAULT_PLAYER_NAMES.length]);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package magic.core.contracts;
+package magic.core;
 
 /**
  * Damageable Interface.

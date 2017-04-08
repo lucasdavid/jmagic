@@ -37,12 +37,12 @@ public class ActionTest {
 
         assertFalse(i.equals(null));
         assertTrue(i.equals(new DrawAction()));
-        assertFalse(i.equals(new PassAction()));
+        assertFalse(i.equals(new AdvanceGameAction()));
 
-        i = new PassAction();
+        i = new AdvanceGameAction();
 
         assertFalse(i.equals(null));
         assertFalse(i.equals(new DrawAction()));
-        assertTrue(i.equals(new PassAction()));
+        assertTrue(i.equals(new AdvanceGameAction()));
     }
 }

@@ -1,6 +1,5 @@
-package magic.core.contracts;
+package magic.core.states;
 
-import magic.core.State;
 import magic.core.actions.Action;
 
 /**

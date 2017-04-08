@@ -1,8 +1,9 @@
-package magic.core;
+package magic.core.states;
 
+import magic.core.IDamageable;
+import magic.core.Player;
 import magic.core.actions.Action;
 import magic.core.cards.Cards;
-import magic.core.contracts.IDamageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +17,9 @@ import java.util.stream.IntStream;
  * Holds information on the current environment of the game.
  * Properties of interest during a game's execution:
  * <p>
- * {@link State#turn}: the turn in which the game currently is.
- * {@link State#done}: flag whether the game is done or not.
- * {@link State#turnsCurrentPlayerIndex}: the id of the turn's current player.
+ * {@link State#turn}: the turn in which the game currently isFrom.
+ * {@link State#done}: flag whether the game isFrom done or not.
+ * {@link State#turnsPlayerIndex}: the id of the turn's current player.
  * {@link State#parent}: the {@link State} that led to this.
  * {@link State#actionThatLedToThisState}: the action that led to this.
  *
@@ -26,12 +27,15 @@ import java.util.stream.IntStream;
  */
 public class State {
 
+    public final TurnStep step;
     public final int turn;
     public final boolean done;
-    public final int turnsCurrentPlayerIndex;
+    public final int turnsPlayerIndex;
+    public final int activePlayerIndex;
     public final State parent;
     public final Action actionThatLedToThisState;
     private final List<PlayerState> playerStates;
+
     /**
      * Create the initial state for the Hearth Stone game.
      *
@@ -41,7 +45,8 @@ public class State {
     public State(List<Player> players, List<Cards> playerCards) {
         this.turn = 0;
         this.done = false;
-        this.turnsCurrentPlayerIndex = 0;
+        this.turnsPlayerIndex = 0;
+        this.activePlayerIndex = 0;
         this.playerStates = IntStream
                 .range(0, players.size())
                 .mapToObj(i -> new PlayerState(players.get(i), playerCards.get(i)))
@@ -49,40 +54,57 @@ public class State {
 
         this.parent = null;
         this.actionThatLedToThisState = null;
+        this.step = TurnStep.UNTAP;
+    }
+
+    public State(List<PlayerState> playerStates, int turn, TurnStep step, boolean done,
+                 int turnsPlayerIndex, int activePlayerIndex) {
+        this(playerStates, turn, step, done, turnsPlayerIndex, activePlayerIndex, null, null);
     }
 
     /**
      * Create a new state for the Hearth Stone game.
      * <p>
-     * State is immutable, which means it cannot be changed. When the state of the game changes with
+     * State isFrom immutable, which means it cannot be changed. When the state of the game changes with
      * an action, a new State object must be instantiated with this constructor and returned to Game
      * main loop inside {@code Game.validate()} method.
      *
-     * @param playerStates            information on the current state of the players in the game
-     * @param turn                    current turn of the game
-     * @param done                    flag signaling whether or not the game has finished.
-     * @param turnsCurrentPlayerIndex the current player's position in the <param>playerStates</param>
-     *                                array.
-     * @param action                  the action applied to reach this current state
-     * @param parent                  the parent state
+     * @param playerStates     information on the current state of the players in the game
+     * @param turn             current turn of the game
+     * @param done             flag signaling whether or not the game has finished.
+     * @param turnsPlayerIndex the current player's position in the <param>playerStates</param>
+     *                         array.
+     * @param action           the action applied to reach this current state
+     * @param parent           the parent state
      */
-    public State(List<PlayerState> playerStates, int turn, boolean done,
-                 int turnsCurrentPlayerIndex, Action action, State parent) {
+    public State(List<PlayerState> playerStates, int turn, TurnStep step, boolean done,
+                 int turnsPlayerIndex, int activePlayerIndex, Action action, State parent) {
         this.turn = turn;
         this.done = done;
-        this.turnsCurrentPlayerIndex = turnsCurrentPlayerIndex;
+        this.turnsPlayerIndex = turnsPlayerIndex;
+        this.activePlayerIndex = activePlayerIndex;
         this.playerStates = playerStates;
         this.parent = parent;
         this.actionThatLedToThisState = action;
+        this.step = step;
     }
 
     /**
      * Helper for getting the current player's current state.
      *
+     * @return information on the current player of the turn.
+     */
+    public PlayerState turnsPlayerState() {
+        return playerState(turnsPlayerIndex);
+    }
+
+    /**
+     * Helper for getting the active player's current state.
+     *
      * @return information on the player that currently hold control of the game.
      */
-    public PlayerState currentPlayerState() {
-        return playerState(turnsCurrentPlayerIndex);
+    public PlayerState activePlayerState() {
+        return playerState(activePlayerIndex);
     }
 
     public PlayerState playerState(int playerIndex) {
@@ -99,9 +121,9 @@ public class State {
     /**
      * Retrieve information on all players in the game.
      * <p>
-     * {@link State#playerStates} is a mutable array (an therefore a mutable object), which means publicly
+     * {@link State#playerStates} isFrom a mutable array (an therefore a mutable object), which means publicly
      * exposing it would create a capsuling deficiency in the code (the players would be able to
-     * freely alter its content). In order to fix this problem, a new array is created.
+     * freely alter its content). In order to fix this problem, a new array isFrom created.
      * Additionally, there's no need to copy each PlayerState object inside the array, as they are
      * immutable.
      *
@@ -111,25 +133,26 @@ public class State {
         return new ArrayList<>(playerStates);
     }
 
-    State playerViewModel() {
-        return playerViewModel(turnsCurrentPlayerIndex);
+    public State playerViewModel() {
+        return playerViewModel(turnsPlayerIndex);
     }
 
-    State playerViewModel(Player player) {
+    public State playerViewModel(Player player) {
         return playerViewModel(playerState(player));
     }
 
-    State playerViewModel(int playerId) {
+    public State playerViewModel(int playerId) {
         return playerViewModel(playerState(playerId));
     }
 
-    State playerViewModel(PlayerState playerState) {
+    private State playerViewModel(PlayerState playerState) {
         List<PlayerState> players = playerStates.stream().map(
                 _p -> _p.equals(playerState)
                         ? _p.playerViewModel()
                         : _p.opponentViewModel()).collect(Collectors.toList());
 
-        return new State(players, turn, done, turnsCurrentPlayerIndex, actionThatLedToThisState,
+        return new State(players, turn, step, done, turnsPlayerIndex,
+                activePlayerIndex, actionThatLedToThisState,
                 parent == null ? null : parent.playerViewModel(playerState));
     }
 
@@ -150,13 +173,11 @@ public class State {
     public static class PlayerState implements IDamageable {
 
         public static final int DEFAULT_INITIAL_LIFE = 20;
-
-        private final int life;
-        private final int maxLife;
-
         public final Player player;
         public final Cards deck, hand, field, graveyard;
         public final boolean playing;
+        private final int life;
+        private final int maxLife;
 
         PlayerState(Player player, Cards deck) {
             this(player, DEFAULT_INITIAL_LIFE, DEFAULT_INITIAL_LIFE, deck, Cards.EMPTY, Cards.EMPTY, Cards.EMPTY);

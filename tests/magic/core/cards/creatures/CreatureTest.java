@@ -1,9 +1,9 @@
 package magic.core.cards.creatures;
 
+import magic.core.IDamageable;
+import magic.core.cards.ICard;
 import magic.core.cards.lands.BasicLands;
 import magic.core.cards.magics.attachments.DamageLifeBoost;
-import magic.core.contracts.cards.ICard;
-import magic.core.contracts.IDamageable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,14 +21,15 @@ class CreatureTest {
 
     @BeforeEach
     void beforeEach() {
-        this.a = new Creature("mocked-creature-1", 1, 10, List.of(BasicLands.SWAMP),
-                Collections.emptyList(), Collections.emptyList());
+        this.a = new Creature("mocked-creature-1", 1, 10, false,
+            List.of(BasicLands.SWAMP),
+            Collections.emptyList(), Collections.emptyList());
     }
 
     @Test
     void takeDamage() {
         final int originalLife = a.life(),
-                originalEffectiveLife = a.effectiveLife();
+            originalEffectiveLife = a.effectiveLife();
 
         final int expectedDamage = 4;
 
@@ -43,12 +44,12 @@ class CreatureTest {
     @Test
     void attach() {
         int initialDamage = a.damage(),
-                initialEffectiveDamage = a.effectiveDamage(),
-                initialLife = a.life(),
-                initialEffectiveLife = a.effectiveLife();
+            initialEffectiveDamage = a.effectiveDamage(),
+            initialLife = a.life(),
+            initialEffectiveLife = a.effectiveLife();
 
         DamageLifeBoost attachment = new DamageLifeBoost("mocked-attachment-1",
-                3, 2, List.of(BasicLands.FOREST));
+            3, 2, List.of(BasicLands.FOREST));
 
         Creature b = (Creature) a.attach(attachment);
 
@@ -67,13 +68,13 @@ class CreatureTest {
     @Test
     void detach() {
         DamageLifeBoost attachment = new DamageLifeBoost("mocked-attachment-1",
-                3, 2, List.of(BasicLands.MOUNTAIN));
+            3, 2, List.of(BasicLands.MOUNTAIN));
         a = (Creature) a.attach(attachment);
 
         int initialDamage = a.damage(),
-                initialEffectiveDamage = a.effectiveDamage(),
-                initialLife = a.life(),
-                initialEffectiveLife = a.effectiveLife();
+            initialEffectiveDamage = a.effectiveDamage(),
+            initialLife = a.life(),
+            initialEffectiveLife = a.effectiveLife();
 
         Creature b = (Creature) a.detach(attachment);
 

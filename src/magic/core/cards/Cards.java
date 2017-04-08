@@ -1,7 +1,5 @@
 package magic.core.cards;
 
-import magic.core.contracts.cards.ICard;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

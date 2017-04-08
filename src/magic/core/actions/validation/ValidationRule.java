@@ -1,10 +1,7 @@
 package magic.core.actions.validation;
 
-import magic.core.Player;
-import magic.core.State;
-import magic.core.exceptions.InvalidActionException;
-import magic.core.exceptions.JMagicException;
 import magic.core.exceptions.ValidationException;
+import magic.core.states.State;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,11 +23,11 @@ public abstract class ValidationRule {
         this.validated = false;
     }
 
-    public abstract void onValidate(State state, Player actor);
+    public abstract void onValidate(State state);
 
-    public ValidationRule validate(State state, Player actor) {
+    public ValidationRule validate(State state) {
         this.validated = false;
-        this.onValidate(state, actor);
+        this.onValidate(state);
         this.validated = true;
         return this;
     }
@@ -42,9 +39,17 @@ public abstract class ValidationRule {
         }
     }
 
+    public void raiseForErrors(State state) throws ValidationException {
+        validate(state).raiseForErrors();
+    }
+
     public boolean isValid() {
         assertValidated();
         return this.errors.isEmpty();
+    }
+
+    public boolean isValid(State state) {
+        return validate(state).isValid();
     }
 
     private void assertValidated() {

@@ -1,11 +1,11 @@
-package magic.core.contracts.cards;
+package magic.core.cards;
 
 
-import magic.core.State;
+import magic.core.IIdentifiable;
+import magic.core.ITargetable;
 import magic.core.cards.lands.BasicLands;
-import magic.core.contracts.IIdentifiable;
-import magic.core.contracts.ITargetable;
 import magic.core.exceptions.JMagicException;
+import magic.core.states.State;
 
 import java.util.Collection;
 import java.util.List;
@@ -23,6 +23,7 @@ public interface ICard extends ITargetable, IIdentifiable {
 
     /**
      * @return an exact duplicate of the card, except for the id.
+     * This is useful for deck builders that want to copy a card.
      */
     ICard duplicate();
 

@@ -1,13 +1,10 @@
 package magic.core.cards.magics.attachments;
 
-import magic.core.State;
+import magic.core.states.State;
 import magic.core.cards.Card;
 import magic.core.cards.lands.BasicLands;
-import magic.core.contracts.cards.ICard;
-import magic.core.contracts.ITargetable;
-import magic.core.contracts.cards.attachments.IAttachable;
-import magic.core.contracts.cards.attachments.IDamageBoost;
-import magic.core.contracts.cards.attachments.ILifeBoost;
+import magic.core.cards.ICard;
+import magic.core.ITargetable;
 import magic.core.exceptions.JMagicException;
 import magic.core.exceptions.IllegalCardUsageException;
 
@@ -79,8 +76,8 @@ public class DamageLifeBoost extends Card implements IDamageBoost, ILifeBoost {
     }
 
     @Override
-    public String toString(boolean longDescription) {
-        return super.toString(longDescription) +
+    public String toString(boolean detailed) {
+        return super.toString(detailed) +
                 String.format(" d+:%d l+: %d", damageIncrease(), lifeIncrease());
     }
 }

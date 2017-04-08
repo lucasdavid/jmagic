@@ -1,7 +1,6 @@
 package magic.core.cards;
 
 import magic.core.cards.lands.BasicLands;
-import magic.core.contracts.cards.ICard;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,8 +39,8 @@ public abstract class Card implements ICard {
         return toString(false);
     }
 
-    public String toString(boolean longDescription) {
-        return longDescription
+    public String toString(boolean detailed) {
+        return detailed
                 ? String.format("\"%s\" c:%s", name, cost)
                 : String.format("\"%s\"", name);
     }

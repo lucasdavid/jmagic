@@ -1,9 +1,8 @@
 package magic.core.cards;
 
-import magic.core.State;
+import magic.core.states.State;
 import magic.core.cards.lands.BasicLands;
-import magic.core.contracts.cards.ICard;
-import magic.core.contracts.ITargetable;
+import magic.core.ITargetable;
 import magic.core.exceptions.JMagicException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

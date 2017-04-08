@@ -1,11 +1,9 @@
 package magic.core.actions;
 
-import magic.core.Player;
-import magic.core.State;
 import magic.core.actions.validation.ValidationRule;
 import magic.core.exceptions.InvalidActionException;
-import magic.core.exceptions.JMagicException;
 import magic.core.exceptions.ValidationException;
+import magic.core.states.State;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -19,7 +17,7 @@ import java.util.Objects;
  */
 public abstract class Action {
 
-    public abstract State update(State state, Player actor);
+    public abstract State update(State state);
 
     /**
      * Checks if the application of this action will bring the game to an invalid
@@ -29,13 +27,13 @@ public abstract class Action {
      * as it dependents on the domain and logic of each and every specific action.
      *
      * @param state the state in which this action will be applied.
-     * @throws JMagicException raised when the application of this
-     *                         action results in an invalid state for the game.
+     * @throws InvalidActionException raised when the application of this
+     *                                action results in an invalid state for the game.
      */
-    public Action raiseForErrors(State state, Player actor) throws InvalidActionException {
+    public Action raiseForErrors(State state) throws InvalidActionException {
         for (ValidationRule r : validationRules()) {
             try {
-                r.validate(state, actor).raiseForErrors();
+                r.validate(state).raiseForErrors();
             } catch (ValidationException e) {
                 throw new InvalidActionException(e.getMessage());
             }
@@ -52,9 +50,9 @@ public abstract class Action {
      * @param state the state that will have its integrity verified.
      * @return true, if the action's application results in a valid state. False, otherwise.
      */
-    public boolean isValid(State state, Player actor) {
+    public boolean isValid(State state) {
         return validationRules().stream()
-                .allMatch(r -> r.validate(state, actor).isValid());
+                .allMatch(r -> r.validate(state).isValid());
     }
 
     @Override
@@ -66,5 +64,10 @@ public abstract class Action {
     public int hashCode() {
         int hash = 7;
         return hash * Objects.hashCode(getClass());
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName();
     }
 }

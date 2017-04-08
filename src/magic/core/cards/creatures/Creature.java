@@ -1,11 +1,12 @@
 package magic.core.cards.creatures;
 
+import magic.core.IDamageable;
 import magic.core.cards.Harmful;
+import magic.core.cards.ICard;
+import magic.core.cards.ITappable;
 import magic.core.cards.lands.BasicLands;
 import magic.core.cards.magics.attachments.DamageLifeBoost;
-import magic.core.contracts.IDamageable;
-import magic.core.contracts.cards.ICard;
-import magic.core.contracts.cards.attachments.IAttachable;
+import magic.core.cards.magics.attachments.IAttachable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,26 +14,30 @@ import java.util.Collections;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class Creature extends Harmful implements IDamageable, IAttachable {
+public class Creature extends Harmful implements IDamageable, IAttachable, ITappable {
 
     private final int life;
     private final int maxLife;
     private final Collection<Abilities> abilities;
     private final Collection<DamageLifeBoost> attachments;
+    private final boolean tapped;
 
-    public Creature(String name, int damage, int life, Collection<BasicLands> cost,
+    public Creature(String name, int damage, int life, boolean tapped,
+                    Collection<BasicLands> cost,
                     Collection<Abilities> abilities,
                     Collection<DamageLifeBoost> attachments) {
-        this(UUID.randomUUID(), name, damage, life, life, cost, abilities, attachments);
+        this(UUID.randomUUID(), name, damage, life, life, tapped, cost, abilities, attachments);
     }
 
     public Creature(UUID id, String name, int damage, int life, int maxLife,
+                    boolean tapped,
                     Collection<BasicLands> cost,
                     Collection<Abilities> abilities,
                     Collection<DamageLifeBoost> attachments) {
         super(id, name, damage, cost);
         this.life = life;
         this.maxLife = maxLife;
+        this.tapped = tapped;
         this.abilities = Collections.unmodifiableCollection(abilities);
         this.attachments = Collections.unmodifiableCollection(attachments);
     }
@@ -40,7 +45,7 @@ public class Creature extends Harmful implements IDamageable, IAttachable {
     @Override
     public IDamageable takeDamage(int damage) {
         return new Creature(id(), name(), effectiveDamage(), life - damage, maxLife,
-                cost(), abilities, attachments);
+            tapped, cost(), abilities, attachments);
     }
 
     @Override
@@ -48,8 +53,8 @@ public class Creature extends Harmful implements IDamageable, IAttachable {
         ArrayList<DamageLifeBoost> attachments = new ArrayList<>(this.attachments);
         attachments.add(attachment);
 
-        return new Creature(id(), name(), damage(), life, maxLife, cost(),
-                abilities, attachments);
+        return new Creature(id(), name(), damage(), life, maxLife,
+            tapped, cost(), abilities, attachments);
     }
 
     @Override
@@ -57,8 +62,25 @@ public class Creature extends Harmful implements IDamageable, IAttachable {
         ArrayList<DamageLifeBoost> attachments = new ArrayList<>(this.attachments);
         attachments.remove(attachment);
 
+        return new Creature(id(), name(), damage(), life, maxLife, tapped,
+            cost(), abilities, attachments);
+    }
+
+    @Override
+    public ITappable tap() {
         return new Creature(id(), name(), damage(), life, maxLife,
-                cost(), abilities, attachments);
+            true, cost(), abilities, attachments);
+    }
+
+    @Override
+    public ITappable untap() {
+        return new Creature(id(), name(), damage(), life, maxLife,
+            false, cost(), abilities, attachments);
+    }
+
+    @Override
+    public boolean tapped() {
+        return tapped;
     }
 
     /**
@@ -67,8 +89,8 @@ public class Creature extends Harmful implements IDamageable, IAttachable {
     @Override
     public int effectiveDamage() {
         return super.effectiveDamage() + attachments.stream()
-                .mapToInt(DamageLifeBoost::damageIncrease)
-                .sum();
+            .mapToInt(DamageLifeBoost::damageIncrease)
+            .sum();
     }
 
     @Override
@@ -87,8 +109,8 @@ public class Creature extends Harmful implements IDamageable, IAttachable {
     @Override
     public int effectiveLife() {
         return life() + attachments.stream()
-                .mapToInt(DamageLifeBoost::lifeIncrease)
-                .sum();
+            .mapToInt(DamageLifeBoost::lifeIncrease)
+            .sum();
     }
 
     /**
@@ -97,8 +119,8 @@ public class Creature extends Harmful implements IDamageable, IAttachable {
     @Override
     public int effectiveMaxLife() {
         return maxLife() + attachments.stream()
-                .mapToInt(DamageLifeBoost::lifeIncrease)
-                .sum();
+            .mapToInt(DamageLifeBoost::lifeIncrease)
+            .sum();
     }
 
     @Override
@@ -112,26 +134,27 @@ public class Creature extends Harmful implements IDamageable, IAttachable {
 
     @Override
     public ICard duplicate() {
-        return new Creature(name(), damage(), life, cost(), abilities, attachments);
+        return new Creature(UUID.randomUUID(), name(), damage(), life, maxLife,
+            tapped, cost(), abilities, attachments);
     }
 
     @Override
-    public String toString(final boolean longDescription) {
+    public String toString(final boolean detailed) {
         String description
-                = super.toString(longDescription)
-                + (life == maxLife
-                ? String.format(" d:%d l:%d", effectiveDamage(), effectiveLife())
-                : String.format(" d:%d l:%d/%d", effectiveDamage(), effectiveLife(), effectiveMaxLife()));
+            = super.toString(detailed)
+            + (life == maxLife
+            ? String.format(" d:%d l:%d", effectiveDamage(), effectiveLife())
+            : String.format(" d:%d l:%d/%d", effectiveDamage(), effectiveLife(), effectiveMaxLife()));
 
-        if (longDescription) {
+        if (detailed) {
             if (!abilities.isEmpty()) {
                 description += String.format(" p:{%s}", abilities);
             }
 
             if (!attachments.isEmpty()) {
                 description += String.format(" a:{%s}", attachments.stream()
-                        .map(a -> a.toString(longDescription))
-                        .collect(Collectors.toList()));
+                    .map(a -> a.toString(detailed))
+                    .collect(Collectors.toList()));
             }
         }
 

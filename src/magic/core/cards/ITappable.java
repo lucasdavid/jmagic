@@ -1,4 +1,4 @@
-package magic.core.contracts.cards;
+package magic.core.cards;
 
 /**
  * Tappable Interface.

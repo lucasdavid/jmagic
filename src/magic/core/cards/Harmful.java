@@ -1,12 +1,11 @@
 package magic.core.cards;
 
-import magic.core.State;
+import magic.core.IDamageable;
+import magic.core.ITargetable;
 import magic.core.cards.lands.BasicLands;
-import magic.core.contracts.cards.ICard;
-import magic.core.contracts.IDamageable;
-import magic.core.contracts.ITargetable;
 import magic.core.exceptions.IllegalCardUsageException;
 import magic.core.exceptions.JMagicException;
+import magic.core.states.State;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,48 +28,48 @@ public abstract class Harmful extends Card {
 
     @Override
     public State use(State state, List<ITargetable> targets) {
-        List<State.PlayerState> playersInfo = state.playerStates();
+        List<State.PlayerState> playerStates = state.playerStates();
 
         targets.forEach(t -> {
             if (t instanceof State.PlayerState) {
                 // Update playerStates with their recomputed lives.
-                int indexOfPlayer = playersInfo.indexOf(t);
-                playersInfo.add(indexOfPlayer,
-                        (State.PlayerState) playersInfo
-                                .remove(indexOfPlayer)
-                                .takeDamage(effectiveDamage()));
+                int indexOfPlayer = playerStates.indexOf(t);
+                playerStates.add(indexOfPlayer,
+                    (State.PlayerState) playerStates
+                        .remove(indexOfPlayer)
+                        .takeDamage(effectiveDamage()));
 
             } else if (t instanceof Card) {
                 // Find the player to whom that card belongs.
-                State.PlayerState p = playersInfo.stream()
-                        .filter(_p -> _p.field.contains((Card) t))
-                        .findFirst().get();
+                State.PlayerState p = playerStates.stream()
+                    .filter(_p -> _p.field.contains((Card) t))
+                    .findFirst().get();
 
                 // Update the card with its recomputed life.
                 List<ICard> fieldCards = p.field.cards();
                 int indexOfCard = fieldCards.indexOf(t);
                 fieldCards.add(indexOfCard,
-                        (Card) ((IDamageable) fieldCards
-                                .remove(indexOfCard))
-                                .takeDamage(effectiveDamage()));
+                    (Card) ((IDamageable) fieldCards
+                        .remove(indexOfCard))
+                        .takeDamage(effectiveDamage()));
 
                 // Update player's info with the updated cards.
-                int indexOfPlayer = playersInfo.indexOf(p);
-                playersInfo.remove(indexOfPlayer);
-                playersInfo.add(indexOfPlayer,
-                        new State.PlayerState(p.player, p.life(), p.maxLife(),
-                                p.deck, p.hand, new Cards(fieldCards), p.graveyard,
-                                p.playing));
+                int indexOfPlayer = playerStates.indexOf(p);
+                playerStates.remove(indexOfPlayer);
+                playerStates.add(indexOfPlayer,
+                    new State.PlayerState(p.player, p.life(), p.maxLife(),
+                        p.deck, p.hand, new Cards(fieldCards), p.graveyard,
+                        p.playing));
             }
         });
 
-        return new State(playersInfo, state.turn, state.done, state.turnsCurrentPlayerIndex,
-                null, null);
+        return new State(playerStates, state.turn, state.step, state.done, state.turnsPlayerIndex,
+            state.activePlayerIndex, null, null);
     }
 
     @Override
     public void raiseForErrors(State state, List<ITargetable> targets)
-            throws JMagicException {
+        throws JMagicException {
         if (targets.isEmpty()) {
             throw new IllegalCardUsageException("must target at least one enemy");
         }
@@ -80,17 +79,17 @@ public abstract class Harmful extends Card {
         }
 
         if (targets.stream()
-                .map(t -> (IDamageable) t)
-                .anyMatch(p -> !p.isAlive())) {
+            .map(t -> (IDamageable) t)
+            .anyMatch(p -> !p.isAlive())) {
             throw new IllegalCardUsageException("cannot target a card that's not alive");
         }
 
         if (targets.stream()
-                .filter(t -> t instanceof Card)
-                .map(t -> (Card) t)
-                .anyMatch(c ->
-                        state.playerStates().stream().noneMatch(i ->
-                                i.field.contains(c)))) {
+            .filter(t -> t instanceof Card)
+            .map(t -> (Card) t)
+            .anyMatch(c ->
+                state.playerStates().stream().noneMatch(i ->
+                    i.field.contains(c)))) {
             throw new IllegalCardUsageException("can only target cards that are on the field");
         }
 
