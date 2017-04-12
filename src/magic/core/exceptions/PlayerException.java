@@ -7,14 +7,14 @@ package magic.core.exceptions;
 public class PlayerException extends JMagicException {
 
     /**
-     * Creates a new instance of <code>NullActionException</code> without detail
+     * Creates a new instance of <code>PlayerException</code> without detail
      * message.
      */
     public PlayerException() {
     }
 
     /**
-     * Constructs an instance of <code>NullActionException</code> with the
+     * Constructs an instance of <code>PlayerException</code> with the
      * specified detail message.
      *
      * @param msg the detail message.

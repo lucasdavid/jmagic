@@ -2,10 +2,9 @@ package magic.core.actions;
 
 import magic.core.Player;
 import magic.core.actions.validation.ValidationRule;
-import magic.core.actions.validation.rules.IsPlaying;
+import magic.core.actions.validation.rules.players.IsPlaying;
 import magic.core.states.State;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,20 +22,20 @@ public class DisqualifyAction extends Action {
 
     @Override
     public State update(State state) {
-        State.PlayerState p = state.playerState(player);
-        p = new State.PlayerState(p.player, p.life(), p.maxLife(),
-                p.deck, p.hand, p.field, p.graveyard, false);
-
         List<State.PlayerState> players = state.playerStates();
-        players.set(players.indexOf(p), p);
+        State.PlayerState p = state.playerState(player);
+
+        players.set(
+            players.indexOf(p),
+            new State.PlayerState(p.player, p.life(), p.maxLife(),
+                p.deck, p.hand, p.field, p.graveyard, false));
 
         return new State(players, state.turn, state.step, state.done,
-                state.turnsPlayerIndex, state.activePlayerIndex, this, state);
+            state.turnsPlayerIndex, state.activePlayerIndex, this, state);
     }
 
     @Override
-    protected Collection<ValidationRule> validationRules() {
-        return List.of(
-                new IsPlaying(player));
+    protected ValidationRule validationRules() {
+        return new IsPlaying(player);
     }
 }

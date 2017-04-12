@@ -1,12 +1,17 @@
 package magic.core.actions;
 
 import magic.core.actions.validation.ValidationRule;
+import magic.core.actions.validation.rules.TurnsStepIs;
+import magic.core.actions.validation.rules.players.IsNthPlayer;
+import magic.core.actions.validation.rules.players.PlayersOtherThanActiveAreAlive;
 import magic.core.states.State;
 import magic.core.states.TurnStep;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+
+import static magic.core.actions.validation.ValidationRules.And;
+import static magic.core.actions.validation.ValidationRules.Not;
+import static magic.core.actions.validation.ValidationRules.Or;
 
 /**
  * Advance Turn Action.
@@ -27,10 +32,14 @@ public class AdvanceGameAction extends Action {
 
         if (state.activePlayerIndex == lastPlayerIndex) {
             // Last player has requested turn advancement.
-            if (state.step == TurnStep.CLEANUP) {
-                // That was the last step of the turn's current player.
-                // Finish and move onto the next player.
-                int turnsPlayer = (state.turnsPlayerIndex + 1) % players.size();
+
+            if (state.step == TurnStep.CLEANUP || !state.turnsPlayerState().isAlive()) {
+                // That was the last step of the turn's current player or they died.
+                // Change turn's player to the next alive.
+                int turnsPlayer = state.turnsPlayerIndex;
+                do {
+                    turnsPlayer = (turnsPlayer + 1) % players.size();
+                } while (!state.playerState(turnsPlayer).isAlive());
 
                 return new State(players, state.turn + 1, TurnStep.values()[0], state.done,
                     turnsPlayer, turnsPlayer);
@@ -52,14 +61,11 @@ public class AdvanceGameAction extends Action {
     }
 
     @Override
-    protected Collection<ValidationRule> validationRules() {
-        return Collections.emptyList();
-//        return List.of(
-//            new Or(
-//                new And(),
-//                new And()
-//            ));
-//        new CardsCountInTurnsPlayersHandIsLessThan(7),
-//            new OtherPlayersAreAlive());
+    protected ValidationRule validationRules() {
+        return And(
+            new PlayersOtherThanActiveAreAlive(),
+            Or(
+                Not(new TurnsStepIs(TurnStep.CLEANUP)),
+                Not(new IsNthPlayer(-1))));
     }
 }

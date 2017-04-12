@@ -2,11 +2,14 @@ package magic.core;
 
 import magic.core.cards.Cards;
 import magic.core.cards.DeckBuilder;
-import magic.core.rules.MagicRule;
+import magic.core.cards.lands.BasicLands;
+import magic.core.observers.Observer;
 import magic.players.RandomPlayer;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -20,39 +23,49 @@ import java.util.stream.IntStream;
 public class GameBuilder {
 
     private final List<Player> players;
+    private final List<Observer> rules;
     private final int numberOfCardsForEachPlayer;
     private final long playerActTimeout;
-    private final boolean disqualifyOnInvalidAction;
-    private final boolean disqualifyOnIllegalAction;
-    private final boolean disqualifyOnActTimeout;
-    private final List<MagicRule> rules;
     private final Random randomState;
+    private final List<Set<BasicLands>> deckColors;
 
     public GameBuilder(int numberOfPlayers, int numberOfCardsForEachPlayer, long playerActTimeout,
-                       boolean disqualifyOnInvalidAction, boolean disqualifyOnIllegalAction,
-                       boolean disqualifyOnActTimeout, List<MagicRule> rules, Random randomState) {
+                       List<Observer> rules, Random randomState) {
         this(IntStream
                 .range(0, numberOfPlayers)
                 .mapToObj(i -> new RandomPlayer(Player.DEFAULT_PLAYER_NAMES[i % Player.DEFAULT_PLAYER_NAMES.length]))
                 .collect(Collectors.toList()),
             numberOfCardsForEachPlayer,
             playerActTimeout,
-            disqualifyOnInvalidAction,
-            disqualifyOnIllegalAction,
-            disqualifyOnActTimeout,
             rules,
             randomState);
     }
 
-    public GameBuilder(List<Player> players, int numberOfCardsForEachPlayer, long playerActTimeout,
-                       boolean disqualifyOnInvalidAction, boolean disqualifyOnIllegalAction,
-                       boolean disqualifyOnActTimeout, List<MagicRule> rules, Random randomState) {
+    public GameBuilder(List<Player> players,
+                       int numberOfCardsForEachPlayer, long playerActTimeout,
+                       List<Observer> rules, Random randomState) {
+        this(players,
+            IntStream
+                .range(0, players.size())
+                .mapToObj(i -> IntStream
+                    .range(0, 2)
+                    .mapToObj(j -> BasicLands.values()[randomState.nextInt(BasicLands.values().length)])
+                    .collect(Collectors.toSet()))
+                .collect(Collectors.toList()),
+            numberOfCardsForEachPlayer,
+            playerActTimeout,
+            rules,
+            randomState);
+
+    }
+
+    public GameBuilder(List<Player> players, List<Set<BasicLands>> deckColors,
+                       int numberOfCardsForEachPlayer, long playerActTimeout,
+                       List<Observer> rules, Random randomState) {
         this.players = players;
+        this.deckColors = deckColors;
         this.numberOfCardsForEachPlayer = numberOfCardsForEachPlayer;
         this.playerActTimeout = playerActTimeout;
-        this.disqualifyOnInvalidAction = disqualifyOnInvalidAction;
-        this.disqualifyOnIllegalAction = disqualifyOnIllegalAction;
-        this.disqualifyOnActTimeout = disqualifyOnActTimeout;
         this.rules = rules;
         this.randomState = randomState;
     }
@@ -67,13 +80,7 @@ public class GameBuilder {
      */
     public Game build() {
         DeckBuilder b = new DeckBuilder(numberOfCardsForEachPlayer, randomState);
-
-        List<Cards> playersCards = players.stream()
-            .map(p -> b.random())
-            .collect(Collectors.toList());
-
-        return new Game(players, playersCards, playerActTimeout,
-            disqualifyOnInvalidAction, disqualifyOnIllegalAction,
-            disqualifyOnActTimeout, rules);
+        List<Cards> decks = deckColors.stream().map(b::random).collect(Collectors.toList());
+        return new Game(players, decks, playerActTimeout, rules);
     }
 }

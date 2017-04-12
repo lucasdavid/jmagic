@@ -29,9 +29,9 @@ public class State {
 
     public final TurnStep step;
     public final int turn;
-    public final boolean done;
     public final int turnsPlayerIndex;
     public final int activePlayerIndex;
+    public final boolean done;
     public final State parent;
     public final Action actionThatLedToThisState;
     private final List<PlayerState> playerStates;
@@ -48,9 +48,9 @@ public class State {
         this.turnsPlayerIndex = 0;
         this.activePlayerIndex = 0;
         this.playerStates = IntStream
-                .range(0, players.size())
-                .mapToObj(i -> new PlayerState(players.get(i), playerCards.get(i)))
-                .collect(Collectors.toList());
+            .range(0, players.size())
+            .mapToObj(i -> new PlayerState(players.get(i), playerCards.get(i)))
+            .collect(Collectors.toList());
 
         this.parent = null;
         this.actionThatLedToThisState = null;
@@ -113,9 +113,9 @@ public class State {
 
     public PlayerState playerState(Player player) {
         return playerStates.stream()
-                .filter(i -> i.player.equals(player))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("unknown player " + player));
+            .filter(i -> i.player.equals(player))
+            .findFirst()
+            .orElseThrow(() -> new NoSuchElementException("unknown player " + player));
     }
 
     /**
@@ -147,22 +147,21 @@ public class State {
 
     private State playerViewModel(PlayerState playerState) {
         List<PlayerState> players = playerStates.stream().map(
-                _p -> _p.equals(playerState)
-                        ? _p.playerViewModel()
-                        : _p.opponentViewModel()).collect(Collectors.toList());
+            _p -> _p.equals(playerState)
+                ? _p.playerViewModel()
+                : _p.opponentViewModel()).collect(Collectors.toList());
 
         return new State(players, turn, step, done, turnsPlayerIndex,
-                activePlayerIndex, actionThatLedToThisState,
-                parent == null ? null : parent.playerViewModel(playerState));
+            activePlayerIndex, actionThatLedToThisState,
+            parent == null ? null : parent.playerViewModel(playerState));
     }
 
     @Override
     public String toString() {
-        return String.format("turn: %d, players:\n %s", turn,
-                String.join("\n", playerStates.stream()
-                        .map(PlayerState::toString)
-                        .collect(Collectors.toList())))
-                + (done ? "(done)" : "");
+        return String.format("turn: %d%s, players:\n%s",
+            turn,
+            (done ? " (done)" : ""),
+            playerStates);
     }
 
     /**
@@ -253,9 +252,13 @@ public class State {
 
         @Override
         public String toString() {
-            return String.format("%s {\n  life: %d/%d,\n  hand: %s,\n  field: %s,\n" +
-                            "  deck: %s,\n  graveyard: %s\n}",
-                    player, effectiveLife(), effectiveMaxLife(), hand, field, deck, graveyard);
+            return String.format("%s\n" +
+                    "  life: %d/%d,\n" +
+                    "  hand: %s,\n" +
+                    "  field: %s,\n" +
+                    "  deck: %s,\n" +
+                    "  graveyard: %s\n",
+                player, effectiveLife(), effectiveMaxLife(), hand, field, deck, graveyard);
         }
     }
 }

@@ -28,4 +28,6 @@ public interface ICard extends ITargetable, IIdentifiable {
     ICard duplicate();
 
     Collection<BasicLands> cost();
+
+    String toString(boolean detailed);
 }

@@ -7,7 +7,6 @@ import magic.core.cards.magics.attachments.DamageLifeBoost;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,9 +20,8 @@ class CreatureTest {
 
     @BeforeEach
     void beforeEach() {
-        this.a = new Creature("mocked-creature-1", 1, 10, false,
-            List.of(BasicLands.SWAMP),
-            Collections.emptyList(), Collections.emptyList());
+        this.a = new Creature("mocked-creature-1", 1, 10,
+            List.of(BasicLands.SWAMP));
     }
 
     @Test

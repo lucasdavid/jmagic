@@ -15,8 +15,8 @@ import java.util.Collection;
  */
 public abstract class ValidationRule {
 
-    private boolean validated;
     protected final Collection<String> errors;
+    private boolean validated;
 
     protected ValidationRule() {
         this.errors = new ArrayList<>();
@@ -54,8 +54,7 @@ public abstract class ValidationRule {
 
     private void assertValidated() {
         if (!this.validated) {
-            throw new IllegalStateException(
-                    "you must first validate a rule before asking whether it's valid or not");
+            throw new IllegalStateException("you must first validate a rule before asking whether it's valid or not");
         }
     }
 

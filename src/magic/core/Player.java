@@ -65,6 +65,6 @@ public abstract class Player implements IIdentifiable, IGameEventListener {
 
     @Override
     public String toString() {
-        return String.format("Player %s", name);
+        return name;
     }
 }

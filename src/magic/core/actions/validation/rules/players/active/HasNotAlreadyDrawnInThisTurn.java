@@ -1,11 +1,11 @@
-package magic.core.actions.validation.rules;
+package magic.core.actions.validation.rules.players.active;
 
 import magic.core.actions.Action;
 import magic.core.actions.DrawAction;
 import magic.core.actions.validation.ValidationRule;
 import magic.core.states.State;
 
-public class ActivePlayerHasNotAlreadyDrawnInThisTurn extends ValidationRule {
+public class HasNotAlreadyDrawnInThisTurn extends ValidationRule {
 
     @Override
     public void onValidate(State state) {

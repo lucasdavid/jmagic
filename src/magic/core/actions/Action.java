@@ -5,7 +5,6 @@ import magic.core.exceptions.InvalidActionException;
 import magic.core.exceptions.ValidationException;
 import magic.core.states.State;
 
-import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -31,18 +30,16 @@ public abstract class Action {
      *                                action results in an invalid state for the game.
      */
     public Action raiseForErrors(State state) throws InvalidActionException {
-        for (ValidationRule r : validationRules()) {
-            try {
-                r.validate(state).raiseForErrors();
-            } catch (ValidationException e) {
-                throw new InvalidActionException(e.getMessage());
-            }
+        try {
+            validationRules().raiseForErrors(state);
+        } catch (ValidationException e) {
+            throw new InvalidActionException(e.getMessage());
         }
 
         return this;
     }
 
-    protected abstract Collection<ValidationRule> validationRules();
+    protected abstract ValidationRule validationRules();
 
     /**
      * Check whether or not the application of this action will result in a valid state.
@@ -51,8 +48,7 @@ public abstract class Action {
      * @return true, if the action's application results in a valid state. False, otherwise.
      */
     public boolean isValid(State state) {
-        return validationRules().stream()
-                .allMatch(r -> r.validate(state).isValid());
+        return validationRules().isValid(state);
     }
 
     @Override
@@ -68,6 +64,6 @@ public abstract class Action {
 
     @Override
     public String toString() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 }

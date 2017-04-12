@@ -1,18 +1,18 @@
-package magic.core.actions.validation.rules;
+package magic.core.actions.validation.rules.players;
 
 import magic.core.Player;
 import magic.core.actions.validation.ValidationRule;
 import magic.core.states.State;
 
-public class OtherPlayersAreAlive extends ValidationRule {
+public class PlayersOtherThanActiveAreAlive extends ValidationRule {
 
     private final long minAlivePlayersCount;
 
-    public OtherPlayersAreAlive() {
+    public PlayersOtherThanActiveAreAlive() {
         this(1);
     }
 
-    public OtherPlayersAreAlive(long minAlivePlayersCount) {
+    public PlayersOtherThanActiveAreAlive(long minAlivePlayersCount) {
         this.minAlivePlayersCount = minAlivePlayersCount;
     }
 

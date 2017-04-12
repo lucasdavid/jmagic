@@ -1,6 +1,5 @@
 package magic.core.cards;
 
-import magic.core.cards.creatures.Abilities;
 import magic.core.cards.creatures.Creature;
 import magic.core.cards.lands.BasicLands;
 import magic.core.cards.magics.attachments.DamageLifeBoost;
@@ -10,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -28,10 +28,8 @@ public class CreatureTest {
 
     @BeforeEach
     public void setUp() {
-        this.creature = new Creature("mocked-creature", 3, 2, false,
-            List.of(BasicLands.FOREST),
-            Collections.emptyList(),
-            Collections.emptyList());
+        this.creature = new Creature(UUID.randomUUID(), "mocked-creature", 3, 2, 3, false,
+            List.of(BasicLands.FOREST), Collections.emptySet(), Collections.emptySet());
     }
 
     @Test
@@ -41,19 +39,18 @@ public class CreatureTest {
 
     @Test
     public void testBuffsAreImmutable() {
-        Creature creature = new Creature("Joe", 10, 4, false,
-            List.of(BasicLands.PLAINS), List.of(Abilities.HASTE),
-            Collections.emptyList());
+        Creature creature = new Creature("Joe", 10, 4,
+            List.of(BasicLands.PLAINS), List.of(Properties.HASTE));
 
-        Collection<Abilities> buffs = creature.abilities();
+        Collection<Properties> buffs = creature.properties();
 
         assertThrows(UnsupportedOperationException.class, () -> {
-            buffs.add(Abilities.PROVOKE);
-            buffs.add(Abilities.DOUBLE_STRIKE);
+            buffs.add(Properties.PROVOKE);
+            buffs.add(Properties.DOUBLE_STRIKE);
         });
 
-        assertEquals(creature.abilities().size(), 1);
-        assertTrue(creature.abilities().contains(Abilities.HASTE));
+        assertEquals(creature.properties().size(), 1);
+        assertTrue(creature.properties().contains(Properties.HASTE));
     }
 
     @Test
@@ -61,7 +58,7 @@ public class CreatureTest {
         DamageLifeBoost a = new DamageLifeBoost("mocked-damage", 2, 0,
             List.of(BasicLands.PLAINS));
 
-        Creature l = new Creature("Joe", 53, 31, false,
+        Creature l = new Creature("Joe", 53, 31,
             List.of(BasicLands.PLAINS), Collections.emptyList(), List.of(a));
 
         assertEquals(53 + 2, l.effectiveDamage());

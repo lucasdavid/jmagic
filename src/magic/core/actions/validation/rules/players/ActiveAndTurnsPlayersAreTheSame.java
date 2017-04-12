@@ -1,4 +1,4 @@
-package magic.core.actions.validation.rules;
+package magic.core.actions.validation.rules.players;
 
 import magic.core.actions.validation.ValidationRule;
 import magic.core.states.State;

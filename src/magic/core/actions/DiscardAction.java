@@ -1,15 +1,18 @@
 package magic.core.actions;
 
-import magic.core.actions.validation.rules.ActiveAndTurnsPlayersAreTheSame;
-import magic.core.actions.validation.rules.CardsCountInTurnsPlayerHandIsMoreThan;
 import magic.core.actions.validation.ValidationRule;
+import magic.core.actions.validation.rules.players.active.CardsCountIsLessThan;
+import magic.core.actions.validation.rules.TurnsStepIs;
 import magic.core.cards.Cards;
 import magic.core.cards.ICard;
 import magic.core.states.State;
 import magic.core.states.State.PlayerState;
+import magic.core.states.TurnStep;
 
-import java.util.Collection;
 import java.util.List;
+
+import static magic.core.actions.validation.ValidationRules.And;
+import static magic.core.actions.validation.ValidationRules.Not;
 
 /**
  * Discard Action.
@@ -45,9 +48,9 @@ public final class DiscardAction extends Action {
     }
 
     @Override
-    protected Collection<ValidationRule> validationRules() {
-        return List.of(
-            new ActiveAndTurnsPlayersAreTheSame(),
-            new CardsCountInTurnsPlayerHandIsMoreThan(7));
+    protected ValidationRule validationRules() {
+        return And(
+            new TurnsStepIs(TurnStep.CLEANUP),
+            Not(new CardsCountIsLessThan(8)));
     }
 }

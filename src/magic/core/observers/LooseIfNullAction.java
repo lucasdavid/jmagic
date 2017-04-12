@@ -1,4 +1,4 @@
-package magic.core.rules;
+package magic.core.observers;
 
 import magic.core.actions.Action;
 import magic.core.states.State;
@@ -6,10 +6,10 @@ import magic.core.states.State;
 /**
  * @author ldavid
  */
-public class LooseIfNullAction extends MagicRule {
+public class LooseIfNullAction extends Observer {
 
     @Override
-    public State afterPlayerAct(State state, Action action) {
+    public State afterPlayerAct(State state, Action action, long actStartedAt, long actEndedAt) {
         if (action == null) {
             State.PlayerState p = state.activePlayerState();
 
@@ -18,7 +18,7 @@ public class LooseIfNullAction extends MagicRule {
                 "(try `AdvanceGameAction` if your intention is to perform no actions)",
                 p.player));
 
-            return _disqualifyAndPass(state);
+            return _disqualify(state);
         }
 
         return state;

@@ -1,9 +1,9 @@
-package magic.core.actions.validation.rules;
+package magic.core.actions.validation.rules.players.active;
 
 import magic.core.actions.validation.ValidationRule;
 import magic.core.states.State;
 
-public class ActivePlayerHasCardsInTheirDeck extends ValidationRule {
+public class HasCardsInTheirDeck extends ValidationRule {
 
     @Override
     public void onValidate(State state) {

@@ -4,6 +4,7 @@ import magic.core.IDamageable;
 import magic.core.cards.Harmful;
 import magic.core.cards.ICard;
 import magic.core.cards.ITappable;
+import magic.core.cards.Properties;
 import magic.core.cards.lands.BasicLands;
 import magic.core.cards.magics.attachments.DamageLifeBoost;
 import magic.core.cards.magics.attachments.IAttachable;
@@ -18,34 +19,45 @@ public class Creature extends Harmful implements IDamageable, IAttachable, ITapp
 
     private final int life;
     private final int maxLife;
-    private final Collection<Abilities> abilities;
+    private final Collection<Properties> properties;
     private final Collection<DamageLifeBoost> attachments;
     private final boolean tapped;
 
-    public Creature(String name, int damage, int life, boolean tapped,
+    public Creature(String name, int damage, int life,
+                    Collection<BasicLands> cost) {
+        this(name, damage, life, cost, Collections.emptySet());
+    }
+
+    public Creature(String name, int damage, int life,
                     Collection<BasicLands> cost,
-                    Collection<Abilities> abilities,
+                    Collection<Properties> properties) {
+        this(name, damage, life, cost, properties, Collections.emptySet());
+    }
+
+    public Creature(String name, int damage, int life,
+                    Collection<BasicLands> cost,
+                    Collection<Properties> properties,
                     Collection<DamageLifeBoost> attachments) {
-        this(UUID.randomUUID(), name, damage, life, life, tapped, cost, abilities, attachments);
+        this(UUID.randomUUID(), name, damage, life, life, false, cost, properties, attachments);
     }
 
     public Creature(UUID id, String name, int damage, int life, int maxLife,
                     boolean tapped,
                     Collection<BasicLands> cost,
-                    Collection<Abilities> abilities,
+                    Collection<Properties> properties,
                     Collection<DamageLifeBoost> attachments) {
         super(id, name, damage, cost);
         this.life = life;
         this.maxLife = maxLife;
         this.tapped = tapped;
-        this.abilities = Collections.unmodifiableCollection(abilities);
+        this.properties = Collections.unmodifiableCollection(properties);
         this.attachments = Collections.unmodifiableCollection(attachments);
     }
 
     @Override
     public IDamageable takeDamage(int damage) {
         return new Creature(id(), name(), effectiveDamage(), life - damage, maxLife,
-            tapped, cost(), abilities, attachments);
+            tapped, cost(), properties, attachments);
     }
 
     @Override
@@ -54,7 +66,7 @@ public class Creature extends Harmful implements IDamageable, IAttachable, ITapp
         attachments.add(attachment);
 
         return new Creature(id(), name(), damage(), life, maxLife,
-            tapped, cost(), abilities, attachments);
+            tapped, cost(), properties, attachments);
     }
 
     @Override
@@ -63,19 +75,19 @@ public class Creature extends Harmful implements IDamageable, IAttachable, ITapp
         attachments.remove(attachment);
 
         return new Creature(id(), name(), damage(), life, maxLife, tapped,
-            cost(), abilities, attachments);
+            cost(), properties, attachments);
     }
 
     @Override
     public ITappable tap() {
         return new Creature(id(), name(), damage(), life, maxLife,
-            true, cost(), abilities, attachments);
+            true, cost(), properties, attachments);
     }
 
     @Override
     public ITappable untap() {
         return new Creature(id(), name(), damage(), life, maxLife,
-            false, cost(), abilities, attachments);
+            false, cost(), properties, attachments);
     }
 
     @Override
@@ -128,14 +140,14 @@ public class Creature extends Harmful implements IDamageable, IAttachable, ITapp
         return effectiveLife() > 0;
     }
 
-    public Collection<Abilities> abilities() {
-        return abilities;
+    public Collection<Properties> properties() {
+        return properties;
     }
 
     @Override
     public ICard duplicate() {
         return new Creature(UUID.randomUUID(), name(), damage(), life, maxLife,
-            tapped, cost(), abilities, attachments);
+            tapped, cost(), properties, attachments);
     }
 
     @Override
@@ -147,8 +159,8 @@ public class Creature extends Harmful implements IDamageable, IAttachable, ITapp
             : String.format(" d:%d l:%d/%d", effectiveDamage(), effectiveLife(), effectiveMaxLife()));
 
         if (detailed) {
-            if (!abilities.isEmpty()) {
-                description += String.format(" p:{%s}", abilities);
+            if (!properties.isEmpty()) {
+                description += String.format(" p:{%s}", properties);
             }
 
             if (!attachments.isEmpty()) {

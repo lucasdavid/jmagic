@@ -1,5 +1,6 @@
-package magic.core.actions.validation.rules;
+package magic.core.actions.validation.rules.players.active;
 
+import magic.core.Player;
 import magic.core.actions.validation.ValidationRule;
 import magic.core.cards.ICard;
 import magic.core.cards.lands.BasicLands;
@@ -11,24 +12,32 @@ import java.util.Collection;
 public class HasLandsToPlayIt extends ValidationRule {
 
     private final ICard card;
+    private final Player player;
 
     public HasLandsToPlayIt(ICard card) {
+        this(null, card);
+    }
+
+    public HasLandsToPlayIt(Player player, ICard card) {
+        this.player = player;
         this.card = card;
     }
 
     @Override
     public void onValidate(State state) {
         Collection<BasicLands> cost = card.cost();
-        State.PlayerState activeState = state.activePlayerState();
+        State.PlayerState ps = player != null
+            ? state.playerState(player)
+            : state.activePlayerState();
 
-        activeState.field.cards().stream()
-                .filter(c -> c instanceof Land && !((Land) c).used())
-                .map(c -> ((Land) c).kind())
-                .forEach(cost::remove);
+        ps.field.cards().stream()
+            .filter(c -> c instanceof Land && !((Land) c).used())
+            .map(c -> ((Land) c).kind())
+            .forEach(cost::remove);
 
         if (!cost.isEmpty()) {
             errors.add(String.format("{%s} doesn't have the correct combination of lands to play {%s}",
-                activeState.player, card));
+                ps.player, card));
         }
     }
 }

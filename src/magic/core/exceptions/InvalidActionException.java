@@ -7,14 +7,7 @@ package magic.core.exceptions;
 public class InvalidActionException extends PlayerException {
 
     /**
-     * Creates a new instance of <code>NullActionException</code> without detail
-     * message.
-     */
-    public InvalidActionException() {
-    }
-
-    /**
-     * Constructs an instance of <code>NullActionException</code> with the
+     * Constructs an instance of <code>InvalidActionException</code> with the
      * specified detail message.
      *
      * @param msg the detail message.

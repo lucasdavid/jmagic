@@ -39,6 +39,7 @@ public abstract class Card implements ICard {
         return toString(false);
     }
 
+    @Override
     public String toString(boolean detailed) {
         return detailed
                 ? String.format("\"%s\" c:%s", name, cost)

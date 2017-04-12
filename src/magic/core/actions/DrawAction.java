@@ -1,9 +1,9 @@
 package magic.core.actions;
 
 import magic.core.actions.validation.ValidationRule;
-import magic.core.actions.validation.rules.ActiveAndTurnsPlayersAreTheSame;
-import magic.core.actions.validation.rules.ActivePlayerHasCardsInTheirDeck;
-import magic.core.actions.validation.rules.ActivePlayerHasNotAlreadyDrawnInThisTurn;
+import magic.core.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
+import magic.core.actions.validation.rules.players.active.HasCardsInTheirDeck;
+import magic.core.actions.validation.rules.players.active.HasNotAlreadyDrawnInThisTurn;
 import magic.core.actions.validation.rules.TurnsStepIs;
 import magic.core.cards.Cards;
 import magic.core.cards.ICard;
@@ -11,8 +11,9 @@ import magic.core.states.State;
 import magic.core.states.State.PlayerState;
 import magic.core.states.TurnStep;
 
-import java.util.Collection;
 import java.util.List;
+
+import static magic.core.actions.validation.ValidationRules.And;
 
 /**
  * Draw Action.
@@ -42,11 +43,11 @@ public final class DrawAction extends Action {
     }
 
     @Override
-    protected Collection<ValidationRule> validationRules() {
-        return List.of(
+    protected ValidationRule validationRules() {
+        return And(
             new TurnsStepIs(TurnStep.DRAW),
             new ActiveAndTurnsPlayersAreTheSame(),
-            new ActivePlayerHasCardsInTheirDeck(),
-            new ActivePlayerHasNotAlreadyDrawnInThisTurn());
+            new HasCardsInTheirDeck(),
+            new HasNotAlreadyDrawnInThisTurn());
     }
 }
