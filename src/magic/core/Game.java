@@ -13,8 +13,8 @@ import magic.core.cards.Cards;
 import magic.core.exceptions.IllegalActionException;
 import magic.core.exceptions.InvalidActionException;
 import magic.core.exceptions.JMagicException;
+import magic.core.rules.MagicRule;
 import magic.core.states.State;
-import magic.core.states.TurnStep;
 import magic.infrastructure.collectors.CustomCollectors;
 
 import java.util.Collection;
@@ -32,8 +32,8 @@ import java.util.logging.Logger;
 /**
  * Game.
  * <p>
- * Defines a Game (a box with players, winners and a state history) and
- * protects it using privacy.
+ * Defines a Game (a box with players, winners and a state history), keeps the
+ * game running and protects its integrity using privacy and view models.
  *
  * @author ldavid
  */
@@ -43,11 +43,13 @@ public class Game {
 
     public final static Collection<Class<? extends Action>> LEGAL_ACTIONS_FOR_PLAYERS = Set.of(
         DiscardAction.class, DrawAction.class, AdvanceGameAction.class, PlayAction.class,
-        UseAction.class);
+        UseAction.class, UntapAction.class);
+
     private final boolean disqualifyOnInvalidAction;
     private final boolean disqualifyOnIllegalAction;
     private final boolean disqualifyOnActTimeout;
     private long playerActTimeout;
+    private final List<MagicRule> rules;
     private Date startedAt;
     private Date finishedAt;
     private Collection<Player> players;
@@ -58,20 +60,22 @@ public class Game {
 
     public Game(List<Player> players, List<Cards> playersCards,
                 long playerActTimeout, boolean disqualifyOnInvalidAction, boolean disqualifyOnIllegalAction,
-                boolean disqualifyOnActTimeout) {
+                boolean disqualifyOnActTimeout, List<MagicRule> rules) {
         this(players, new State(players, playersCards),
-            playerActTimeout, disqualifyOnInvalidAction, disqualifyOnIllegalAction, disqualifyOnActTimeout);
+            playerActTimeout, disqualifyOnInvalidAction, disqualifyOnIllegalAction, disqualifyOnActTimeout,
+            rules);
     }
 
     public Game(List<Player> players, State initialState,
                 long playerActTimeout, boolean disqualifyOnInvalidAction, boolean disqualifyOnIllegalAction,
-                boolean disqualifyOnActTimeout) {
+                boolean disqualifyOnActTimeout, List<MagicRule> rules) {
         this.players = players;
         this._currentState = initialState;
         this.playerActTimeout = playerActTimeout;
         this.disqualifyOnInvalidAction = disqualifyOnInvalidAction;
         this.disqualifyOnIllegalAction = disqualifyOnIllegalAction;
         this.disqualifyOnActTimeout = disqualifyOnActTimeout;
+        this.rules = rules;
     }
 
     public Game run() {
@@ -87,21 +91,15 @@ public class Game {
             _activePlayer = _currentState.activePlayerState().player;
 
             try {
-                if (_currentState.step == TurnStep.UNTAP &&
-                    _currentState.activePlayerIndex == _currentState.turnsPlayerIndex) {
-                    // Always un-tap cards automatically.
-                    _currentState = new UntapAction(_activePlayer)
-                        .raiseForErrors(_currentState)
-                        .update(_currentState);
-                }
+                rules.forEach(r -> _currentState = r.beforePlayerAct(_currentState));
+                if (_currentState.done) break;
 
                 Action action = executor
                     .submit(askForPlayersAction)
                     .get(this.playerActTimeout, TimeUnit.MILLISECONDS);
 
-                if (action == null) {
-                    throw new InvalidActionException("action cannot be empty (try `AdvanceGameAction` if your intention is to perform no actions)");
-                }
+                rules.forEach(r -> _currentState = r.afterPlayerAct(_currentState, action));
+                if (_currentState.done) break;
 
                 if (!LEGAL_ACTIONS_FOR_PLAYERS.contains(action.getClass())) {
                     throw new IllegalActionException(String.format("action {%s} is illegal by the game rules", action));
@@ -119,7 +117,7 @@ public class Game {
                 passOrFinish(_activePlayer, disqualifyOnInvalidAction);
             } catch (IllegalActionException ex) {
                 // This _activePlayer's attempted to use an illegal action. Disqualify them.
-                LOG.log(Level.SEVERE, null, ex);
+                LOG.log(Level.WARNING, null, ex);
                 passOrFinish(_activePlayer, disqualifyOnIllegalAction);
             } catch (TimeoutException ex) {
                 LOG.log(Level.WARNING, null, ex);
@@ -127,7 +125,7 @@ public class Game {
             } catch (Exception ex) {
                 // A very serious exception has been raised. Stops the game altogether.
                 LOG.log(Level.SEVERE, null, ex);
-                _currentState = new FinishGameAction().update(_currentState);
+                finish();
             }
         }
 
@@ -138,6 +136,7 @@ public class Game {
 
         LOG.info("final game state: " + _currentState);
 
+        executor.shutdown();
         this.finishedAt = new Date();
         return this;
     }
@@ -161,9 +160,12 @@ public class Game {
 
     private void finish() {
         try {
-            _currentState = new FinishGameAction().raiseForErrors(_currentState).update(_currentState);
+            _currentState = new FinishGameAction()
+                .raiseForErrors(_currentState)
+                .update(_currentState);
         } catch (JMagicException ex) {
             LOG.log(Level.SEVERE, null, ex);
+            _currentState = null;
         }
     }
 
