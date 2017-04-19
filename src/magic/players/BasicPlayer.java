@@ -9,6 +9,7 @@ import magic.core.actions.PlayAction;
 import magic.core.actions.UntapAction;
 import magic.core.actions.validation.rules.players.active.HasNotAlreadyDrawnInThisTurn;
 import magic.core.actions.validation.rules.players.active.HasNotAlreadyUntappedInThisTurn;
+import magic.core.actions.validation.rules.players.active.HasNotPlayedALandThisTurn;
 import magic.core.cards.lands.Land;
 import magic.core.states.State;
 import magic.core.states.TurnStep;
@@ -54,7 +55,7 @@ public class BasicPlayer extends Player {
             return new DiscardAction(myState.hand.cards().get(0));
         }
 
-        if (state.step == TurnStep.MAIN_1) {
+        if (state.step == TurnStep.MAIN_1 && new HasNotPlayedALandThisTurn().isValid(state)) {
             try {
                 return new PlayAction(myState.hand.cards().stream()
                     .filter(c -> c instanceof Land)

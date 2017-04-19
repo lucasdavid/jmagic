@@ -22,7 +22,7 @@ public class And extends ValidationRule {
 
     @Override
     public void onValidate(State state) {
-        errors.addAll(this.innerRules.stream()
+        errors.addAll(innerRules.stream()
                 .flatMap(r -> r.validate(state).errors().stream())
                 .collect(Collectors.toList()));
     }

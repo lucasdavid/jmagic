@@ -3,8 +3,8 @@ package magic.core.actions.validation;
 import magic.core.states.State;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Or Validation Rule Base.
@@ -22,10 +22,13 @@ public class Or extends ValidationRule {
 
     @Override
     public void onValidate(State state) {
-        errors.addAll(this.innerRules.stream()
-                .map(r -> r.validate(state).errors())
-                .filter(Collection::isEmpty)
-                .findFirst()
-                .orElseGet(() -> this.innerRules.get(0).errors()));
+        for (ValidationRule r : innerRules) {
+            if (r.isValid(state)) return;
+        }
+
+        errors.add(String.format("Or(%s) is invalid",
+            innerRules.stream()
+                .flatMap(r -> r.errors().stream())
+                .collect(Collectors.toList())));
     }
 }

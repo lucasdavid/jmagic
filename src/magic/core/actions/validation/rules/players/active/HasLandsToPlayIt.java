@@ -31,12 +31,12 @@ public class HasLandsToPlayIt extends ValidationRule {
             : state.activePlayerState();
 
         ps.field.cards().stream()
-            .filter(c -> c instanceof Land && !((Land) c).used())
+            .filter(c -> c instanceof Land && !((Land) c).tapped())
             .map(c -> ((Land) c).kind())
             .forEach(cost::remove);
 
         if (!cost.isEmpty()) {
-            errors.add(String.format("{%s} doesn't have the correct combination of lands to play {%s}",
+            errors.add(String.format("%s doesn't have the correct combination of lands to play %s",
                 ps.player, card));
         }
     }

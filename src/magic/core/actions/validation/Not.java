@@ -20,7 +20,7 @@ public class Not extends ValidationRule {
     public void onValidate(State state) {
         innerRule.validate(state);
         if (innerRule.isValid()) {
-            errors.add(String.format("inner rule %s should not be valid, but it is", innerRule));
+            errors.add(String.format("Not(%s) is invalid", innerRule));
         }
     }
 }

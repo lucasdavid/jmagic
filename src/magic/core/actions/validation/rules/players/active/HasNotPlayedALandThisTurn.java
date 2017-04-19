@@ -13,13 +13,13 @@ public class HasNotPlayedALandThisTurn extends ValidationRule {
         // Validate that Player isFrom drawing only once in a turn!
         Action actionExecutedInPrevious = state.actionThatLedToThisState;
         State previous = state.parent;
-        State.PlayerState active = state.activePlayerState();
+        State.PlayerState p = state.activePlayerState();
 
         while (previous != null && previous.turn == state.turn) {
-            if (active.player.equals(previous.turnsPlayerState().player)
+            if (p.player.equals(previous.turnsPlayerState().player)
                 && actionExecutedInPrevious instanceof PlayAction
                 && ((PlayAction) actionExecutedInPrevious).card() instanceof Land) {
-                errors.add(String.format("%s already played a land in this turn", active));
+                errors.add(String.format("%s already played a land in this turn", p.player));
             }
 
             actionExecutedInPrevious = previous.actionThatLedToThisState;

@@ -14,11 +14,11 @@ import magic.core.observers.LooseOnActTimeout;
 import magic.core.observers.LooseOnIllegalActionAttempt;
 import magic.core.observers.LooseOnInvalidActionAttempt;
 import magic.core.observers.Observer;
-import magic.core.observers.WinIfLastPlayerAlive;
 import magic.core.observers.PassOrFinishIfLost;
+import magic.core.observers.StartGameWithHandSize;
+import magic.core.observers.WinIfLastPlayerAlive;
 import magic.players.RandomPlayer;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -41,6 +41,7 @@ public class Runner {
     public static final int N_CARDS = 40;
     public static final long PLAYER_ACT_TIMEOUT = 1000;
     public static final List<Observer> OBSERVERS = List.of(
+        new StartGameWithHandSize(7),
         new LooseIfDrawingFromEmptyDeck(),
         new LooseIfNullAction(),
         new LooseOnActTimeout(PLAYER_ACT_TIMEOUT),

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Cards.
@@ -41,22 +42,6 @@ public class Cards {
         return cards.contains(card);
     }
 
-    public int indexOf(ICard card) {
-        return cards.indexOf(card);
-    }
-
-    public Cards removeAll(List<ICard> cards) {
-        List<ICard> newCards = cards();
-        newCards.removeAll(cards);
-        return new Cards(newCards);
-    }
-
-    public Cards addAll(List<ICard> cards) {
-        List<ICard> newCards = cards();
-        newCards.addAll(cards);
-        return new Cards(newCards);
-    }
-
     public int size() {
         return cards.size();
     }
@@ -79,6 +64,13 @@ public class Cards {
 
     @Override
     public String toString() {
-        return cards.toString();
+        return toString(false);
+    }
+
+    public String toString(boolean detailed) {
+        return cards.stream()
+            .map(c -> c.toString(detailed))
+            .collect(Collectors.toList())
+            .toString();
     }
 }

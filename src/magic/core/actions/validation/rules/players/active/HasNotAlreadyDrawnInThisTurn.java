@@ -12,12 +12,12 @@ public class HasNotAlreadyDrawnInThisTurn extends ValidationRule {
         // Validate that Player isFrom drawing only once in a turn!
         Action actionExecutedInPrevious = state.actionThatLedToThisState;
         State previous = state.parent;
-        State.PlayerState active = state.activePlayerState();
+        State.PlayerState p = state.activePlayerState();
 
         while (previous != null && previous.turn == state.turn) {
-            if (active.player.equals(previous.turnsPlayerState().player)
-                    && actionExecutedInPrevious instanceof DrawAction) {
-                errors.add(String.format("%s already drew this turn", active));
+            if (p.player.equals(previous.turnsPlayerState().player)
+                && actionExecutedInPrevious instanceof DrawAction) {
+                errors.add(String.format("%s already drew this turn", p));
             }
 
             actionExecutedInPrevious = previous.actionThatLedToThisState;

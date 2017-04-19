@@ -22,4 +22,9 @@ public class CardIsOfType extends ValidationRule {
             errors.add(String.format("%s is not a %s", card, type));
         }
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s(%s, %s)", super.toString(), card, type.getSimpleName());
+    }
 }

@@ -1,22 +1,24 @@
 package magic.core.actions;
 
 import magic.core.actions.validation.ValidationRule;
-import magic.core.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
+import magic.core.actions.validation.rules.TurnsStepIs;
 import magic.core.actions.validation.rules.cards.CardHasAbility;
 import magic.core.actions.validation.rules.cards.CardIsOfType;
+import magic.core.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
 import magic.core.actions.validation.rules.players.active.HasCardInHand;
 import magic.core.actions.validation.rules.players.active.HasLandsToPlayIt;
 import magic.core.actions.validation.rules.players.active.HasNotPlayedALandThisTurn;
-import magic.core.actions.validation.rules.TurnsStepIs;
 import magic.core.cards.Cards;
 import magic.core.cards.ICard;
 import magic.core.cards.Properties;
+import magic.core.cards.lands.BasicLands;
 import magic.core.cards.lands.Land;
 import magic.core.states.State;
 import magic.core.states.TurnStep;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static magic.core.actions.validation.ValidationRules.And;
 import static magic.core.actions.validation.ValidationRules.Not;
@@ -31,7 +33,7 @@ import static magic.core.actions.validation.ValidationRules.Or;
  */
 public class PlayAction extends Action {
 
-    private final ICard card;
+    private ICard card;
 
     public PlayAction(ICard card) {
         this.card = card;
@@ -44,17 +46,23 @@ public class PlayAction extends Action {
         List<ICard> hand = p.hand.cards();
         List<ICard> field = p.field.cards();
 
-        ICard validCard = hand.remove(hand.indexOf(card));
-        field.add(validCard);
+        card = hand.remove(hand.indexOf(card));
+        field.add(card);
 
-        List<ICard> landsToUse = field.stream()
-            .filter(c -> c instanceof Land && !((Land) c).used())
-            .map(c -> (Land) c)
-            .map(l -> new Land(l.id(), l.kind(), true))
-            .collect(Collectors.toList());
+        Collection<BasicLands> cost = card.cost();
+        Collection<ICard> landsUsed = new ArrayList<>();
 
-        field.removeAll(landsToUse);
-        field.addAll(landsToUse);
+        field.stream()
+            .filter(c -> c instanceof Land)
+            .map(c -> ((Land) c))
+            .filter(c -> !c.tapped())
+            .forEach(c -> {
+                if (cost.remove(c.kind()))
+                    landsUsed.add(c);
+            });
+
+        field.removeAll(landsUsed);
+        field.addAll(landsUsed);
 
         p = new State.PlayerState(p.player, p.life(), p.maxLife(),
             p.deck, new Cards(hand), new Cards(field), p.graveyard);

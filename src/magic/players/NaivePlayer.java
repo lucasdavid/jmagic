@@ -4,6 +4,8 @@ import magic.core.actions.Action;
 import magic.core.actions.AdvanceGameAction;
 import magic.core.actions.PlayAction;
 import magic.core.actions.validation.rules.players.active.HasLandsToPlayIt;
+import magic.core.cards.ICard;
+import magic.core.cards.lands.Land;
 import magic.core.states.State;
 import magic.core.states.TurnStep;
 
@@ -31,7 +33,7 @@ public class NaivePlayer extends BasicPlayer {
         if (state.step == TurnStep.MAIN_2) {
             try {
                 return new PlayAction(myState.hand.cards().stream()
-                    .filter(c -> new HasLandsToPlayIt(c).isValid(state))
+                    .filter(c -> !(c instanceof Land) && new HasLandsToPlayIt(this, c).isValid(state))
                     .findAny()
                     .get());
             } catch (NoSuchElementException ignored) {

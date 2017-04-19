@@ -61,4 +61,9 @@ public abstract class ValidationRule {
     public Collection<String> errors() {
         return new ArrayList<>(this.errors);
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
 }
