@@ -1,5 +1,6 @@
 package magic.core.cards.magics.attachments;
 
+import magic.core.cards.Properties;
 import magic.core.states.State;
 import magic.core.cards.Card;
 import magic.core.cards.lands.BasicLands;
@@ -9,20 +10,27 @@ import magic.core.exceptions.JMagicException;
 import magic.core.exceptions.IllegalCardUsageException;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public class DamageLifeBoost extends Card implements IDamageBoost, ILifeBoost {
+public class Boost extends Card implements IDamageBoost, ILifeBoost {
 
     private final int damageIncrease;
     private final int lifeIncrease;
 
-    public DamageLifeBoost(String name, int damageIncrease, int lifeIncrease, Collection<BasicLands> cost) {
-        this(UUID.randomUUID(), name, damageIncrease, lifeIncrease, cost);
+    public Boost(String name, int damageIncrease, int lifeIncrease, Collection<BasicLands> cost) {
+        this(UUID.randomUUID(), name, damageIncrease, lifeIncrease, Collections.emptySet(), cost);
     }
 
-    public DamageLifeBoost(UUID id, String name, int damageIncrease, int lifeIncrease, Collection<BasicLands> cost) {
-        super(id, name, cost);
+    public Boost(String name, int damageIncrease, int lifeIncrease,
+                 Collection<Properties> properties, Collection<BasicLands> cost) {
+        this(UUID.randomUUID(), name, damageIncrease, lifeIncrease, properties, cost);
+    }
+
+    public Boost(UUID id, String name, int damageIncrease, int lifeIncrease,
+                 Collection<Properties> properties, Collection<BasicLands> cost) {
+        super(id, name, properties, cost);
 
         this.damageIncrease = damageIncrease;
         this.lifeIncrease = lifeIncrease;
@@ -65,14 +73,14 @@ public class DamageLifeBoost extends Card implements IDamageBoost, ILifeBoost {
 
         if (targets.stream().anyMatch(t ->
                 state.playerStates().stream().noneMatch(p ->
-                        p.field.contains((Card) t)))) {
+                        p.field.contains((ICard) t)))) {
             throw new IllegalCardUsageException("can only attach to a card in the field");
         }
     }
 
     @Override
     public ICard duplicate() {
-        return new DamageLifeBoost(name(), damageIncrease, lifeIncrease, cost());
+        return new Boost(name(), damageIncrease, lifeIncrease, cost());
     }
 
     @Override

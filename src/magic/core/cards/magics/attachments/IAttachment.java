@@ -3,7 +3,7 @@ package magic.core.cards.magics.attachments;
 import magic.core.cards.ICard;
 
 /**
- * DamageLifeBoost Interface.
+ * Attachment Interface.
  *
  * @author ldavid
  */

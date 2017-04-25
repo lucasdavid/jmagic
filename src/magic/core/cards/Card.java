@@ -12,10 +12,12 @@ public abstract class Card implements ICard {
     private final UUID id;
     private final String name;
     private final Collection<BasicLands> cost;
+    private final Collection<Properties> properties;
 
-    public Card(UUID id, String name, Collection<BasicLands> cost) {
+    public Card(UUID id, String name, Collection<Properties> properties, Collection<BasicLands> cost) {
         this.id = id;
         this.name = name;
+        this.properties = properties;
         this.cost = cost;
     }
 
@@ -27,6 +29,16 @@ public abstract class Card implements ICard {
     @Override
     public String name() {
         return name;
+    }
+
+    @Override
+    public Collection<Properties> properties() {
+        return new ArrayList<>(properties);
+    }
+
+    @Override
+    public Collection<Properties> effectiveProperties() {
+        return properties();
     }
 
     @Override

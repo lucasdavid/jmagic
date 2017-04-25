@@ -4,7 +4,7 @@ import magic.core.cards.creatures.Creature;
 import magic.core.cards.lands.BasicLands;
 import magic.core.cards.lands.Land;
 import magic.core.cards.magics.Burn;
-import magic.core.cards.magics.attachments.DamageLifeBoost;
+import magic.core.cards.magics.attachments.Boost;
 
 import java.util.Collections;
 import java.util.List;
@@ -55,9 +55,9 @@ public class DeckBuilder {
         new Burn("Great Flood", 4, 3, List.of(BasicLands.ISLAND, BasicLands.ISLAND)),
         new Burn("Blood Feast", 6, 3, List.of(BasicLands.MOUNTAIN, BasicLands.SWAMP)),
 
-        new DamageLifeBoost("Sword of Dawn", 2, 0,
+        new Boost("Sword of Dawn", 2, 0,
             List.of(BasicLands.PLAINS)),
-        new DamageLifeBoost("Heavenly Blessing", 4, 2,
+        new Boost("Heavenly Blessing", 4, 2,
             List.of(BasicLands.PLAINS, BasicLands.PLAINS, BasicLands.WASTES)),
 
         new Land(BasicLands.FOREST),

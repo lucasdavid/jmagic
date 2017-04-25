@@ -3,7 +3,7 @@ package magic.core.cards.creatures;
 import magic.core.IDamageable;
 import magic.core.cards.ICard;
 import magic.core.cards.lands.BasicLands;
-import magic.core.cards.magics.attachments.DamageLifeBoost;
+import magic.core.cards.magics.attachments.Boost;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +46,7 @@ class CreatureTest {
             initialLife = a.life(),
             initialEffectiveLife = a.effectiveLife();
 
-        DamageLifeBoost attachment = new DamageLifeBoost("mocked-attachment-1",
+        Boost attachment = new Boost("mocked-attachment-1",
             3, 2, List.of(BasicLands.FOREST));
 
         Creature b = (Creature) a.attach(attachment);
@@ -65,7 +65,7 @@ class CreatureTest {
 
     @Test
     void detach() {
-        DamageLifeBoost attachment = new DamageLifeBoost("mocked-attachment-1",
+        Boost attachment = new Boost("mocked-attachment-1",
             3, 2, List.of(BasicLands.MOUNTAIN));
         a = (Creature) a.attach(attachment);
 

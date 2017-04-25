@@ -2,7 +2,7 @@ package magic.core.cards;
 
 import magic.core.cards.creatures.Creature;
 import magic.core.cards.lands.BasicLands;
-import magic.core.cards.magics.attachments.DamageLifeBoost;
+import magic.core.cards.magics.attachments.Boost;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -55,7 +55,7 @@ public class CreatureTest {
 
     @Test
     public void testLackeyWithAttachments() {
-        DamageLifeBoost a = new DamageLifeBoost("mocked-damage", 2, 0,
+        Boost a = new Boost("mocked-damage", 2, 0,
             List.of(BasicLands.PLAINS));
 
         Creature l = new Creature("Joe", 53, 31,

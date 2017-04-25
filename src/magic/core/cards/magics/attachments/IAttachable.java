@@ -9,7 +9,7 @@ import magic.core.cards.ICard;
  */
 public interface IAttachable extends ICard {
 
-    IAttachable attach(DamageLifeBoost attachment);
+    IAttachable attach(Boost attachment);
 
-    IAttachable detach(DamageLifeBoost attachment);
+    IAttachable detach(Boost attachment);
 }

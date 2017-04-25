@@ -1,10 +1,11 @@
 package magic.core.cards.magics;
 
 import magic.core.cards.Harmful;
-import magic.core.cards.lands.BasicLands;
 import magic.core.cards.ICard;
+import magic.core.cards.lands.BasicLands;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
 
 public class Burn extends Harmful {
@@ -18,7 +19,7 @@ public class Burn extends Harmful {
     }
 
     public Burn(UUID id, String name, int damage, int maxTargetCount, Collection<BasicLands> cost) {
-        super(id, name, damage, maxTargetCount, cost);
+        super(id, name, damage, maxTargetCount, Collections.emptySet(), cost);
     }
 
     @Override
@@ -29,6 +30,6 @@ public class Burn extends Harmful {
     @Override
     public String toString(boolean detailed) {
         return String.format("%s d:%d (%d enemies)",
-                super.toString(detailed), maxTargetCount(), effectiveDamage());
+            super.toString(detailed), maxTargetCount(), effectiveDamage());
     }
 }
