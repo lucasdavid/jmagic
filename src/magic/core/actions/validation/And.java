@@ -4,7 +4,6 @@ import magic.core.states.State;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * And Validation Rule Base.
@@ -22,8 +21,11 @@ public class And extends ValidationRule {
 
     @Override
     public void onValidate(State state) {
-        errors.addAll(innerRules.stream()
-                .flatMap(r -> r.validate(state).errors().stream())
-                .collect(Collectors.toList()));
+        for (ValidationRule r : innerRules) {
+            if (!r.validate(state).isValid()) {
+                errors.addAll(r.errors);
+                break;
+            }
+        }
     }
 }

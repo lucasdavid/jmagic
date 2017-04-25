@@ -3,11 +3,11 @@ package magic.core.actions.validation.rules;
 import magic.core.actions.validation.ValidationRule;
 import magic.core.states.State;
 
-public class IsOnNthTurn extends ValidationRule {
+public class IsNthTurn extends ValidationRule {
 
     private final int turn;
 
-    public IsOnNthTurn(int turn) {
+    public IsNthTurn(int turn) {
         this.turn = turn;
     }
 

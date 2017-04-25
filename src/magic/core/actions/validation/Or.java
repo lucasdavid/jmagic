@@ -26,8 +26,8 @@ public class Or extends ValidationRule {
             if (r.isValid(state)) return;
         }
 
-        errors.add(String.format("Or(%s) is invalid",
-            innerRules.stream()
+        errors.add(String.format("Or(%s) failed: (%s)",
+            innerRules, innerRules.stream()
                 .flatMap(r -> r.errors().stream())
                 .collect(Collectors.toList())));
     }
