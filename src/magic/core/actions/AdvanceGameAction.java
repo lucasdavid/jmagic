@@ -1,8 +1,9 @@
 package magic.core.actions;
 
 import magic.core.actions.validation.ValidationRule;
+import magic.core.actions.validation.rules.IsNthTurn;
 import magic.core.actions.validation.rules.TurnsStepIs;
-import magic.core.actions.validation.rules.players.IsNthPlayer;
+import magic.core.actions.validation.rules.players.HasInitiallyDrawn;
 import magic.core.actions.validation.rules.players.PlayersOtherThanActiveAreAlive;
 import magic.core.states.State;
 import magic.core.states.TurnStep;
@@ -64,8 +65,11 @@ public class AdvanceGameAction extends Action {
     protected ValidationRule validationRules() {
         return And(
             new PlayersOtherThanActiveAreAlive(),
+            // Prevents players from advancing without initially drawing 7 cards.
             Or(
-                Not(new TurnsStepIs(TurnStep.CLEANUP)),
-                Not(new IsNthPlayer(-1))));
+                Not(And(
+                    new TurnsStepIs(TurnStep.DRAW),
+                    new IsNthTurn(0))),
+                new HasInitiallyDrawn()));
     }
 }
