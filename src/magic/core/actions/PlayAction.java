@@ -75,15 +75,19 @@ public class PlayAction extends Action {
     @Override
     protected ValidationRule validationRules() {
         return And(
-            new ActiveAndTurnsPlayersAreTheSame(),
             new HasCardInHand(card),
             new HasLandsToPlayIt(card),
             Or(
                 Not(new CardIsOfType(card, Land.class)),
                 new HasNotPlayedALandThisTurn()),
             Or(
-                new TurnsStepIs(TurnStep.MAIN_1),
-                new TurnsStepIs(TurnStep.MAIN_2),
+                And(
+                    new ActiveAndTurnsPlayersAreTheSame(),
+                    Or(
+                        new TurnsStepIs(TurnStep.MAIN_1),
+                        new TurnsStepIs(TurnStep.MAIN_2)
+                    )
+                ),
                 new CardHasAbility(card, Properties.FLASH)
             ));
     }
