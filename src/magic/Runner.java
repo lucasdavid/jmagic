@@ -5,6 +5,7 @@ import magic.core.GameBuilder;
 import magic.core.actions.AdvanceGameAction;
 import magic.core.actions.DiscardAction;
 import magic.core.actions.DrawAction;
+import magic.core.actions.InitialDrawAction;
 import magic.core.actions.PlayAction;
 import magic.core.actions.UntapAction;
 import magic.core.actions.UseAction;
@@ -15,7 +16,6 @@ import magic.core.observers.LooseOnIllegalActionAttempt;
 import magic.core.observers.LooseOnInvalidActionAttempt;
 import magic.core.observers.Observer;
 import magic.core.observers.PassOrFinishIfLost;
-import magic.core.observers.StartGameWithHandSize;
 import magic.core.observers.WinIfLastPlayerAlive;
 import magic.players.RandomPlayer;
 
@@ -41,7 +41,6 @@ public class Runner {
     public static final int N_CARDS = 40;
     public static final long PLAYER_ACT_TIMEOUT = 1000;
     public static final List<Observer> OBSERVERS = List.of(
-        new StartGameWithHandSize(7),
         new LooseIfDrawingFromEmptyDeck(),
         new LooseIfNullAction(),
         new LooseOnActTimeout(PLAYER_ACT_TIMEOUT),
@@ -53,7 +52,8 @@ public class Runner {
                 AdvanceGameAction.class,
                 PlayAction.class,
                 UseAction.class,
-                UntapAction.class)),
+                UntapAction.class,
+                InitialDrawAction.class)),
         new PassOrFinishIfLost(),
         new WinIfLastPlayerAlive());
 

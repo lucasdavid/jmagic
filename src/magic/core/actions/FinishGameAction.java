@@ -7,7 +7,11 @@ import magic.core.states.State;
 import static magic.core.actions.validation.ValidationRules.Not;
 
 /**
- * Finish a game.
+ * Finish A Game Action.
+ * <p>
+ * Note: the game master should not allowed the players to perform this action.
+ * This can be achieved by setting a {@link magic.core.observers.LooseOnIllegalActionAttempt}
+ * observer when building the game and not passing this class in the collection of allowed classes.
  *
  * @author ldavid
  */

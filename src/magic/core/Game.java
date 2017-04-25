@@ -82,7 +82,6 @@ public class Game {
 
         LOG.log(Level.INFO, "Initial state: {0}", _currentState);
 
-        GAME_MATCH_LOOP:
         while (!_currentState.done) {
             _activePlayer = _currentState.activePlayerState().player;
 

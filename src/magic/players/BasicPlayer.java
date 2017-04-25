@@ -5,8 +5,10 @@ import magic.core.actions.Action;
 import magic.core.actions.AdvanceGameAction;
 import magic.core.actions.DiscardAction;
 import magic.core.actions.DrawAction;
+import magic.core.actions.InitialDrawAction;
 import magic.core.actions.PlayAction;
 import magic.core.actions.UntapAction;
+import magic.core.actions.validation.rules.players.HasNotAlreadyInitiallyDrawnMoreThan;
 import magic.core.actions.validation.rules.players.active.HasNotAlreadyDrawnInThisTurn;
 import magic.core.actions.validation.rules.players.active.HasNotAlreadyUntappedInThisTurn;
 import magic.core.actions.validation.rules.players.active.HasNotPlayedALandThisTurn;
@@ -36,12 +38,23 @@ public class BasicPlayer extends Player {
 
     @Override
     public Action act(State state) {
+        State.PlayerState myState = state.playerState(this);
+
+        long landsInMyHandCount = myState.hand.cards().stream()
+            .filter(c -> c instanceof Land)
+            .count();
+
+        if (state.step == TurnStep.DRAW && state.turn == 0
+            && (myState.hand.isEmpty() || landsInMyHandCount < 2)
+            && new HasNotAlreadyInitiallyDrawnMoreThan(2).isValid(state)
+            && new HasNotAlreadyDrawnInThisTurn().isValid(state)) {
+            return new InitialDrawAction();
+        }
+
         if (!state.turnsPlayerState().player.equals(this)) {
             // Don't intercept other people's turns.
             return new AdvanceGameAction();
         }
-
-        State.PlayerState myState = state.playerState(this);
 
         if (state.step == TurnStep.DRAW && new HasNotAlreadyDrawnInThisTurn().isValid(state)) {
             return new DrawAction();
@@ -61,7 +74,8 @@ public class BasicPlayer extends Player {
                     .filter(c -> c instanceof Land)
                     .findFirst()
                     .get());
-            } catch (NoSuchElementException ignored) {}
+            } catch (NoSuchElementException ignored) {
+            }
         }
 
         // Can't do anything else right now.

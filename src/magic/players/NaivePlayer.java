@@ -4,7 +4,6 @@ import magic.core.actions.Action;
 import magic.core.actions.AdvanceGameAction;
 import magic.core.actions.PlayAction;
 import magic.core.actions.validation.rules.players.active.HasLandsToPlayIt;
-import magic.core.cards.ICard;
 import magic.core.cards.lands.Land;
 import magic.core.states.State;
 import magic.core.states.TurnStep;

@@ -18,9 +18,9 @@ public class IsPlaying extends ValidationRule {
 
     @Override
     public void onValidate(State state) {
-        State.PlayerState playerState = player != null
-            ? state.playerState(player)
-            : state.activePlayerState();
+        State.PlayerState playerState = player == null
+            ? state.activePlayerState()
+            : state.playerState(player);
 
         if (!playerState.playing) {
             errors.add(String.format("%s isn't playing", player));

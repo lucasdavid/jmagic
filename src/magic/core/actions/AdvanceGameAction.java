@@ -1,7 +1,7 @@
 package magic.core.actions;
 
 import magic.core.actions.validation.ValidationRule;
-import magic.core.actions.validation.rules.IsNthTurn;
+import magic.core.actions.validation.rules.TurnIs;
 import magic.core.actions.validation.rules.TurnsStepIs;
 import magic.core.actions.validation.rules.players.HasInitiallyDrawn;
 import magic.core.actions.validation.rules.players.PlayersOtherThanActiveAreAlive;
@@ -69,7 +69,7 @@ public class AdvanceGameAction extends Action {
             Or(
                 Not(And(
                     new TurnsStepIs(TurnStep.DRAW),
-                    new IsNthTurn(0))),
+                    new TurnIs(0))),
                 new HasInitiallyDrawn()));
     }
 }

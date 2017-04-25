@@ -1,8 +1,9 @@
 package magic.core.actions;
 
 import magic.core.actions.validation.ValidationRule;
-import magic.core.actions.validation.rules.players.active.CardsCountIsLessThan;
 import magic.core.actions.validation.rules.TurnsStepIs;
+import magic.core.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
+import magic.core.actions.validation.rules.players.active.CardsCountIsLessThan;
 import magic.core.cards.Cards;
 import magic.core.cards.ICard;
 import magic.core.states.State;
@@ -50,6 +51,7 @@ public final class DiscardAction extends Action {
     @Override
     protected ValidationRule validationRules() {
         return And(
+            new ActiveAndTurnsPlayersAreTheSame(),
             new TurnsStepIs(TurnStep.CLEANUP),
             Not(new CardsCountIsLessThan(8)));
     }

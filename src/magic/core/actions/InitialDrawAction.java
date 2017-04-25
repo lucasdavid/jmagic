@@ -1,24 +1,26 @@
 package magic.core.actions;
 
 import magic.core.actions.validation.ValidationRule;
-import magic.core.actions.validation.rules.IsOnNthTurn;
+import magic.core.actions.validation.rules.TurnIs;
 import magic.core.actions.validation.rules.TurnsStepIs;
-import magic.core.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
+import magic.core.actions.validation.rules.players.CardsDrawnCountReflectsMulliganCount;
+import magic.core.actions.validation.rules.players.HasNotAlreadyInitiallyDrawnMoreThan;
 import magic.core.cards.Cards;
 import magic.core.cards.ICard;
 import magic.core.states.State;
-import magic.core.states.State.PlayerState;
 import magic.core.states.TurnStep;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static magic.core.actions.validation.ValidationRules.And;
 
 /**
  * Initial Draw Action.
  * <p>
- * All players draw {@code n} cards from their decks.
+ * The active player draws {@code n} cards from their deck. If this action has
+ * already been performed and this is a Paris Mulligan, then shuffle the hand
+ * previously obtained back into the deck before drawing.
  *
  * @author ldavid
  */
@@ -36,27 +38,31 @@ public final class InitialDrawAction extends Action {
 
     @Override
     public State update(State state) {
-        List<PlayerState> playersInfo = state.playerStates().stream()
-            .map(p -> {
-                List<ICard> hand = p.hand.cards();
-                List<ICard> deck = p.deck.cards();
+        State.PlayerState p = state.activePlayerState();
 
-                for (int i = 0; i < n; i++) hand.add(deck.remove(0));
+        List<ICard> hand = p.hand.cards();
+        List<ICard> deck = p.deck.cards();
 
-                return new PlayerState(p.player, p.life(), p.maxLife(),
-                    new Cards(deck), new Cards(hand), p.field, p.graveyard);
-            })
-            .collect(Collectors.toList());
+        deck.addAll(hand);
+        hand.clear();
+        Collections.shuffle(deck);
 
-        return new State(playersInfo, state.turn, state.step, state.done,
+        for (int i = 0; i < n; i++) hand.add(deck.remove(0));
+
+        List<State.PlayerState> ps = state.playerStates();
+        ps.set(ps.indexOf(p), new State.PlayerState(p.player, p.life(), p.maxLife(),
+            new Cards(deck), new Cards(hand), p.field, p.graveyard));
+
+        return new State(ps, state.turn, state.step, state.done,
             state.turnsPlayerIndex, state.activePlayerIndex, this, state);
     }
 
     @Override
     protected ValidationRule validationRules() {
         return And(
-            new IsOnNthTurn(0),
-            new TurnsStepIs(TurnStep.UNTAP),
-            new ActiveAndTurnsPlayersAreTheSame());
+            new TurnIs(0),
+            new TurnsStepIs(TurnStep.DRAW),
+            new HasNotAlreadyInitiallyDrawnMoreThan(7),
+            new CardsDrawnCountReflectsMulliganCount(n));
     }
 }

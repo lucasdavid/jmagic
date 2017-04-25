@@ -3,11 +3,19 @@ package magic.core.actions.validation.rules;
 import magic.core.actions.validation.ValidationRule;
 import magic.core.states.State;
 
-public class IsNthTurn extends ValidationRule {
+/**
+ * TurnIs Validation Rule.
+ *
+ * Check whether or not the current n-th turn in the state game
+ * {@link State state} is {@link TurnIs#turn}.
+ *
+ * @author ldavid
+ */
+public class TurnIs extends ValidationRule {
 
     private final int turn;
 
-    public IsNthTurn(int turn) {
+    public TurnIs(int turn) {
         this.turn = turn;
     }
 
