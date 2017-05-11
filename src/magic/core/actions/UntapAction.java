@@ -1,10 +1,10 @@
 package magic.core.actions;
 
 import magic.core.Player;
-import magic.core.actions.validation.ValidationRule;
+import magic.infrastructure.validation.rules.ValidationRule;
 import magic.core.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
 import magic.core.actions.validation.rules.players.active.HasNotAlreadyUntappedInThisTurn;
-import magic.core.actions.validation.rules.TurnsStepIs;
+import magic.core.actions.validation.rules.game.TurnsStepIs;
 import magic.core.cards.Cards;
 import magic.core.cards.ITappable;
 import magic.core.states.State;
@@ -13,7 +13,7 @@ import magic.core.states.TurnStep;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static magic.core.actions.validation.ValidationRules.And;
+import static magic.infrastructure.validation.connectives.Connectives.And;
 
 /**
  * Untap Action.
@@ -47,7 +47,7 @@ public class UntapAction extends Action {
     }
 
     @Override
-    protected ValidationRule validationRules() {
+    public ValidationRule validationRules() {
         return And(
             new TurnsStepIs(TurnStep.UNTAP),
             new ActiveAndTurnsPlayersAreTheSame(),

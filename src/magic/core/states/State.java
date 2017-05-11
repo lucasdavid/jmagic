@@ -252,12 +252,12 @@ public class State {
 
         @Override
         public String toString() {
-            return String.format("%s\n" +
+            return String.format("\n%s:\n" +
                     "  life: %d/%d,\n" +
                     "  hand: %s,\n" +
                     "  field: %s,\n" +
                     "  deck: %s,\n" +
-                    "  graveyard: %s\n",
+                    "  graveyard: %s",
                 player, effectiveLife(), effectiveMaxLife(), hand, field, deck, graveyard);
         }
     }

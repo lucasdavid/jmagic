@@ -1,10 +1,10 @@
 package magic.core.actions;
 
-import magic.core.actions.validation.ValidationRule;
-import magic.core.actions.validation.rules.GameIsFinished;
+import magic.infrastructure.validation.rules.ValidationRule;
+import magic.core.actions.validation.rules.game.GameIsFinished;
 import magic.core.states.State;
 
-import static magic.core.actions.validation.ValidationRules.Not;
+import static magic.infrastructure.validation.connectives.Connectives.Not;
 
 /**
  * Finish A Game Action.
@@ -24,7 +24,7 @@ public class FinishGameAction extends Action {
     }
 
     @Override
-    protected ValidationRule validationRules() {
+    public ValidationRule validationRules() {
         return Not(new GameIsFinished());
     }
 }

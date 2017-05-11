@@ -2,9 +2,10 @@ package magic.core.actions.validation.rules.players.active;
 
 import magic.core.actions.Action;
 import magic.core.actions.PlayAction;
-import magic.core.actions.validation.ValidationRule;
 import magic.core.cards.lands.Land;
 import magic.core.states.State;
+import magic.infrastructure.validation.rules.ValidationRule;
+
 
 public class HasNotPlayedALandThisTurn extends ValidationRule {
 

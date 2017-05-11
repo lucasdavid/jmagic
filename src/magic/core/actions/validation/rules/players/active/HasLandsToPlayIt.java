@@ -1,13 +1,14 @@
 package magic.core.actions.validation.rules.players.active;
 
 import magic.core.Player;
-import magic.core.actions.validation.ValidationRule;
 import magic.core.cards.ICard;
 import magic.core.cards.lands.BasicLands;
 import magic.core.cards.lands.Land;
 import magic.core.states.State;
+import magic.infrastructure.validation.rules.ValidationRule;
 
 import java.util.Collection;
+
 
 public class HasLandsToPlayIt extends ValidationRule {
 

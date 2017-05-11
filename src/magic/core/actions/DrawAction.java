@@ -1,8 +1,8 @@
 package magic.core.actions;
 
 import magic.core.Player;
-import magic.core.actions.validation.ValidationRule;
-import magic.core.actions.validation.rules.TurnsStepIs;
+import magic.infrastructure.validation.rules.ValidationRule;
+import magic.core.actions.validation.rules.game.TurnsStepIs;
 import magic.core.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
 import magic.core.actions.validation.rules.players.active.HasCardsInTheirDeck;
 import magic.core.actions.validation.rules.players.active.HasNotAlreadyDrawnInThisTurn;
@@ -14,7 +14,7 @@ import magic.core.states.TurnStep;
 
 import java.util.List;
 
-import static magic.core.actions.validation.ValidationRules.And;
+import static magic.infrastructure.validation.connectives.Connectives.And;
 
 /**
  * Draw Action.
@@ -47,7 +47,7 @@ public final class DrawAction extends Action {
 
         hand.add(deck.remove(0));
 
-        ps.add(ps.indexOf(p),
+        ps.set(ps.indexOf(p),
             new State.PlayerState(p.player, p.life(), p.maxLife(),
                 new Cards(deck), new Cards(hand), p.field, p.graveyard));
 
@@ -56,7 +56,7 @@ public final class DrawAction extends Action {
     }
 
     @Override
-    protected ValidationRule validationRules() {
+    public ValidationRule validationRules() {
         return And(
             new HasCardsInTheirDeck(),
             new TurnsStepIs(TurnStep.DRAW),

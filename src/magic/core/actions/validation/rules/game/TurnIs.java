@@ -1,7 +1,7 @@
-package magic.core.actions.validation.rules;
+package magic.core.actions.validation.rules.game;
 
-import magic.core.actions.validation.ValidationRule;
 import magic.core.states.State;
+import magic.infrastructure.validation.rules.ValidationRule;
 
 /**
  * TurnIs Validation Rule.
@@ -25,5 +25,10 @@ public class TurnIs extends ValidationRule {
             errors.add(String.format("Incorrect turn (expected: %d, actual: %d)",
                 turn, state.turn));
         }
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s(%d)", super.toString(), turn);
     }
 }

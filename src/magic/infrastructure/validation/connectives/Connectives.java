@@ -1,11 +1,13 @@
-package magic.core.actions.validation;
+package magic.infrastructure.validation.connectives;
+
+import magic.infrastructure.validation.rules.ValidationRule;
 
 /**
  * Validation Rules.
  *
  * @author ldavid
  */
-public abstract class ValidationRules {
+public abstract class Connectives {
 
     public static ValidationRule Or(ValidationRule... innerRules) {
         return new Or(innerRules);

@@ -4,22 +4,16 @@ package magic.core.cards;
 import magic.core.IIdentifiable;
 import magic.core.ITargetable;
 import magic.core.cards.lands.BasicLands;
-import magic.core.exceptions.JMagicException;
-import magic.core.states.State;
+import magic.infrastructure.validation.IGameModifier;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Card Interface.
  *
  * @author ldavid
  */
-public interface ICard extends ITargetable, IIdentifiable {
-
-    State use(State state, List<ITargetable> targets);
-
-    void raiseForErrors(State state, List<ITargetable> targets) throws JMagicException;
+public interface ICard extends ITargetable, IIdentifiable, IGameModifier {
 
     /**
      * @return an exact duplicate of the card, except for the id.

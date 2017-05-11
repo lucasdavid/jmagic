@@ -1,6 +1,7 @@
-package magic.core.actions.validation;
+package magic.infrastructure.validation.connectives;
 
 import magic.core.states.State;
+import magic.infrastructure.validation.rules.ValidationRule;
 
 /**
  * Not Validation Rule Base.
@@ -18,9 +19,13 @@ public class Not extends ValidationRule {
 
     @Override
     public void onValidate(State state) {
-        innerRule.validate(state);
-        if (innerRule.isValid()) {
+        if (innerRule.isValid(state)) {
             errors.add(String.format("Not(%s) is invalid", innerRule));
         }
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Not(%s)", innerRule);
     }
 }

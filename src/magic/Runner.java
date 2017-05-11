@@ -10,7 +10,7 @@ import magic.core.actions.PlayAction;
 import magic.core.actions.UntapAction;
 import magic.core.actions.UseAction;
 import magic.core.observers.LooseIfDrawingFromEmptyDeck;
-import magic.core.observers.LooseIfNullAction;
+import magic.core.observers.LooseOnNullAction;
 import magic.core.observers.LooseOnActTimeout;
 import magic.core.observers.LooseOnIllegalActionAttempt;
 import magic.core.observers.LooseOnInvalidActionAttempt;
@@ -42,7 +42,7 @@ public class Runner {
     public static final long PLAYER_ACT_TIMEOUT = 1000;
     public static final List<Observer> OBSERVERS = List.of(
         new LooseIfDrawingFromEmptyDeck(),
-        new LooseIfNullAction(),
+        new LooseOnNullAction(),
         new LooseOnActTimeout(PLAYER_ACT_TIMEOUT),
         new LooseOnInvalidActionAttempt(),
         new LooseOnIllegalActionAttempt(

@@ -2,8 +2,9 @@ package magic.core.actions.validation.rules.players.active;
 
 import magic.core.actions.Action;
 import magic.core.actions.DrawAction;
-import magic.core.actions.validation.ValidationRule;
 import magic.core.states.State;
+import magic.infrastructure.validation.rules.ValidationRule;
+
 
 public class HasNotAlreadyDrawnInThisTurn extends ValidationRule {
 

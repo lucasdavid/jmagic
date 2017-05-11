@@ -1,10 +1,11 @@
 package magic.core.actions;
 
-import magic.core.actions.validation.ValidationRule;
-import magic.core.actions.validation.rules.TurnIs;
-import magic.core.actions.validation.rules.TurnsStepIs;
+import magic.infrastructure.validation.rules.ValidationRule;
+import magic.core.actions.validation.rules.game.TurnIs;
+import magic.core.actions.validation.rules.game.TurnsStepIs;
 import magic.core.actions.validation.rules.players.CardsDrawnCountReflectsMulliganCount;
 import magic.core.actions.validation.rules.players.HasNotAlreadyInitiallyDrawnMoreThan;
+import magic.core.actions.validation.rules.players.active.HasNotAlreadyDrawnInThisTurn;
 import magic.core.cards.Cards;
 import magic.core.cards.ICard;
 import magic.core.states.State;
@@ -13,7 +14,7 @@ import magic.core.states.TurnStep;
 import java.util.Collections;
 import java.util.List;
 
-import static magic.core.actions.validation.ValidationRules.And;
+import static magic.infrastructure.validation.connectives.Connectives.And;
 
 /**
  * Initial Draw Action.
@@ -58,11 +59,12 @@ public final class InitialDrawAction extends Action {
     }
 
     @Override
-    protected ValidationRule validationRules() {
+    public ValidationRule validationRules() {
         return And(
             new TurnIs(0),
             new TurnsStepIs(TurnStep.DRAW),
             new HasNotAlreadyInitiallyDrawnMoreThan(7),
+            new HasNotAlreadyDrawnInThisTurn(),
             new CardsDrawnCountReflectsMulliganCount(n));
     }
 }

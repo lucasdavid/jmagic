@@ -1,6 +1,7 @@
-package magic.core.actions.validation;
+package magic.infrastructure.validation.connectives;
 
 import magic.core.states.State;
+import magic.infrastructure.validation.rules.ValidationRule;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,10 +23,15 @@ public class And extends ValidationRule {
     @Override
     public void onValidate(State state) {
         for (ValidationRule r : innerRules) {
-            if (!r.validate(state).isValid()) {
-                errors.addAll(r.errors);
+            if (!r.isValid(state)) {
+                errors.addAll(r.errors());
                 break;
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return String.format("And(%s)", innerRules);
     }
 }

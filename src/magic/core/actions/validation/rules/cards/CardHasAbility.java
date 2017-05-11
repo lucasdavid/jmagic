@@ -1,10 +1,9 @@
 package magic.core.actions.validation.rules.cards;
 
-import magic.core.actions.validation.ValidationRule;
 import magic.core.cards.ICard;
 import magic.core.cards.Properties;
-import magic.core.cards.creatures.Creature;
 import magic.core.states.State;
+import magic.infrastructure.validation.rules.ValidationRule;
 
 public class CardHasAbility extends ValidationRule {
 
@@ -18,11 +17,8 @@ public class CardHasAbility extends ValidationRule {
 
     @Override
     public void onValidate(State state) {
-        try {
-            if (((Creature) card).properties().contains(ability)) return;
-        } catch (ClassCastException ignored) {
+        if (!card.properties().contains(ability)) {
+            errors.add(String.format("%s doesn't have the ability {%s}", card, ability));
         }
-
-        errors.add(String.format("%s doesn't have the ability {%s}", card, ability));
     }
 }

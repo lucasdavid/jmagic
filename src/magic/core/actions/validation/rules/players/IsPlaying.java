@@ -1,8 +1,9 @@
 package magic.core.actions.validation.rules.players;
 
 import magic.core.Player;
-import magic.core.actions.validation.ValidationRule;
 import magic.core.states.State;
+import magic.infrastructure.validation.rules.ValidationRule;
+
 
 public class IsPlaying extends ValidationRule {
 

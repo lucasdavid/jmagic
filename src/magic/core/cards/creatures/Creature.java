@@ -6,7 +6,6 @@ import magic.core.cards.ICard;
 import magic.core.cards.ITappable;
 import magic.core.cards.Properties;
 import magic.core.cards.lands.BasicLands;
-import magic.core.cards.magics.attachments.Boost;
 import magic.core.cards.magics.attachments.IAttachable;
 import magic.core.cards.magics.attachments.IAttachment;
 import magic.core.cards.magics.attachments.IDamageBoost;
@@ -99,7 +98,7 @@ public class Creature extends Harmful implements IDamageable, IAttachable, ITapp
     }
 
     @Override
-    public IAttachable attach(Boost attachment) {
+    public IAttachable attach(IAttachment attachment) {
         Collection<IAttachment> attachments = attachments();
         attachments.add(attachment);
         return new Creature(id(), name(), damage(), life, maxLife,
@@ -107,7 +106,7 @@ public class Creature extends Harmful implements IDamageable, IAttachable, ITapp
     }
 
     @Override
-    public IAttachable detach(Boost attachment) {
+    public IAttachable detach(IAttachment attachment) {
         Collection<IAttachment> attachments = attachments();
         attachments.remove(attachment);
 

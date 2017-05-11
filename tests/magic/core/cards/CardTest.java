@@ -1,12 +1,12 @@
 package magic.core.cards;
 
-import magic.core.states.State;
 import magic.core.cards.lands.BasicLands;
-import magic.core.ITargetable;
-import magic.core.exceptions.JMagicException;
+import magic.core.states.State;
+import magic.infrastructure.validation.rules.ValidationRule;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,23 +17,24 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class CardTest {
 
-    class MockedCard extends Card {
+    private class MockedCard extends Card {
 
-        public MockedCard(String name, Collection<BasicLands> cost) {
+        MockedCard(String name, Collection<BasicLands> cost) {
             this(UUID.randomUUID(), name, cost);
         }
 
-        public MockedCard(UUID id, String name, Collection<BasicLands> cost) {
-            super(id, name, cost);
+        MockedCard(UUID id, String name, Collection<BasicLands> cost) {
+            super(id, name, Collections.emptyList(), cost);
         }
 
         @Override
-        public State use(State state, List<ITargetable> targets) {
+        public State update(State state) {
             return null;
         }
 
         @Override
-        public void raiseForErrors(State state, List<ITargetable> targets) throws JMagicException {
+        public ValidationRule validationRules() {
+            return null;
         }
 
         @Override

@@ -1,10 +1,11 @@
-package magic.core.actions.validation;
+package magic.infrastructure.validation.rules;
 
 import magic.core.exceptions.ValidationException;
 import magic.core.states.State;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Validation Rule Base.
@@ -20,7 +21,6 @@ public abstract class ValidationRule {
 
     protected ValidationRule() {
         this.errors = new ArrayList<>();
-        this.validated = false;
     }
 
     public abstract void onValidate(State state);
@@ -34,8 +34,9 @@ public abstract class ValidationRule {
 
     public void raiseForErrors() throws ValidationException {
         assertValidated();
-        if (!errors.isEmpty()) {
-            throw new ValidationException(errors.stream().findFirst().get());
+        Optional<String> error = errors.stream().findFirst();
+        if (error.isPresent()) {
+            throw new ValidationException(error.get());
         }
     }
 
@@ -59,7 +60,7 @@ public abstract class ValidationRule {
     }
 
     public Collection<String> errors() {
-        return new ArrayList<>(this.errors);
+        return this.errors;
     }
 
     @Override

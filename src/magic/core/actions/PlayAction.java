@@ -1,7 +1,7 @@
 package magic.core.actions;
 
-import magic.core.actions.validation.ValidationRule;
-import magic.core.actions.validation.rules.TurnsStepIs;
+import magic.infrastructure.validation.rules.ValidationRule;
+import magic.core.actions.validation.rules.game.TurnsStepIs;
 import magic.core.actions.validation.rules.cards.CardHasAbility;
 import magic.core.actions.validation.rules.cards.CardIsOfType;
 import magic.core.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
@@ -19,10 +19,11 @@ import magic.core.states.TurnStep;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static magic.core.actions.validation.ValidationRules.And;
-import static magic.core.actions.validation.ValidationRules.Not;
-import static magic.core.actions.validation.ValidationRules.Or;
+import static magic.infrastructure.validation.connectives.Connectives.And;
+import static magic.infrastructure.validation.connectives.Connectives.Not;
+import static magic.infrastructure.validation.connectives.Connectives.Or;
 
 /**
  * Play Action.
@@ -58,7 +59,7 @@ public class PlayAction extends Action {
             .filter(c -> !c.tapped())
             .forEach(c -> {
                 if (cost.remove(c.kind()))
-                    landsUsed.add(c);
+                    landsUsed.add(c.tap());
             });
 
         field.removeAll(landsUsed);
@@ -73,7 +74,7 @@ public class PlayAction extends Action {
     }
 
     @Override
-    protected ValidationRule validationRules() {
+    public ValidationRule validationRules() {
         return And(
             new HasCardInHand(card),
             new HasLandsToPlayIt(card),

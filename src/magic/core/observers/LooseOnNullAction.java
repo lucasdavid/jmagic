@@ -6,7 +6,7 @@ import magic.core.states.State;
 /**
  * @author ldavid
  */
-public class LooseIfNullAction extends Observer {
+public class LooseOnNullAction extends Observer {
 
     @Override
     public State afterPlayerAct(State state, Action action, long actStartedAt, long actEndedAt) {
@@ -14,7 +14,7 @@ public class LooseIfNullAction extends Observer {
             State.PlayerState p = state.activePlayerState();
 
             LOG.warning(String.format(
-                "%s lost because `LooseIfNullAction` rule is active " +
+                "%s lost because `LooseOnNullAction` rule is active " +
                 "(try `AdvanceGameAction` if your intention is to perform no actions)",
                 p.player));
 

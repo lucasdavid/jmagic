@@ -4,9 +4,12 @@ import magic.core.ITargetable;
 import magic.core.cards.Card;
 import magic.core.cards.ICard;
 import magic.core.cards.ITappable;
+import magic.core.cards.Properties;
 import magic.core.exceptions.JMagicException;
 import magic.core.states.State;
+import magic.infrastructure.validation.rules.ValidationRule;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +33,11 @@ public class Land extends Card implements ITappable {
     }
 
     public Land(UUID id, BasicLands kind, boolean tapped) {
-        super(id, kind.name().toLowerCase(), Collections.emptyList());
+        this(id, kind, Collections.emptyList(), tapped);
+    }
+
+    public Land(UUID id, BasicLands kind, Collection<Properties> properties, boolean tapped) {
+        super(id, kind.name().toLowerCase(), properties, Collections.emptyList());
         this.kind = kind;
         this.tapped = tapped;
     }
@@ -40,12 +47,8 @@ public class Land extends Card implements ITappable {
     }
 
     @Override
-    public State use(State state, List<ITargetable> targets) {
+    public State update(State state) {
         return null;
-    }
-
-    @Override
-    public void raiseForErrors(State state, List<ITargetable> targets) throws JMagicException {
     }
 
     @Override
@@ -71,5 +74,10 @@ public class Land extends Card implements ITappable {
     @Override
     public String toString(boolean detailed) {
         return super.toString(false);
+    }
+
+    @Override
+    public ValidationRule validationRules() {
+        return null;
     }
 }

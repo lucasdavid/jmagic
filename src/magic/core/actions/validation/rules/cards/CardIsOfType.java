@@ -1,8 +1,8 @@
 package magic.core.actions.validation.rules.cards;
 
-import magic.core.actions.validation.ValidationRule;
 import magic.core.cards.ICard;
 import magic.core.states.State;
+import magic.infrastructure.validation.rules.ValidationRule;
 
 /**
  * @author ldavid

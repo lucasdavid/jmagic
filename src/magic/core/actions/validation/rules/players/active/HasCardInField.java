@@ -1,8 +1,9 @@
 package magic.core.actions.validation.rules.players.active;
 
-import magic.core.actions.validation.ValidationRule;
 import magic.core.cards.ICard;
 import magic.core.states.State;
+import magic.infrastructure.validation.rules.ValidationRule;
+
 
 public class HasCardInField extends ValidationRule {
 

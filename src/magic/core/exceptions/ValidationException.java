@@ -7,7 +7,7 @@ package magic.core.exceptions;
  *
  * @author ldavid
  */
-public class ValidationException extends Exception {
+public class ValidationException extends JMagicException {
 
     /**
      * Creates a new instance of <code>JMagicException</code> without

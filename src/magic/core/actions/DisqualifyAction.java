@@ -1,7 +1,7 @@
 package magic.core.actions;
 
 import magic.core.Player;
-import magic.core.actions.validation.ValidationRule;
+import magic.infrastructure.validation.rules.ValidationRule;
 import magic.core.actions.validation.rules.players.IsPlaying;
 import magic.core.states.State;
 
@@ -35,7 +35,7 @@ public class DisqualifyAction extends Action {
     }
 
     @Override
-    protected ValidationRule validationRules() {
+    public ValidationRule validationRules() {
         return new IsPlaying(player);
     }
 }

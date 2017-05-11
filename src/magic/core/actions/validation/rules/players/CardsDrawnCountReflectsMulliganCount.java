@@ -1,11 +1,9 @@
 package magic.core.actions.validation.rules.players;
 
 import magic.core.Player;
-import magic.core.actions.Action;
-import magic.core.actions.InitialDrawAction;
-import magic.core.actions.validation.ValidationRule;
+import magic.core.experts.MulliganExpert;
 import magic.core.states.State;
-import magic.core.states.TurnStep;
+import magic.infrastructure.validation.rules.ValidationRule;
 
 public class CardsDrawnCountReflectsMulliganCount extends ValidationRule {
 
@@ -23,30 +21,16 @@ public class CardsDrawnCountReflectsMulliganCount extends ValidationRule {
 
     @Override
     public void onValidate(State state) {
-        Action actionExecutedInPrevious = state.actionThatLedToThisState;
-        State previous = state.parent;
-        State.PlayerState p = player == null
-            ? state.activePlayerState()
-            : state.playerState(player);
+        Player player = this.player == null
+            ? state.activePlayerState().player
+            : this.player;
 
-        int initialDrawsCount = 0;
-
-        assert state.step == TurnStep.DRAW;
-
-        while (previous != null && previous.step == state.step) {
-            if (p.player.equals(previous.activePlayerState().player)
-                && actionExecutedInPrevious instanceof InitialDrawAction) {
-                initialDrawsCount++;
-            }
-
-            actionExecutedInPrevious = previous.actionThatLedToThisState;
-            previous = previous.parent;
-        }
+        int initialDrawsCount = new MulliganExpert().count(state, player);
 
         if (7 - initialDrawsCount != cardsDrawnCount) {
             errors.add(String.format("As this is %s's %dth mulligan, they"
                     + " should have drawn %d cards (actual: %d)",
-                p.player, initialDrawsCount, 7 - initialDrawsCount, cardsDrawnCount));
+                player, initialDrawsCount, 7 - initialDrawsCount, cardsDrawnCount));
         }
     }
 }

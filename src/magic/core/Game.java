@@ -3,6 +3,8 @@ package magic.core;
 import magic.core.actions.Action;
 import magic.core.actions.AdvanceGameAction;
 import magic.core.cards.Cards;
+import magic.core.observers.LooseOnNullAction;
+import magic.core.observers.LooseOnInvalidActionAttempt;
 import magic.core.observers.Observer;
 import magic.core.observers.PassOrFinishIfLost;
 import magic.core.observers.WinIfLastPlayerAlive;
@@ -57,6 +59,14 @@ public class Game {
         this.playerActTimeout = playerActTimeout;
 
         observers = new ArrayList<>(observers);
+
+        if (observers.stream().noneMatch(o -> o instanceof LooseOnNullAction)) {
+            observers.add(new LooseOnNullAction());
+        }
+
+        if (observers.stream().noneMatch(o -> o instanceof LooseOnInvalidActionAttempt)) {
+            observers.add(new LooseOnInvalidActionAttempt());
+        }
 
         // Place `PassOrFinishIfLost` and `WinIfLastPlayerAlive` as the observers.
         // This is important to the game logic, which must first kill players and then

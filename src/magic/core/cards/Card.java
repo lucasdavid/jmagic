@@ -1,13 +1,16 @@
 package magic.core.cards;
 
+import magic.core.IIdentifiable;
+import magic.core.ITargetable;
 import magic.core.cards.lands.BasicLands;
+import magic.infrastructure.validation.IGameModifier;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
 
-public abstract class Card implements ICard {
+public abstract class Card implements ICard, ITargetable, IIdentifiable, IGameModifier {
 
     private final UUID id;
     private final String name;
@@ -31,37 +34,22 @@ public abstract class Card implements ICard {
         return name;
     }
 
-    @Override
     public Collection<Properties> properties() {
         return new ArrayList<>(properties);
     }
 
-    @Override
     public Collection<Properties> effectiveProperties() {
         return properties();
     }
 
-    @Override
     public Collection<BasicLands> cost() {
         return new ArrayList<>(cost);
     }
 
     @Override
-    public String toString() {
-        return toString(false);
-    }
-
-    @Override
-    public String toString(boolean detailed) {
-        return detailed
-                ? String.format("\"%s\" c:%s", name, cost)
-                : String.format("\"%s\"", name);
-    }
-
-    @Override
     public boolean equals(Object o) {
         try {
-            return id().equals(((Card) o).id());
+            return this == o || id().equals(((Card) o).id());
         } catch (ClassCastException | NullPointerException e) {
             return false;
         }
@@ -72,5 +60,16 @@ public abstract class Card implements ICard {
         int hash = 7;
         hash = 17 * hash + Objects.hashCode(id());
         return hash;
+    }
+
+    @Override
+    public String toString() {
+        return toString(false);
+    }
+
+    public String toString(boolean detailed) {
+        return detailed
+            ? String.format("\"%s\" c:%s", name, cost)
+            : String.format("\"%s\"", name);
     }
 }

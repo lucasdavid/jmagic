@@ -1,7 +1,8 @@
-package magic.core.actions.validation.rules;
+package magic.core.actions.validation.rules.game;
 
-import magic.core.actions.validation.ValidationRule;
 import magic.core.states.State;
+import magic.infrastructure.validation.rules.ValidationRule;
+
 
 public class GameIsFinished extends ValidationRule {
 

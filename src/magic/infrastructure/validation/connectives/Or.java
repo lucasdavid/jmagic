@@ -1,6 +1,7 @@
-package magic.core.actions.validation;
+package magic.infrastructure.validation.connectives;
 
 import magic.core.states.State;
+import magic.infrastructure.validation.rules.ValidationRule;
 
 import java.util.Arrays;
 import java.util.List;

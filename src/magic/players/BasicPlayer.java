@@ -8,11 +8,11 @@ import magic.core.actions.DrawAction;
 import magic.core.actions.InitialDrawAction;
 import magic.core.actions.PlayAction;
 import magic.core.actions.UntapAction;
-import magic.core.actions.validation.rules.players.HasNotAlreadyInitiallyDrawnMoreThan;
 import magic.core.actions.validation.rules.players.active.HasNotAlreadyDrawnInThisTurn;
 import magic.core.actions.validation.rules.players.active.HasNotAlreadyUntappedInThisTurn;
 import magic.core.actions.validation.rules.players.active.HasNotPlayedALandThisTurn;
 import magic.core.cards.lands.Land;
+import magic.core.experts.IExpert;
 import magic.core.states.State;
 import magic.core.states.TurnStep;
 
@@ -28,27 +28,37 @@ import java.util.NoSuchElementException;
  */
 public class BasicPlayer extends Player {
 
-    public BasicPlayer() {
+    private final IExpert mulliganExpert;
+
+    public BasicPlayer(IExpert mulliganExpert) {
         super();
+        this.mulliganExpert = mulliganExpert;
     }
 
-    public BasicPlayer(String name) {
+    public BasicPlayer(String name, IExpert mulliganExpert) {
         super(name);
+        this.mulliganExpert = mulliganExpert;
     }
 
     @Override
     public Action act(State state) {
         State.PlayerState myState = state.playerState(this);
 
-        long landsInMyHandCount = myState.hand.cards().stream()
-            .filter(c -> c instanceof Land)
-            .count();
+        if (state.step == TurnStep.DRAW && state.turn == 0) {
+            final long cardsCount = myState.hand.size();
+            final long landsCount = myState.hand.cards().stream()
+                .filter(c -> c instanceof Land)
+                .count();
 
-        if (state.step == TurnStep.DRAW && state.turn == 0
-            && (myState.hand.isEmpty() || landsInMyHandCount < 2)
-            && new HasNotAlreadyInitiallyDrawnMoreThan(2).isValid(state)
-            && new HasNotAlreadyDrawnInThisTurn().isValid(state)) {
-            return new InitialDrawAction();
+            // I either haven't drawn yet or I've got a bad initial hand -- not (or too) many lands.
+            // The good thing is that I can draw again.
+            if ((cardsCount == 0 || landsCount < 2 || cardsCount - landsCount < 2)
+                && new InitialDrawAction().isValid(state)) {
+
+                // Only draw `7 - mulliganCount`, as the game rules state.
+                int mulliganCount = mulliganExpert.count(state, this);
+                return new InitialDrawAction(7 - mulliganCount);
+            }
         }
 
         if (!state.turnsPlayerState().player.equals(this)) {

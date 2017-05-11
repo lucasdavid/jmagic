@@ -3,10 +3,10 @@ package magic.core.observers;
 import magic.core.Game;
 import magic.core.Player;
 import magic.core.actions.Action;
+import magic.core.actions.AdvanceGameAction;
 import magic.core.actions.DisqualifyAction;
 import magic.core.actions.FinishGameAction;
-import magic.core.exceptions.InvalidActionException;
-import magic.core.exceptions.JMagicException;
+import magic.core.exceptions.ValidationException;
 import magic.core.states.State;
 
 import java.util.logging.Level;
@@ -36,22 +36,19 @@ public abstract class Observer {
     }
 
     protected State _disqualify(State state, Player player) {
-        try {
-            state = new DisqualifyAction(player)
-                .raiseForErrors(state)
-                .update(state);
-        } catch (InvalidActionException ignored) {
-        }
-
-        return state;
+        return _apply_action(state, new DisqualifyAction(player));
     }
 
     protected State _finish(State state) {
+        return _apply_action(state, new FinishGameAction());
+    }
+
+    private State _apply_action(State state, Action action) {
         try {
-            return new FinishGameAction()
+            return action
                 .raiseForErrors(state)
                 .update(state);
-        } catch (JMagicException ex) {
+        } catch (ValidationException ex) {
             LOG.log(Level.SEVERE, null, ex);
             return null;
         }

@@ -1,8 +1,8 @@
 package magic.core.actions;
 
-import magic.core.actions.validation.ValidationRule;
-import magic.core.actions.validation.rules.TurnIs;
-import magic.core.actions.validation.rules.TurnsStepIs;
+import magic.infrastructure.validation.rules.ValidationRule;
+import magic.core.actions.validation.rules.game.TurnIs;
+import magic.core.actions.validation.rules.game.TurnsStepIs;
 import magic.core.actions.validation.rules.players.HasInitiallyDrawn;
 import magic.core.actions.validation.rules.players.PlayersOtherThanActiveAreAlive;
 import magic.core.states.State;
@@ -10,9 +10,9 @@ import magic.core.states.TurnStep;
 
 import java.util.List;
 
-import static magic.core.actions.validation.ValidationRules.And;
-import static magic.core.actions.validation.ValidationRules.Not;
-import static magic.core.actions.validation.ValidationRules.Or;
+import static magic.infrastructure.validation.connectives.Connectives.And;
+import static magic.infrastructure.validation.connectives.Connectives.Not;
+import static magic.infrastructure.validation.connectives.Connectives.Or;
 
 /**
  * Advance Turn Action.
@@ -62,7 +62,7 @@ public class AdvanceGameAction extends Action {
     }
 
     @Override
-    protected ValidationRule validationRules() {
+    public ValidationRule validationRules() {
         return And(
             new PlayersOtherThanActiveAreAlive(),
             // Prevents players from advancing without initially drawing 7 cards.
