@@ -16,7 +16,6 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
 
 class GameTest {
 
@@ -68,11 +67,6 @@ class GameTest {
             assertEquals(1, os.stream().filter(o -> o instanceof PassOrFinishIfLost).count());
             assertEquals(1, os.stream().filter(o -> o instanceof WinIfLastPlayerAlive).count());
         }
-    }
-
-    @Test
-    void run() {
-        fail("not-implemented");
     }
 
     class TestPlayer extends Player {

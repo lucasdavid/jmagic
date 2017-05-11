@@ -44,10 +44,8 @@ public class CreatureTest {
 
         Collection<Properties> buffs = creature.properties();
 
-        assertThrows(UnsupportedOperationException.class, () -> {
-            buffs.add(Properties.PROVOKE);
-            buffs.add(Properties.DOUBLE_STRIKE);
-        });
+        buffs.add(Properties.PROVOKE);
+        buffs.add(Properties.DOUBLE_STRIKE);
 
         assertEquals(creature.properties().size(), 1);
         assertTrue(creature.properties().contains(Properties.HASTE));
