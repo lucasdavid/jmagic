@@ -42,8 +42,24 @@ public class Cards {
         return cards.contains(card);
     }
 
+    public ICard getValidated(ICard card) {
+        return cards.get(cards.indexOf(card));
+    }
+
     public int size() {
         return cards.size();
+    }
+
+    public Cards update(ICard... updatedCards) {
+        return update(List.of(updatedCards));
+    }
+
+    public Cards update(List<ICard> updatedCards) {
+        List<ICard> newCards = new ArrayList<>(cards);
+        for (ICard card : updatedCards) {
+            newCards.set(newCards.indexOf(card), card);
+        }
+        return new Cards(newCards);
     }
 
     @Override

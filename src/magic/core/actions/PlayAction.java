@@ -14,12 +14,11 @@ import magic.core.cards.Properties;
 import magic.core.cards.lands.BasicLands;
 import magic.core.cards.lands.Land;
 import magic.core.states.State;
-import magic.core.states.TurnStep;
+import magic.core.states.TurnSteps;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static magic.infrastructure.validation.connectives.Connectives.And;
 import static magic.infrastructure.validation.connectives.Connectives.Not;
@@ -66,7 +65,8 @@ public class PlayAction extends Action {
         field.addAll(landsUsed);
 
         p = new State.PlayerState(p.player, p.life(), p.maxLife(),
-            p.deck, new Cards(hand), new Cards(field), p.graveyard);
+            p.deck, new Cards(hand), new Cards(field), p.graveyard,
+            p.attackers, p.blockers, p.playing);
         playerStates.add(state.turnsPlayerIndex, p);
 
         return new State(playerStates, state.turn, state.step, state.done,
@@ -85,8 +85,8 @@ public class PlayAction extends Action {
                 And(
                     new ActiveAndTurnsPlayersAreTheSame(),
                     Or(
-                        new TurnsStepIs(TurnStep.MAIN_1),
-                        new TurnsStepIs(TurnStep.MAIN_2)
+                        new TurnsStepIs(TurnSteps.MAIN_1),
+                        new TurnsStepIs(TurnSteps.MAIN_2)
                     )
                 ),
                 new CardHasAbility(card, Properties.FLASH)

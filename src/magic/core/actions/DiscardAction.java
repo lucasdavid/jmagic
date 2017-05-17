@@ -8,7 +8,7 @@ import magic.core.cards.Cards;
 import magic.core.cards.ICard;
 import magic.core.states.State;
 import magic.core.states.State.PlayerState;
-import magic.core.states.TurnStep;
+import magic.core.states.TurnSteps;
 
 import java.util.List;
 
@@ -42,7 +42,8 @@ public final class DiscardAction extends Action {
 
         playersInfo.add(state.turnsPlayerIndex,
             new PlayerState(p.player, p.life(), p.maxLife(),
-                p.deck, new Cards(hand), p.field, new Cards(graveyard)));
+                p.deck, new Cards(hand), p.field, new Cards(graveyard),
+                p.attackers, p.blockers, p.playing));
 
         return new State(playersInfo, state.turn, state.step, state.done,
             state.turnsPlayerIndex, state.activePlayerIndex, this, state);
@@ -52,7 +53,7 @@ public final class DiscardAction extends Action {
     public ValidationRule validationRules() {
         return And(
             new ActiveAndTurnsPlayersAreTheSame(),
-            new TurnsStepIs(TurnStep.CLEANUP),
+            new TurnsStepIs(TurnSteps.CLEANUP),
             Not(new CardsCountIsLessThan(8)));
     }
 

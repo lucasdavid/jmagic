@@ -1,12 +1,12 @@
 package magic.core.actions;
 
-import magic.infrastructure.validation.rules.ValidationRule;
 import magic.core.actions.validation.rules.game.TurnIs;
 import magic.core.actions.validation.rules.game.TurnsStepIs;
-import magic.core.actions.validation.rules.players.HasInitiallyDrawn;
+import magic.core.actions.validation.rules.players.HasPerformedThisTurn;
 import magic.core.actions.validation.rules.players.PlayersOtherThanActiveAreAlive;
 import magic.core.states.State;
-import magic.core.states.TurnStep;
+import magic.core.states.TurnSteps;
+import magic.infrastructure.validation.rules.ValidationRule;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class AdvanceGameAction extends Action {
         if (state.activePlayerIndex == lastPlayerIndex) {
             // Last player has requested turn advancement.
 
-            if (state.step == TurnStep.CLEANUP || !state.turnsPlayerState().isAlive()) {
+            if (state.step == TurnSteps.CLEANUP || !state.turnsPlayerState().isAlive()) {
                 // That was the last step of the turn's current player or they died.
                 // Change turn's player to the next alive.
                 int turnsPlayer = state.turnsPlayerIndex;
@@ -42,7 +42,7 @@ public class AdvanceGameAction extends Action {
                     turnsPlayer = (turnsPlayer + 1) % players.size();
                 } while (!state.playerState(turnsPlayer).isAlive());
 
-                return new State(players, state.turn + 1, TurnStep.values()[0], state.done,
+                return new State(players, state.turn + 1, TurnSteps.values()[0], state.done,
                     turnsPlayer, turnsPlayer);
             }
 
@@ -68,8 +68,8 @@ public class AdvanceGameAction extends Action {
             // Prevents players from advancing without initially drawing 7 cards.
             Or(
                 Not(And(
-                    new TurnsStepIs(TurnStep.DRAW),
-                    new TurnIs(0))),
-                new HasInitiallyDrawn()));
+                    new TurnIs(0),
+                    new TurnsStepIs(TurnSteps.DRAW))),
+                new HasPerformedThisTurn(InitialDrawAction.class)));
     }
 }

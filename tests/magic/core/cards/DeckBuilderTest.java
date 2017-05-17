@@ -43,16 +43,6 @@ class DeckBuilderTest {
         }
 
         @Override
-        public State update(State state) {
-            return null;
-        }
-
-        @Override
-        public ValidationRule validationRules() {
-            return null;
-        }
-
-        @Override
         public ICard duplicate() {
             return new MockedCard(name(), cost());
         }

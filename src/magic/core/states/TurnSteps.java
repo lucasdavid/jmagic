@@ -1,11 +1,11 @@
 package magic.core.states;
 
 /**
- * Turn Stage.
+ * Turn Steps.
  *
  * @author ldavid
  */
-public enum TurnStep {
+public enum TurnSteps {
     UNTAP(Phase.BEGINNING), UPKEEP(Phase.BEGINNING), DRAW(Phase.BEGINNING),
     MAIN_1(Phase.PRE_COMBAT),
     BEGINNING_OF_COMBAT(Phase.COMBAT), DECLARE_ATTACKERS(Phase.COMBAT), DECLARE_BLOCKERS(Phase.COMBAT),
@@ -13,10 +13,10 @@ public enum TurnStep {
     MAIN_2(Phase.POST_COMBAT),
     END(Phase.END), CLEANUP(Phase.END);
 
-    private static TurnStep[] vals = values();
+    private static TurnSteps[] vals = values();
     private Phase phase;
 
-    TurnStep(Phase phase) {
+    TurnSteps(Phase phase) {
         this.phase = phase;
     }
 
@@ -28,7 +28,7 @@ public enum TurnStep {
         return this.phase == phase;
     }
 
-    public TurnStep next() {
+    public TurnSteps next() {
         return vals[(this.ordinal() + 1) % vals.length];
     }
 

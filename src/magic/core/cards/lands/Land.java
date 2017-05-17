@@ -47,11 +47,6 @@ public class Land extends Card implements ITappable {
     }
 
     @Override
-    public State update(State state) {
-        return null;
-    }
-
-    @Override
     public ITappable tap() {
         return new Land(id(), kind, true);
     }
@@ -74,10 +69,5 @@ public class Land extends Card implements ITappable {
     @Override
     public String toString(boolean detailed) {
         return super.toString(false);
-    }
-
-    @Override
-    public ValidationRule validationRules() {
-        return null;
     }
 }

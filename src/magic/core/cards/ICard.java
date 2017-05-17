@@ -13,7 +13,7 @@ import java.util.Collection;
  *
  * @author ldavid
  */
-public interface ICard extends ITargetable, IIdentifiable, IGameModifier {
+public interface ICard extends ITargetable, IIdentifiable {
 
     /**
      * @return an exact duplicate of the card, except for the id.

@@ -4,15 +4,18 @@ import magic.core.IDamageable;
 import magic.core.Player;
 import magic.core.actions.Action;
 import magic.core.cards.Cards;
+import magic.core.cards.creatures.Creature;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * State for a HearthStone Game.
+ * State for a Game of Magic.
  * <p>
  * Holds information on the current environment of the game.
  * Properties of interest during a game's execution:
@@ -27,7 +30,7 @@ import java.util.stream.IntStream;
  */
 public class State {
 
-    public final TurnStep step;
+    public final TurnSteps step;
     public final int turn;
     public final int turnsPlayerIndex;
     public final int activePlayerIndex;
@@ -43,21 +46,15 @@ public class State {
      * @param playerCards a list of cards for each player in the game.
      */
     public State(List<Player> players, List<Cards> playerCards) {
-        this.turn = 0;
-        this.done = false;
-        this.turnsPlayerIndex = 0;
-        this.activePlayerIndex = 0;
-        this.playerStates = IntStream
-            .range(0, players.size())
-            .mapToObj(i -> new PlayerState(players.get(i), playerCards.get(i)))
-            .collect(Collectors.toList());
-
-        this.parent = null;
-        this.actionThatLedToThisState = null;
-        this.step = TurnStep.UNTAP;
+        this(IntStream
+                .range(0, players.size())
+                .mapToObj(i -> new PlayerState(players.get(i), playerCards.get(i)))
+                .collect(Collectors.toList()),
+            0,
+            TurnSteps.values()[0], false, 0, 0, null, null);
     }
 
-    public State(List<PlayerState> playerStates, int turn, TurnStep step, boolean done,
+    public State(List<PlayerState> playerStates, int turn, TurnSteps step, boolean done,
                  int turnsPlayerIndex, int activePlayerIndex) {
         this(playerStates, turn, step, done, turnsPlayerIndex, activePlayerIndex, null, null);
     }
@@ -77,8 +74,9 @@ public class State {
      * @param action           the action applied to reach this current state
      * @param parent           the parent state
      */
-    public State(List<PlayerState> playerStates, int turn, TurnStep step, boolean done,
-                 int turnsPlayerIndex, int activePlayerIndex, Action action, State parent) {
+    public State(List<PlayerState> playerStates, int turn, TurnSteps step, boolean done,
+                 int turnsPlayerIndex, int activePlayerIndex,
+                 Action action, State parent) {
         this.turn = turn;
         this.done = done;
         this.turnsPlayerIndex = turnsPlayerIndex;
@@ -177,17 +175,16 @@ public class State {
         public final boolean playing;
         private final int life;
         private final int maxLife;
+        public final Map<Creature, Player> attackers;
+        public final Map<Creature, Creature> blockers;
 
         PlayerState(Player player, Cards deck) {
-            this(player, DEFAULT_INITIAL_LIFE, DEFAULT_INITIAL_LIFE, deck, Cards.EMPTY, Cards.EMPTY, Cards.EMPTY);
-        }
-
-        public PlayerState(Player player, int life, int maxLife, Cards deck, Cards hand, Cards field, Cards graveyard) {
-            this(player, life, maxLife, deck, hand, field, graveyard, true);
+            this(player, DEFAULT_INITIAL_LIFE, DEFAULT_INITIAL_LIFE, deck, Cards.EMPTY, Cards.EMPTY, Cards.EMPTY,
+                Collections.emptyMap(), Collections.emptyMap(), true);
         }
 
         public PlayerState(Player player, int life, int maxLife, Cards deck, Cards hand, Cards field, Cards graveyard,
-                           boolean playing) {
+                           Map<Creature, Player> attackers, Map<Creature, Creature> blockers, boolean playing) {
             this.player = player;
             this.life = life;
             this.maxLife = maxLife;
@@ -195,12 +192,16 @@ public class State {
             this.hand = hand;
             this.field = field;
             this.graveyard = graveyard;
+
+            this.attackers = Collections.unmodifiableMap(attackers);
+            this.blockers = Collections.unmodifiableMap(blockers);
             this.playing = playing;
         }
 
         @Override
-        public IDamageable takeDamage(int damage) {
-            return new PlayerState(player, life - damage, maxLife, deck, hand, field, graveyard);
+        public PlayerState takeDamage(int damage) {
+            return new PlayerState(player, life - damage, maxLife,
+                deck, hand, field, graveyard, attackers, blockers, playing);
         }
 
         @Override
@@ -229,11 +230,13 @@ public class State {
         }
 
         private PlayerState opponentViewModel() {
-            return new PlayerState(player, life, maxLife, null, null, field, graveyard);
+            return new PlayerState(player, life, maxLife, null, null,
+                field, graveyard, attackers, blockers, playing);
         }
 
         private PlayerState playerViewModel() {
-            return new PlayerState(player, life, maxLife, null, hand, field, graveyard);
+            return new PlayerState(player, life, maxLife, null,
+                hand, field, graveyard, attackers, blockers, playing);
         }
 
         @Override

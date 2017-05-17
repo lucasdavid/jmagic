@@ -2,7 +2,7 @@ package magic.core.observers;
 
 import magic.core.actions.Action;
 import magic.core.actions.AdvanceGameAction;
-import magic.core.exceptions.JMagicException;
+import magic.core.exceptions.ValidationException;
 import magic.core.states.State;
 
 /**
@@ -23,7 +23,7 @@ public class PassOrFinishIfLost extends Observer {
                 return new AdvanceGameAction()
                     .raiseForErrors(state)
                     .update(state);
-            } catch (JMagicException ignored) {
+            } catch (ValidationException ex) {
                 _finish(state);
             }
         }

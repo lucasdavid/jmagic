@@ -1,16 +1,13 @@
 package magic.core.cards;
 
-import magic.core.IIdentifiable;
-import magic.core.ITargetable;
 import magic.core.cards.lands.BasicLands;
-import magic.infrastructure.validation.IGameModifier;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
 
-public abstract class Card implements ICard, ITargetable, IIdentifiable, IGameModifier {
+public abstract class Card implements ICard {
 
     private final UUID id;
     private final String name;

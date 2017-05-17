@@ -6,7 +6,7 @@ import magic.core.actions.validation.rules.players.active.HasLandsToPlayIt;
 import magic.core.cards.lands.Land;
 import magic.core.experts.IExpert;
 import magic.core.states.State;
-import magic.core.states.TurnStep;
+import magic.core.states.TurnSteps;
 
 import java.util.NoSuchElementException;
 
@@ -24,7 +24,7 @@ public class NaivePlayer extends BasicPlayer {
     public Action act(State state) {
         State.PlayerState myState = state.playerState(this);
 
-        if (state.step == TurnStep.MAIN_2) {
+        if (state.step == TurnSteps.MAIN_2) {
             try {
                 return new PlayAction(myState.hand.cards().stream()
                     .filter(c -> !(c instanceof Land) && new HasLandsToPlayIt(this, c).isValid(state))
@@ -34,7 +34,7 @@ public class NaivePlayer extends BasicPlayer {
             }
         }
 
-        if (state.step == TurnStep.DECLARE_BLOCKERS) {
+        if (state.step == TurnSteps.DECLARE_BLOCKERS) {
             // Declare blockers...
         }
 

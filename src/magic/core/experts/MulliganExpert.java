@@ -4,7 +4,7 @@ import magic.core.Player;
 import magic.core.actions.Action;
 import magic.core.actions.InitialDrawAction;
 import magic.core.states.State;
-import magic.core.states.TurnStep;
+import magic.core.states.TurnSteps;
 
 /**
  * Initial Draw IExpert.
@@ -14,7 +14,7 @@ import magic.core.states.TurnStep;
 public class MulliganExpert implements IExpert {
 
     public int count(State state, Player player) {
-        assert state.step == TurnStep.DRAW;
+        assert state.step == TurnSteps.DRAW;
 
         Action actionExecutedInPrevious = state.actionThatLedToThisState;
         State previous = state.parent;

@@ -1,4 +1,4 @@
-package magic.core.cards.validation.rules;
+package magic.core.actions.validation.rules.cards;
 
 import magic.core.ITargetable;
 import magic.core.cards.magics.attachments.IAttachment;

@@ -1,15 +1,15 @@
 package magic.core.actions.validation.rules.game;
 
 import magic.core.states.State;
-import magic.core.states.TurnStep;
+import magic.core.states.TurnSteps;
 import magic.infrastructure.validation.rules.ValidationRule;
 
 
 public class TurnsStepIs extends ValidationRule {
 
-    private final TurnStep step;
+    private final TurnSteps step;
 
-    public TurnsStepIs(TurnStep step) {
+    public TurnsStepIs(TurnSteps step) {
         this.step = step;
     }
 

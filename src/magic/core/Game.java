@@ -3,8 +3,8 @@ package magic.core;
 import magic.core.actions.Action;
 import magic.core.actions.AdvanceGameAction;
 import magic.core.cards.Cards;
-import magic.core.observers.LooseOnNullAction;
 import magic.core.observers.LooseOnInvalidActionAttempt;
+import magic.core.observers.LooseOnNullAction;
 import magic.core.observers.Observer;
 import magic.core.observers.PassOrFinishIfLost;
 import magic.core.observers.WinIfLastPlayerAlive;
@@ -47,6 +47,9 @@ public class Game {
 
     private State _currentState;
     private Player _activePlayer;
+    private final Callable<Action> actRoutine = () ->
+        _activePlayer.act(_currentState.playerViewModel(_activePlayer));
+    private ExecutorService exec;
 
     public Game(List<Player> players, List<Cards> playersCards, long playerActTimeout, List<Observer> observers) {
         this(players, new State(players, playersCards), playerActTimeout, observers);
@@ -85,17 +88,20 @@ public class Game {
     }
 
     public Game run() {
-        this.startedAt = new Date();
+        if (running()) {
+            throw new IllegalStateException("cannot run an ongoing game");
+        }
 
-        ExecutorService exec = Executors.newSingleThreadExecutor();
-        Callable<Action> actRoutine = () -> _activePlayer.act(_currentState.playerViewModel(_activePlayer));
+        this.startedAt = new Date();
+        exec = Executors.newSingleThreadExecutor();
 
         LOG.log(Level.INFO, "Initial state: {0}", _currentState);
 
         while (!_currentState.done) {
             _activePlayer = _currentState.activePlayerState().player;
 
-            for (Observer o : observers) _currentState = o.beforePlayerAct(_currentState);
+            for (Observer o : observers)
+                _currentState = o.beforePlayerAct(_currentState);
 
             // One of the observers ended the game.
             if (_currentState.done) break;
@@ -103,23 +109,9 @@ public class Game {
             // This usually happens when the player attempts an invalid action.
             if (!_currentState.activePlayerState().player.equals(_activePlayer)) continue;
 
-            Action action = null;
-            Future<Action> f = null;
-
             long actStartedAt = System.currentTimeMillis();
-
-            try {
-                f = exec.submit(actRoutine);
-                action = this.playerActTimeout <= 0
-                    ? f.get()
-                    : f.get(this.playerActTimeout, TimeUnit.MILLISECONDS);
-            } catch (TimeoutException | InterruptedException ignored) {
-            } catch (ExecutionException ex) {
-                LOG.log(Level.SEVERE, null, ex);
-            }
-
+            Action action = requestActivePlayerAction();
             long actEndedAt = System.currentTimeMillis();
-            f.cancel(true);
 
             for (Observer o : observers)
                 _currentState = o.afterPlayerAct(_currentState, action, actStartedAt, actEndedAt);
@@ -146,6 +138,23 @@ public class Game {
         return this;
     }
 
+    private Action requestActivePlayerAction() {
+        Future<Action> f = null;
+        try {
+            f = exec.submit(actRoutine);
+            return this.playerActTimeout <= 0
+                ? f.get()
+                : f.get(this.playerActTimeout, TimeUnit.MILLISECONDS);
+        } catch (TimeoutException | InterruptedException ignored) {
+        } catch (ExecutionException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        } finally {
+            if (f != null) f.cancel(true);
+        }
+
+        return null;
+    }
+
     @Override
     public String toString() {
         return String.format("Game's players: %s", players)
@@ -155,11 +164,15 @@ public class Game {
     }
 
     public Date startedAt() {
-        return (Date) this.startedAt.clone();
+        return startedAt;
     }
 
     public Date finishedAt() {
-        return (Date) this.finishedAt.clone();
+        return finishedAt;
+    }
+
+    public boolean running() {
+        return startedAt != null && finishedAt == null;
     }
 
     public Collection<Player> winners() {

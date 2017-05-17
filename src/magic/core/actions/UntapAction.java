@@ -8,7 +8,7 @@ import magic.core.actions.validation.rules.game.TurnsStepIs;
 import magic.core.cards.Cards;
 import magic.core.cards.ITappable;
 import magic.core.states.State;
-import magic.core.states.TurnStep;
+import magic.core.states.TurnSteps;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +39,7 @@ public class UntapAction extends Action {
                 new Cards(s.field.cards().stream()
                     .map(c -> c instanceof ITappable ? ((ITappable) c).untap() : c)
                     .collect(Collectors.toList())),
-                s.graveyard, s.playing)
+                s.graveyard, s.attackers, s.blockers, s.playing)
                 : s)
             .collect(Collectors.toList());
         return new State(players, state.turn, state.step, state.done,
@@ -49,7 +49,7 @@ public class UntapAction extends Action {
     @Override
     public ValidationRule validationRules() {
         return And(
-            new TurnsStepIs(TurnStep.UNTAP),
+            new TurnsStepIs(TurnSteps.UNTAP),
             new ActiveAndTurnsPlayersAreTheSame(),
             new HasNotAlreadyUntappedInThisTurn());
     }

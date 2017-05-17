@@ -53,7 +53,7 @@ public abstract class Player implements IIdentifiable, IGameEventListener {
     @Override
     public boolean equals(Object o) {
         try {
-            return id.equals(((Player) o).id);
+            return this == o || id().equals(((Player) o).id);
         } catch (ClassCastException ex) {
             return false;
         }

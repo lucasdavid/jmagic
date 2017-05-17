@@ -87,14 +87,28 @@ public class Creature extends Harmful implements IDamageable, IAttachable, ITapp
     }
 
     @Override
-    public IDamageable takeDamage(int damage) {
+    public Creature takeDamage(int damage) {
         return new Creature(id(), name(), damage(), life - damage, maxLife,
             tapped, cost(), properties(), attachments);
+    }
+
+    public Creature takeDamage(Harmful harmful) {
+        Collection<Properties> properties = harmful.effectiveProperties();
+
+        if (properties.contains(Properties.DEATH_TOUCH)) {
+            return this.die();
+        }
+
+        return takeDamage(harmful.effectiveDamage());
     }
 
     @Override
     public boolean isAlive() {
         return effectiveLife() > 0;
+    }
+
+    public Creature die() {
+        return takeDamage(effectiveLife());
     }
 
     @Override

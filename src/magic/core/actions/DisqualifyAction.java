@@ -2,7 +2,7 @@ package magic.core.actions;
 
 import magic.core.Player;
 import magic.infrastructure.validation.rules.ValidationRule;
-import magic.core.actions.validation.rules.players.IsPlaying;
+import magic.core.actions.validation.rules.players.ArePlaying;
 import magic.core.states.State;
 
 import java.util.List;
@@ -27,8 +27,8 @@ public class DisqualifyAction extends Action {
 
         players.set(
             players.indexOf(p),
-            new State.PlayerState(p.player, p.life(), p.maxLife(),
-                p.deck, p.hand, p.field, p.graveyard, false));
+            new State.PlayerState(p.player, p.life(), p.maxLife(), p.deck,
+                p.hand, p.field, p.graveyard, p.attackers, p.blockers, false));
 
         return new State(players, state.turn, state.step, state.done,
             state.turnsPlayerIndex, state.activePlayerIndex, this, state);
@@ -36,6 +36,6 @@ public class DisqualifyAction extends Action {
 
     @Override
     public ValidationRule validationRules() {
-        return new IsPlaying(player);
+        return new ArePlaying(player);
     }
 }

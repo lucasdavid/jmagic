@@ -2,21 +2,8 @@ package magic;
 
 import magic.core.Game;
 import magic.core.GameBuilder;
-import magic.core.actions.AdvanceGameAction;
-import magic.core.actions.DiscardAction;
-import magic.core.actions.DrawAction;
-import magic.core.actions.InitialDrawAction;
-import magic.core.actions.PlayAction;
-import magic.core.actions.UntapAction;
-import magic.core.actions.UseAction;
-import magic.core.observers.LooseIfDrawingFromEmptyDeck;
-import magic.core.observers.LooseOnNullAction;
-import magic.core.observers.LooseOnActTimeout;
-import magic.core.observers.LooseOnIllegalActionAttempt;
-import magic.core.observers.LooseOnInvalidActionAttempt;
-import magic.core.observers.Observer;
-import magic.core.observers.PassOrFinishIfLost;
-import magic.core.observers.WinIfLastPlayerAlive;
+import magic.core.actions.*;
+import magic.core.observers.*;
 import magic.players.RandomPlayer;
 
 import java.util.List;
@@ -53,7 +40,9 @@ public class Runner {
                 PlayAction.class,
                 UseAction.class,
                 UntapAction.class,
-                InitialDrawAction.class)),
+                InitialDrawAction.class,
+                DeclareAttackersAction.class,
+                DeclareBlockersAction.class)),
         new PassOrFinishIfLost(),
         new WinIfLastPlayerAlive());
 
