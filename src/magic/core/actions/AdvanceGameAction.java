@@ -31,6 +31,17 @@ public class AdvanceGameAction extends Action {
             ? state.playerStates().size() - 1
             : state.turnsPlayerIndex - 1;
 
+        if (state.step == TurnSteps.COMBAT_DAMAGE) {
+            // Combat damage will only be called by the turn's player.
+
+            // I know this for a fact, as the active and turn's player are the
+            // same when the turn's step jumps forward.
+            assert state.turnsPlayerIndex == state.activePlayerIndex;
+
+            return new State(players, state.turn, state.step.next(), state.done,
+                state.turnsPlayerIndex, state.turnsPlayerIndex, this, state);
+        }
+
         if (state.activePlayerIndex == lastPlayerIndex) {
             // Last player has requested turn advancement.
 

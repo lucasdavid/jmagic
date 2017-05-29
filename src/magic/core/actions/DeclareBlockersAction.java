@@ -64,4 +64,9 @@ public final class DeclareBlockersAction extends Action {
             new CardsAreInAnyField(
                 new ArrayList<>(blockers.values())));
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s", super.toString(), blockers);
+    }
 }

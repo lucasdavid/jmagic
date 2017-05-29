@@ -1,6 +1,8 @@
 package magic.players;
 
+import magic.core.Player;
 import magic.core.actions.Action;
+import magic.core.actions.DeclareAttackersAction;
 import magic.core.actions.DeclareBlockersAction;
 import magic.core.actions.PlayAction;
 import magic.core.actions.validation.rules.players.active.HasLandsToPlayIt;
@@ -44,7 +46,26 @@ public class NaivePlayer extends BasicPlayer {
             }
         }
 
-        if (state.step == TurnSteps.DECLARE_BLOCKERS) {
+        if (state.step == TurnSteps.DECLARE_ATTACKERS
+            && state.activePlayerIndex == state.turnsPlayerIndex
+            && !(state.actionThatLedToThisState instanceof DeclareAttackersAction)) {
+
+            Map<Creature, Player> attackers = new HashMap<>();
+            List<Player> enemies = state.playerStates().stream()
+                .filter(p -> !this.equals(p.player))
+                .map(s -> s.player)
+                .collect(Collectors.toList());
+
+            myState.field.cards().stream()
+                .filter(c -> c instanceof Creature && !((Creature) c).tapped())
+                .map(c -> (Creature) c)
+                .forEach(attacker -> attackers.put(attacker, enemies.get(0)));
+
+            return new DeclareAttackersAction(attackers);
+        }
+
+        if (state.step == TurnSteps.DECLARE_BLOCKERS
+            && !(state.actionThatLedToThisState instanceof DeclareBlockersAction)) {
             List<Creature> attackers = state
                 .turnsPlayerState()
                     .attackers.entrySet().stream()
@@ -58,12 +79,14 @@ public class NaivePlayer extends BasicPlayer {
                 Map<Creature, Creature> blockers = new HashMap<>();
 
                 myState.field.cards().stream()
-                    .filter(c -> c instanceof Creature)
+                    .filter(c -> c instanceof Creature && !((Creature) c).tapped())
                     .map(c -> (Creature) c)
                     .sorted(Comparator.comparingInt(Creature::effectiveLife))
-                    .forEachOrdered(blocker -> {
-                        Creature attacker = attackers.remove(0);
-                        blockers.put(blocker, attacker);
+                    .forEach(blocker -> {
+                        if (!attackers.isEmpty()) {
+                            Creature attacker = attackers.remove(0);
+                            blockers.put(blocker, attacker);
+                        }
                     });
 
                 return new DeclareBlockersAction(blockers);

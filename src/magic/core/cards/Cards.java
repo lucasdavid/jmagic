@@ -1,5 +1,7 @@
 package magic.core.cards;
 
+import magic.core.cards.creatures.Creature;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,6 +61,26 @@ public class Cards {
         for (ICard card : updatedCards) {
             newCards.set(newCards.indexOf(card), card);
         }
+        return new Cards(newCards);
+    }
+
+    public Cards add(ICard... addingCards) {
+        return add(List.of(addingCards));
+    }
+
+    public Cards add(List<ICard> addingCards) {
+        List<ICard> newCards = new ArrayList<>(cards);
+        newCards.addAll(addingCards);
+        return new Cards(newCards);
+    }
+
+    public Cards remove(ICard... removingCards) {
+        return remove(List.of(removingCards));
+    }
+
+    public Cards remove(List<ICard> removingCards) {
+        List<ICard> newCards = new ArrayList<>(cards);
+        newCards.removeAll(removingCards);
         return new Cards(newCards);
     }
 

@@ -1,4 +1,4 @@
-package magic.infrastructure.validation;
+package magic.infrastructure;
 
 import magic.core.exceptions.ValidationException;
 import magic.core.states.State;

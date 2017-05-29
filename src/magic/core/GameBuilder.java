@@ -29,18 +29,6 @@ public class GameBuilder {
     private final Random randomState;
     private final List<Set<BasicLands>> deckColors;
 
-    public GameBuilder(int numberOfPlayers, int numberOfCardsForEachPlayer, long playerActTimeout,
-                       List<Observer> rules, Random randomState) {
-        this(IntStream
-                .range(0, numberOfPlayers)
-                .mapToObj(i -> new RandomPlayer(Player.DEFAULT_PLAYER_NAMES[i % Player.DEFAULT_PLAYER_NAMES.length]))
-                .collect(Collectors.toList()),
-            numberOfCardsForEachPlayer,
-            playerActTimeout,
-            rules,
-            randomState);
-    }
-
     public GameBuilder(List<Player> players,
                        int numberOfCardsForEachPlayer, long playerActTimeout,
                        List<Observer> rules, Random randomState) {
@@ -56,7 +44,6 @@ public class GameBuilder {
             playerActTimeout,
             rules,
             randomState);
-
     }
 
     public GameBuilder(List<Player> players, List<Set<BasicLands>> deckColors,

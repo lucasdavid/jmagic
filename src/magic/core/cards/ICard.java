@@ -4,7 +4,6 @@ package magic.core.cards;
 import magic.core.IIdentifiable;
 import magic.core.ITargetable;
 import magic.core.cards.lands.BasicLands;
-import magic.infrastructure.validation.IGameModifier;
 
 import java.util.Collection;
 

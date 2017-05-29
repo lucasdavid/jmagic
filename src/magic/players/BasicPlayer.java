@@ -18,6 +18,7 @@ import magic.core.experts.IExpert;
 import magic.core.states.State;
 import magic.core.states.TurnSteps;
 
+import java.util.Comparator;
 import java.util.NoSuchElementException;
 
 /**
@@ -91,7 +92,8 @@ public class BasicPlayer extends Player {
         }
 
         if (state.step == TurnSteps.COMBAT_DAMAGE
-            && new HasPerformedThisTurn(ComputeDamageAction.class).isValid(state)) {
+            && !new HasPerformedThisTurn(ComputeDamageAction.class).isValid(state)
+            && !myState.attackers.isEmpty()) {
             return new ComputeDamageAction();
         }
 

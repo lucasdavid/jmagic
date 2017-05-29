@@ -156,10 +156,9 @@ public class State {
 
     @Override
     public String toString() {
-        return String.format("turn: %d%s, players:\n%s",
-            turn,
-            (done ? " (done)" : ""),
-            playerStates);
+        return String.format("turn: %d%s, %s, players:\n%s",
+            turn, (done ? " (done)" : ""),
+            step, playerStates);
     }
 
     /**

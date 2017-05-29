@@ -4,6 +4,7 @@ import magic.core.Player;
 import magic.core.actions.validation.rules.game.TurnsStepIs;
 import magic.core.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
 import magic.core.actions.validation.rules.players.ArePlaying;
+import magic.core.actions.validation.rules.players.HasPerformedThisTurn;
 import magic.core.actions.validation.rules.players.active.HasCardsInField;
 import magic.core.cards.ICard;
 import magic.core.cards.creatures.Creature;
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static magic.infrastructure.validation.connectives.Connectives.And;
+import static magic.infrastructure.validation.connectives.Connectives.Not;
 
 /**
  * Declare Attackers Action.
@@ -49,6 +51,7 @@ public final class DeclareAttackersAction extends Action {
 
     @Override
     public ValidationRule validationRules() {
+        // TODO: prevent players from attacking themselves.
         return And(
             new TurnsStepIs(TurnSteps.DECLARE_ATTACKERS),
             new ActiveAndTurnsPlayersAreTheSame(),
@@ -58,5 +61,10 @@ public final class DeclareAttackersAction extends Action {
                 .map(c -> (ICard) c)
                 .collect(Collectors.toSet())),
             new ArePlaying(attackers.values()));
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s", super.toString(), attackers);
     }
 }

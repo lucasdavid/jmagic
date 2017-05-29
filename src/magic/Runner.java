@@ -42,7 +42,8 @@ public class Runner {
                 UntapAction.class,
                 InitialDrawAction.class,
                 DeclareAttackersAction.class,
-                DeclareBlockersAction.class)),
+                DeclareBlockersAction.class,
+                ComputeDamageAction.class)),
         new PassOrFinishIfLost(),
         new WinIfLastPlayerAlive());
 

@@ -1,6 +1,6 @@
 package magic.core.actions;
 
-import magic.infrastructure.validation.IGameModifier;
+import magic.infrastructure.IGameModifier;
 
 import java.util.Objects;
 
