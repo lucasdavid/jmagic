@@ -6,11 +6,9 @@ import magic.core.exceptions.ValidationException;
 import magic.core.states.State;
 
 /**
- * Pass If Not Alive Observer.
+ * PassOrFinishIfLost Observer.
  *
  * This observer will pass control onto another player if the current one isn't alive.
- *
- * Notes: don't use this class directly.
  *
  * @author ldavid
  */

@@ -4,6 +4,11 @@ import magic.core.actions.Action;
 import magic.core.states.State;
 
 /**
+ * LooseOnNullAction Observer.
+ * <p>
+ * Adding this to a game's observer pool will result in a player loosing when
+ * attempting a {@code null} action.
+ *
  * @author ldavid
  */
 public class LooseOnNullAction extends Observer {
@@ -15,7 +20,7 @@ public class LooseOnNullAction extends Observer {
 
             LOG.warning(String.format(
                 "%s lost because `LooseOnNullAction` rule is active " +
-                "(try `AdvanceGameAction` if your intention is to perform no actions)",
+                    "(try `AdvanceGameAction` if your intention is to perform no actions)",
                 p.player));
 
             return _disqualify(state);

@@ -4,6 +4,12 @@ import magic.core.actions.Action;
 import magic.core.states.State;
 
 /**
+ * LooseOnActTimeout Observer.
+ * <p>
+ * Adding this to a game observer's pool will result in a player loosing if
+ * they take longer than {@link LooseOnActTimeout#timeout} to return from a
+ * {@link magic.core.Player#act} call.
+ *
  * @author ldavid
  */
 public class LooseOnActTimeout extends Observer {

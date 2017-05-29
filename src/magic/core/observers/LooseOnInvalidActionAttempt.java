@@ -5,6 +5,11 @@ import magic.core.exceptions.ValidationException;
 import magic.core.states.State;
 
 /**
+ * LooseOnInvalidActionAttempt Observer.
+ * <p>
+ * Adding this to a game's observer pool will result in a player loosing if
+ * they attempt an action that's not valid to the current state of the game.
+ *
  * @author ldavid
  */
 public class LooseOnInvalidActionAttempt extends Observer {

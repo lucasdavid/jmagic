@@ -4,6 +4,12 @@ import magic.core.actions.Action;
 import magic.core.states.State;
 
 /**
+ * WinIfLastPlayerAlive Observer.
+ * <p>
+ * This observer checks if there's currently
+ * {@link WinIfLastPlayerAlive#maxWinners} alive player in the game. If that's
+ * the case, it ends the game.
+ *
  * @author ldavid
  */
 public class WinIfLastPlayerAlive extends Observer {

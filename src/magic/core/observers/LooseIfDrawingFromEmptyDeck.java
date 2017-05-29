@@ -5,6 +5,11 @@ import magic.core.states.State;
 import magic.core.states.TurnSteps;
 
 /**
+ * LooseIfDrawingFromEmptyDeck Observer.
+ * <p>
+ * Adding this to a game's observer pool will result in a player loosing when
+ * attempting to draw from an empty deck.
+ *
  * @author ldavid
  */
 public class LooseIfDrawingFromEmptyDeck extends Observer {
