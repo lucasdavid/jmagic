@@ -4,7 +4,7 @@ import magic.infrastructure.validation.rules.ValidationRule;
 import magic.core.actions.validation.rules.game.GameIsFinished;
 import magic.core.states.State;
 
-import static magic.infrastructure.validation.connectives.Connectives.Not;
+import static magic.infrastructure.validation.basic.Connectives.Not;
 
 /**
  * Finish A Game Action.

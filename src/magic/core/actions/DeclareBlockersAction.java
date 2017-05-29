@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static magic.infrastructure.validation.connectives.Connectives.And;
-import static magic.infrastructure.validation.connectives.Connectives.Not;
+import static magic.infrastructure.validation.basic.Connectives.And;
+import static magic.infrastructure.validation.basic.Connectives.Not;
 
 /**
  * Declare Defenders Action.

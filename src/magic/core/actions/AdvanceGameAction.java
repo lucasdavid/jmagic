@@ -10,9 +10,9 @@ import magic.infrastructure.validation.rules.ValidationRule;
 
 import java.util.List;
 
-import static magic.infrastructure.validation.connectives.Connectives.And;
-import static magic.infrastructure.validation.connectives.Connectives.Not;
-import static magic.infrastructure.validation.connectives.Connectives.Or;
+import static magic.infrastructure.validation.basic.Connectives.And;
+import static magic.infrastructure.validation.basic.Connectives.Not;
+import static magic.infrastructure.validation.basic.Connectives.Or;
 
 /**
  * Advance Turn Action.

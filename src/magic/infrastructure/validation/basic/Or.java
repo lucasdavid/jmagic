@@ -1,4 +1,4 @@
-package magic.infrastructure.validation.connectives;
+package magic.infrastructure.validation.basic;
 
 import magic.core.states.State;
 import magic.infrastructure.validation.rules.ValidationRule;

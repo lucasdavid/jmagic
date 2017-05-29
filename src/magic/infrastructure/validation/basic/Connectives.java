@@ -1,6 +1,9 @@
-package magic.infrastructure.validation.connectives;
+package magic.infrastructure.validation.basic;
 
+import magic.core.states.State;
 import magic.infrastructure.validation.rules.ValidationRule;
+
+import java.util.function.Predicate;
 
 /**
  * Validation Rules.
@@ -19,5 +22,9 @@ public abstract class Connectives {
 
     public static ValidationRule Not(ValidationRule innerRule) {
         return new Not(innerRule);
+    }
+
+    public static ValidationRule True(Predicate<State> predicate) {
+        return new IsTrue(predicate);
     }
 }

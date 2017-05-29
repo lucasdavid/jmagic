@@ -14,7 +14,7 @@ import magic.core.states.TurnSteps;
 import java.util.Collections;
 import java.util.List;
 
-import static magic.infrastructure.validation.connectives.Connectives.And;
+import static magic.infrastructure.validation.basic.Connectives.And;
 
 /**
  * Initial Draw Action.

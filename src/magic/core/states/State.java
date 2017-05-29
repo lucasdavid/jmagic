@@ -158,7 +158,12 @@ public class State {
     public String toString() {
         return String.format("turn: %d%s, %s, players:\n%s",
             turn, (done ? " (done)" : ""),
-            step, playerStates);
+            step,
+            String.join(
+                "\n",
+                playerStates.stream()
+                    .map(PlayerState::toString)
+                    .collect(Collectors.toList())));
     }
 
     /**
@@ -172,10 +177,10 @@ public class State {
         public final Player player;
         public final Cards deck, hand, field, graveyard;
         public final boolean playing;
-        private final int life;
-        private final int maxLife;
         public final Map<Creature, Player> attackers;
         public final Map<Creature, Creature> blockers;
+        private final int life;
+        private final int maxLife;
 
         PlayerState(Player player, Cards deck) {
             this(player, DEFAULT_INITIAL_LIFE, DEFAULT_INITIAL_LIFE, deck, Cards.EMPTY, Cards.EMPTY, Cards.EMPTY,
@@ -254,13 +259,16 @@ public class State {
 
         @Override
         public String toString() {
-            return String.format("\n%s:\n" +
+            return String.format("%s:\n" +
                     "  life: %d/%d,\n" +
                     "  hand: %s,\n" +
                     "  field: %s,\n" +
                     "  deck: %s,\n" +
-                    "  graveyard: %s",
-                player, effectiveLife(), effectiveMaxLife(), hand, field, deck, graveyard);
+                    "  graveyard: %s\n" +
+                    "  attackers: %s\n" +
+                    "  blockers: %s",
+                player, effectiveLife(), effectiveMaxLife(), hand, field, deck, graveyard,
+                attackers, blockers);
         }
     }
 }

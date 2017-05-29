@@ -30,12 +30,6 @@ public class UseAction extends Action {
     @Override
     public State update(State state) {
         throw new UnsupportedOperationException();
-//        State t = this.card.use(state, targets);
-//
-//        // Override the state to make it look like
-//        // this action modified it instead of the card.
-//        return new State(t.playersState(), t.turn, t.done, t.turnsPlayerIndex,
-//                this, state);
     }
 
     @Override
