@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 /**
  * Player Base Class.
  * <p>
- * Basic interface for a Hearth Stone's player.
- * Check its sub-classes.
+ * Basic interface for a Hearth Stone's player. Check its sub-classes at
+ * {@link magic.players} package.
  */
 public abstract class Player implements IIdentifiable, IGameEventListener {
 

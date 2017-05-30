@@ -32,4 +32,9 @@ public class Or extends ValidationRule {
                 .flatMap(r -> r.errors().stream())
                 .collect(Collectors.toList())));
     }
+
+    @Override
+    public String toString() {
+        return String.format("Or(%s)", innerRules);
+    }
 }
