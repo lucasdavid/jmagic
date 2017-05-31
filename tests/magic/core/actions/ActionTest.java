@@ -1,28 +1,17 @@
 package magic.core.actions;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import magic.core.states.State;
+import magic.infrastructure.validation.basic.IsTrue;
+import magic.infrastructure.validation.rules.ValidationRule;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- *
  * @author ldavid
  */
 public class ActionTest {
-
-    public ActionTest() {
-    }
-
-    @BeforeEach
-    public void setUp() {
-    }
-
-    @AfterEach
-    public void tearDown() {
-    }
 
     /**
      * Test of equals method, of class Action.
@@ -44,5 +33,20 @@ public class ActionTest {
         assertFalse(i.equals(null));
         assertFalse(i.equals(new DrawAction()));
         assertTrue(i.equals(new AdvanceGameAction()));
+    }
+
+    private class TestAction extends Action {
+
+        @Override
+        public State update(State state) {
+            return new State(state.playerStates(), state.turn + 1, state.step,
+                state.done, state.turnsPlayerIndex,
+                state.activePlayerIndex, state.actionThatLedToThisState, state);
+        }
+
+        @Override
+        public ValidationRule validationRules() {
+            return new IsTrue(state -> state.turn < 50);
+        }
     }
 }

@@ -6,7 +6,7 @@ import magic.infrastructure.validation.rules.ValidationRule;
 import java.util.function.Predicate;
 
 /**
- * True Validation Rule Base.
+ * IsTrue Validation Rule Base.
  * <p>
  *
  * @author ldavid
@@ -28,6 +28,6 @@ public class IsTrue extends ValidationRule {
 
     @Override
     public String toString() {
-        return String.format("True(%s) failed", predicate);
+        return String.format("IsTrue(%s) failed", predicate);
     }
 }

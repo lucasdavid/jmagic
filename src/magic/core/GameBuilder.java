@@ -4,9 +4,7 @@ import magic.core.cards.Cards;
 import magic.core.cards.DeckBuilder;
 import magic.core.cards.lands.BasicLands;
 import magic.core.observers.Observer;
-import magic.players.RandomPlayer;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -26,35 +24,35 @@ public class GameBuilder {
     private final List<Observer> rules;
     private final int numberOfCardsForEachPlayer;
     private final long playerActTimeout;
-    private final Random randomState;
+    private final Random random;
     private final List<Set<BasicLands>> deckColors;
 
     public GameBuilder(List<Player> players,
                        int numberOfCardsForEachPlayer, long playerActTimeout,
-                       List<Observer> rules, Random randomState) {
+                       List<Observer> rules, Random random) {
         this(players,
             IntStream
                 .range(0, players.size())
                 .mapToObj(i -> IntStream
                     .range(0, 2)
-                    .mapToObj(j -> BasicLands.values()[randomState.nextInt(BasicLands.values().length)])
+                    .mapToObj(j -> BasicLands.values()[random.nextInt(BasicLands.values().length)])
                     .collect(Collectors.toSet()))
                 .collect(Collectors.toList()),
             numberOfCardsForEachPlayer,
             playerActTimeout,
             rules,
-            randomState);
+            random);
     }
 
     public GameBuilder(List<Player> players, List<Set<BasicLands>> deckColors,
                        int numberOfCardsForEachPlayer, long playerActTimeout,
-                       List<Observer> rules, Random randomState) {
+                       List<Observer> rules, Random random) {
         this.players = players;
         this.deckColors = deckColors;
         this.numberOfCardsForEachPlayer = numberOfCardsForEachPlayer;
         this.playerActTimeout = playerActTimeout;
         this.rules = rules;
-        this.randomState = randomState;
+        this.random = random;
     }
 
     /**
@@ -66,8 +64,10 @@ public class GameBuilder {
      * @return a new Game object
      */
     public Game build() {
-        DeckBuilder b = new DeckBuilder(numberOfCardsForEachPlayer, randomState);
-        List<Cards> decks = deckColors.stream().map(b::random).collect(Collectors.toList());
+        DeckBuilder b = new DeckBuilder(numberOfCardsForEachPlayer, random);
+        List<Cards> decks = deckColors.stream()
+            .map(b::random)
+            .collect(Collectors.toList());
         return new Game(players, decks, playerActTimeout, rules);
     }
 }

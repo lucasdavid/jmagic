@@ -47,6 +47,6 @@ public class Boost extends Card implements IDamageBoost, ILifeBoost {
     @Override
     public String toString(boolean detailed) {
         return super.toString(detailed) +
-                String.format(" d+:%d l+: %d", damageIncrease(), lifeIncrease());
+            String.format(" d+:%d l+: %d", damageIncrease(), lifeIncrease());
     }
 }

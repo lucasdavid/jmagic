@@ -3,6 +3,7 @@ package magic;
 import magic.core.Game;
 import magic.core.GameBuilder;
 import magic.core.actions.AdvanceGameAction;
+import magic.core.actions.AttachAction;
 import magic.core.actions.ComputeDamageAction;
 import magic.core.actions.DeclareAttackersAction;
 import magic.core.actions.DeclareBlockersAction;
@@ -11,7 +12,6 @@ import magic.core.actions.DrawAction;
 import magic.core.actions.InitialDrawAction;
 import magic.core.actions.PlayAction;
 import magic.core.actions.UntapAction;
-import magic.core.actions.UseAction;
 import magic.core.observers.LooseIfDrawingFromEmptyDeck;
 import magic.core.observers.LooseOnActTimeout;
 import magic.core.observers.LooseOnIllegalActionAttempt;
@@ -52,7 +52,7 @@ public class Runner {
             DrawAction.class,
             AdvanceGameAction.class,
             PlayAction.class,
-            UseAction.class,
+            AttachAction.class,
             UntapAction.class,
             InitialDrawAction.class,
             DeclareAttackersAction.class,
@@ -84,18 +84,21 @@ public class Runner {
     }
 
     private void run() {
-        GameBuilder gb = new GameBuilder(
+        Random random = new Random(seed);
+
+        GameBuilder gameBuilder = new GameBuilder(
             IntStream.range(0, numberOfPlayers)
-                .mapToObj(i -> new RandomPlayer())
+                .mapToObj(i -> new RandomPlayer(random))
                 .collect(Collectors.toList()),
-            numberOfCardsForEachPlayer, playerActTimeout, observers, new Random(seed));
+            numberOfCardsForEachPlayer, playerActTimeout, observers, random);
 
         IntStream.range(0, numberOfMatches).forEach(matchId -> {
-            Game g = gb.build();
+            Game game = gameBuilder.build();
 
             LOG.info(String.format("Game #%d started", matchId));
-            g.run();
-            LOG.info(String.format("Game ran from %s to %s. Winners: %s\n", g.startedAt(), g.finishedAt(), g.winners()));
+            game.run();
+            LOG.info(String.format("Game ran from %s to %s. Winners: %s\n",
+                game.startedAt(), game.finishedAt(), game.winners()));
         });
     }
 }

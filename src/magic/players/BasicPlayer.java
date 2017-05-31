@@ -13,13 +13,13 @@ import magic.core.actions.validation.rules.players.HasPerformedThisTurn;
 import magic.core.actions.validation.rules.players.active.HasNotAlreadyDrawnInThisTurn;
 import magic.core.actions.validation.rules.players.active.HasNotAlreadyUntappedInThisTurn;
 import magic.core.actions.validation.rules.players.active.HasNotPlayedALandThisTurn;
+import magic.core.cards.ICard;
 import magic.core.cards.lands.Land;
 import magic.core.experts.IExpert;
 import magic.core.states.State;
 import magic.core.states.TurnSteps;
 
-import java.util.Comparator;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 /**
  * Basic Magic Player.
@@ -82,12 +82,12 @@ public class BasicPlayer extends Player {
         }
 
         if (state.step == TurnSteps.MAIN_1 && new HasNotPlayedALandThisTurn().isValid(state)) {
-            try {
-                return new PlayAction(myState.hand.cards().stream()
-                    .filter(c -> c instanceof Land)
-                    .findFirst()
-                    .get());
-            } catch (NoSuchElementException ignored) {
+            Optional<ICard> land = myState.hand.cards().stream()
+                .filter(c -> c instanceof Land)
+                .findFirst();
+
+            if (land.isPresent()) {
+                return new PlayAction(land.get());
             }
         }
 

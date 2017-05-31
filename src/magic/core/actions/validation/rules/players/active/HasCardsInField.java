@@ -12,7 +12,7 @@ public class HasCardsInField extends ValidationRule {
 
     private final Collection<ICard> cards;
 
-    public HasCardsInField(ICard cards) {
+    public HasCardsInField(ICard... cards) {
         this(List.of(cards));
     }
 

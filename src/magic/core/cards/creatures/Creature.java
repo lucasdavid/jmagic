@@ -129,6 +129,11 @@ public class Creature extends Harmful implements IDamageable, IAttachable, ITapp
     }
 
     @Override
+    public boolean attached(IAttachment attachment) {
+        return attachments.contains(attachment);
+    }
+
+    @Override
     public ITappable tap() {
         return new Creature(id(), name(), damage(), life, maxLife,
             true, cost(), properties(), attachments);

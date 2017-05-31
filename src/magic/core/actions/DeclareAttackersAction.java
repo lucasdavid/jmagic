@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import static magic.infrastructure.validation.basic.Connectives.And;
 import static magic.infrastructure.validation.basic.Connectives.Not;
 import static magic.infrastructure.validation.basic.Connectives.Or;
-import static magic.infrastructure.validation.basic.Connectives.True;
+import static magic.infrastructure.validation.basic.Connectives.IsTrue;
 
 /**
  * Declare Attackers Action.
@@ -63,7 +63,7 @@ public final class DeclareAttackersAction extends Action {
                 .collect(Collectors.toSet())),
             new ArePlaying(attackers.values()),
             Or(
-                True(state -> attackers.isEmpty()),
+                IsTrue(state -> attackers.isEmpty()),
                 Not(new PlayerIs(attackers.values()))
             )
         );

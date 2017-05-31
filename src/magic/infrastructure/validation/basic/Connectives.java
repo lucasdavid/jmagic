@@ -24,7 +24,7 @@ public abstract class Connectives {
         return new Not(innerRule);
     }
 
-    public static ValidationRule True(Predicate<State> predicate) {
+    public static ValidationRule IsTrue(Predicate<State> predicate) {
         return new IsTrue(predicate);
     }
 }
