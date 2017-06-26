@@ -1,6 +1,7 @@
-package magic.core.states;
+package magic.core;
 
 import magic.core.actions.Action;
+import magic.core.states.State;
 
 /**
  * Game Event Listener Interface.

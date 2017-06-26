@@ -1,7 +1,5 @@
 package magic.core;
 
-import magic.core.states.IGameEventListener;
-
 import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Logger;

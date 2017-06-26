@@ -3,11 +3,7 @@ package magic.core;
 import magic.core.actions.Action;
 import magic.core.actions.AdvanceGameAction;
 import magic.core.cards.Cards;
-import magic.core.observers.LooseOnInvalidActionAttempt;
-import magic.core.observers.LooseOnNullAction;
-import magic.core.observers.Observer;
-import magic.core.observers.PassOrFinishIfLost;
-import magic.core.observers.WinIfLastPlayerAlive;
+import magic.core.observers.*;
 import magic.core.states.State;
 import magic.infrastructure.collectors.CustomCollectors;
 

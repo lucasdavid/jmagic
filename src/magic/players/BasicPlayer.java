@@ -1,14 +1,7 @@
 package magic.players;
 
 import magic.core.Player;
-import magic.core.actions.Action;
-import magic.core.actions.AdvanceGameAction;
-import magic.core.actions.ComputeDamageAction;
-import magic.core.actions.DiscardAction;
-import magic.core.actions.DrawAction;
-import magic.core.actions.InitialDrawAction;
-import magic.core.actions.PlayAction;
-import magic.core.actions.UntapAction;
+import magic.core.actions.*;
 import magic.core.actions.validation.rules.players.HasPerformedThisTurn;
 import magic.core.actions.validation.rules.players.active.HasNotAlreadyDrawnInThisTurn;
 import magic.core.actions.validation.rules.players.active.HasNotAlreadyUntappedInThisTurn;
