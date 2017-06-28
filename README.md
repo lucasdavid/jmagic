@@ -3,10 +3,15 @@
 A Java implementation for an environment which can play the game
 Magic: The Gathering.
 
+
 ## Introduction
+
+This code is licenced under MIT License. Check the attached [LICENSE](LICENSE)
+file.
 
 This code was developed using Java 9 SDK. Please refer to the proper
 documentation.
+
 
 ## Start Up
 
@@ -18,7 +23,7 @@ Tweak its attributes to personalize your game instance. For instance:
  * Removing `AttachAction.class` entry from the `LooseOnIllegalActionAttempt`
    instantiation in `Runner.OBSERVERS` will prevent all players from attaching
    cards to others.
-   
+
 For more flexible behavior, check the constructors available at
 `magic.core.Game` class.
 
@@ -89,7 +94,7 @@ class MyCompletePlayer extends Player {
             && new HasNotAlreadyDrawnInThisTurn().isValid(state)) {
             return new DrawAction();
         }
-        
+
         // Don't know what to do. Advance game.
         return AdvanceGameAction();
     }
@@ -99,11 +104,11 @@ class MyCompletePlayer extends Player {
 *Explanation:* although we know for a fact that IT IS Dylan's drawing phase,
 `Player#act(State state)` is called in many other stages of the game. Dylan
 must, therefore, check if:
- 
+
  1. He is the active and turn's player (the player that has the upkeep)
- 2. This is the drawing phase 
+ 2. This is the drawing phase
  3. He didn't draw already.
- 
+
 If all of these conditions are true, he will return an instance of
 `DrawAction`, which will be read by the Game object and finally modify
 the game state. Otherwise, Dylan won't know what to do and will simply
@@ -111,4 +116,129 @@ request the game to advance with `AdvanceGameAction`.
 
 **Note:** although this implementation correctly draws from the deck,
 it does not cover many other important actions. Read the implementations
-in `magic.players` package for more insight.
+in [magic.players](src/magic/players) package for more insight.
+
+
+## Docs
+
+This section describes the intertwining of the elements in this code.
+
+### Actions
+
+An `Action` is the entity capable of modifying the match's current `State`.
+An action's implementation of the abstract method
+`State Action#update(State state)` will determine how the state is altered.
+
+At every iteration of the `Game`, an action is requested from the active
+`Player` by calling `Player#act(State state)`. The active `Player` therefore
+must implement this contract and act accordingly to the current state of the
+game, described by its parameter `State state`.
+
+For more information on how actions work, check out the many examples in
+[magic.core.actions](src/magic/core/actions).
+
+### Observers
+
+`Player` are not the only entity that can execute actions over a game state.
+Twice every iteration (before the active player's action and after it), the
+game will deliver the current state to each observer, which in turn will modify
+it at will.
+
+Passing a `List` of `Observers` to a `Game` construtor is a way to add
+constrains to that game. For example:
+
+```Java
+Game game = new Game(players, playersCards, playerActTimeout, List.of(
+        new LooseIfDrawingFromEmptyDeck(),
+        new LooseOnActTimeout(3000)
+));
+```
+
+This game will disqualify players that attempt to draw from an empty deck
+**and** the ones that failed to return with an Action in less than 3 seconds.
+
+For more information on how observers work, check out the many examples at
+[magic.core.observers](src/magic/core/observers).
+
+### Validation
+
+Not all actions are valid all the time. For instance, you cannot
+draw a card outside your own drawing phase unless you have a spell that
+explicitly allows you to do so. That's when `ValidationRule` becomes
+interesting: by sub-classing it and defining an implementation for
+`ValidationRule#onValidate(State state)`, we can create an rule that checks
+whether or not the current state is valid. Furthermore, we can add to error
+messages to `ValidationRule#errors` to better inform users why that state is
+invalid.
+
+Let's illustrate the concept with an example. Say we create a "rule that
+asserts that the game is in a given turn-step". The implementation is quite easy:
+
+```Java
+public class TurnsStepIs extends ValidationRule {
+
+    private final TurnSteps step;
+
+    public TurnsStepIs(TurnSteps step) {
+        this.step = step;
+    }
+
+    @Override
+    public void onValidate(State state) {
+        if (state.step != this.step) {
+            errors.add(String.format("Incorrect turn's step (expected: %s, actual: %s)",
+                this.step.name(), state.step.name()));
+        }
+    }
+}
+```
+
+We can now use `TurnStepIs` rule when defining our `DrawAction`:
+
+```Java
+public final class DrawAction extends Action {
+
+    @Override
+    public State update(State state) {
+        // Logic to draw card...
+    }
+
+    @Override
+    public ValidationRule validationRules() {
+        return new TurnsStepIs(TurnSteps.DRAW),
+    }
+}
+```
+
+Before applying every action given by a player, the `Game` instance will use
+an observer to check if that action is valid
+(by simply checking `action.validationRules().validate(state).isValid()`).
+If it's not, the player will either automatically pass or be disqualified.
+
+In the example above, `DrawAction` will only be valid during DRAW turn steps!
+
+Finally, you can compose rules using a few connectives in
+[magic.infrastructure.validation.basic](src/magic/infrastructure/validation/basic),
+such as `And`, `Or` and `Not`:
+
+```Java
+import static magic.infrastructure.validation.basic.Connectives.*;
+
+public final class DrawAction extends Action {
+
+    // Rest of DrawAction's code...
+
+    @Override
+    public ValidationRule validationRules() {
+        return And(
+            new HasCardsInTheirDeck(),
+            new TurnsStepIs(TurnSteps.DRAW),
+            new ActiveAndTurnsPlayersAreTheSame(),
+            new HasNotAlreadyDrawnInThisTurn());
+    }
+}
+```
+
+Notice that these connectives are merely sub-classes of `ValidationRule`, and
+the static methods in Connectives class are justs aliases to the construction
+of a connective object.
