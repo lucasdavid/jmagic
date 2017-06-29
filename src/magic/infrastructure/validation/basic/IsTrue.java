@@ -27,6 +27,15 @@ public class IsTrue extends ValidationRule {
     }
 
     @Override
+    public boolean equals(Object o) {
+        try {
+            return this == o || this.predicate.equals(((IsTrue) o).predicate);
+        } catch (NullPointerException | ClassCastException ex) {
+            return false;
+        }
+    }
+
+    @Override
     public String toString() {
         return String.format("IsTrue(%s) failed", predicate);
     }

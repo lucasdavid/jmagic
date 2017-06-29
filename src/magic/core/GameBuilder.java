@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
 public class GameBuilder {
 
     private final List<Player> players;
-    private final List<Observer> rules;
+    private final List<Observer> observers;
     private final int numberOfCardsForEachPlayer;
     private final long playerActTimeout;
     private final Random random;
@@ -29,7 +29,7 @@ public class GameBuilder {
 
     public GameBuilder(List<Player> players,
                        int numberOfCardsForEachPlayer, long playerActTimeout,
-                       List<Observer> rules, Random random) {
+                       List<Observer> observers, Random random) {
         this(players,
             IntStream
                 .range(0, players.size())
@@ -40,18 +40,18 @@ public class GameBuilder {
                 .collect(Collectors.toList()),
             numberOfCardsForEachPlayer,
             playerActTimeout,
-            rules,
+            observers,
             random);
     }
 
     public GameBuilder(List<Player> players, List<Set<BasicLands>> deckColors,
                        int numberOfCardsForEachPlayer, long playerActTimeout,
-                       List<Observer> rules, Random random) {
+                       List<Observer> observers, Random random) {
         this.players = players;
         this.deckColors = deckColors;
         this.numberOfCardsForEachPlayer = numberOfCardsForEachPlayer;
         this.playerActTimeout = playerActTimeout;
-        this.rules = rules;
+        this.observers = observers;
         this.random = random;
     }
 
@@ -68,6 +68,6 @@ public class GameBuilder {
         List<Cards> decks = deckColors.stream()
             .map(b::random)
             .collect(Collectors.toList());
-        return new Game(players, decks, playerActTimeout, rules);
+        return new Game(players, decks, playerActTimeout, observers);
     }
 }

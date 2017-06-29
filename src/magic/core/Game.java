@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Game.
@@ -53,9 +54,10 @@ public class Game {
 
     public Game(List<Player> players, State initialState, long playerActTimeout,
                 List<Observer> observers) {
-        this.players = players;
         this._currentState = initialState;
         this.playerActTimeout = playerActTimeout;
+
+        this.players = Collections.unmodifiableList(players);
 
         observers = new ArrayList<>(observers);
 
@@ -169,6 +171,10 @@ public class Game {
 
     public boolean running() {
         return startedAt != null && finishedAt == null;
+    }
+
+    public List<Player> players() {
+        return players;
     }
 
     public Collection<Player> winners() {

@@ -9,23 +9,16 @@ import magic.infrastructure.validation.rules.ValidationRule;
  *
  * @author ldavid
  */
-public class Not extends ValidationRule {
-
-    private final ValidationRule innerRule;
+public class Not extends Connective {
 
     public Not(ValidationRule innerRule) {
-        this.innerRule = innerRule;
+        super(innerRule);
     }
 
     @Override
     public void onValidate(State state) {
-        if (innerRule.isValid(state)) {
-            errors.add(String.format("Not(%s) is invalid", innerRule));
+        if (innerRules.get(0).isValid(state)) {
+            errors.add(String.format("Not(%s) failed", innerRules.get(0)));
         }
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Not(%s)", innerRule);
     }
 }

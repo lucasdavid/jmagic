@@ -12,12 +12,10 @@ import java.util.List;
  *
  * @author ldavid
  */
-public class And extends ValidationRule {
-
-    private final List<ValidationRule> innerRules;
+public class And extends Connective {
 
     public And(ValidationRule... innerRules) {
-        this.innerRules = Arrays.asList(innerRules);
+        super(innerRules);
     }
 
     @Override
@@ -28,10 +26,5 @@ public class And extends ValidationRule {
                 break;
             }
         }
-    }
-
-    @Override
-    public String toString() {
-        return String.format("And(%s)", innerRules);
     }
 }

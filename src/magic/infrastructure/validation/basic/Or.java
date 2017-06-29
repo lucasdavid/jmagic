@@ -13,12 +13,10 @@ import java.util.stream.Collectors;
  *
  * @author ldavid
  */
-public class Or extends ValidationRule {
-
-    private final List<ValidationRule> innerRules;
+public class Or extends Connective {
 
     public Or(ValidationRule... innerRules) {
-        this.innerRules = Arrays.asList(innerRules);
+        super(innerRules);
     }
 
     @Override
@@ -33,8 +31,4 @@ public class Or extends ValidationRule {
                 .collect(Collectors.toList())));
     }
 
-    @Override
-    public String toString() {
-        return String.format("Or(%s)", innerRules);
-    }
 }
