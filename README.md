@@ -1,5 +1,7 @@
 # JMagic: the Gathering
 
+[![Build Status](https://travis-ci.org/lucasdavid/jmagic.svg?branch=master)](https://travis-ci.org/lucasdavid/jmagic)
+
 A Java implementation for an environment which can play the game
 Magic: The Gathering.
 
