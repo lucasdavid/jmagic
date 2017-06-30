@@ -1,0 +1,37 @@
+package org.games.jmagic.experts;
+
+import org.games.jmagic.players.Player;
+import org.games.jmagic.actions.Action;
+import org.games.jmagic.actions.InitialDrawAction;
+import org.games.jmagic.core.states.State;
+import org.games.jmagic.core.states.TurnSteps;
+
+/**
+ * Mulligan Expert.
+ *
+ * This class is expert in Mulligan. That is, re-drawing the initial hand
+ * when the drawing player isn't satisfied with the one they've got.
+ *
+ * @author ldavid
+ */
+public class MulliganExpert implements IExpert {
+
+    public int count(State state, Player player) {
+        assert state.step == TurnSteps.DRAW;
+
+        Action actionExecutedInPrevious = state.actionThatLedToThisState;
+        State previous = state.parent;
+        int initialDrawsCount = 0;
+        while (previous != null && previous.step == state.step) {
+            if (player.equals(previous.activePlayerState().player)
+                && actionExecutedInPrevious instanceof InitialDrawAction) {
+                initialDrawsCount++;
+            }
+
+            actionExecutedInPrevious = previous.actionThatLedToThisState;
+            previous = previous.parent;
+        }
+
+        return initialDrawsCount;
+    }
+}

@@ -1,6 +1,6 @@
 # JMagic: the Gathering
 
-[![Build Status](https://travis-ci.org/lucasdavid/jmagic.svg?branch=master)](https://travis-ci.org/lucasdavid/jmagic)
+[![Build Status](https://travis-ci.org/lucasdavid/jorg.games.jmagic.svg?branch=master)](https://travis-ci.org/lucasdavid/jmagic)
 
 A Java implementation for an environment which can play the game
 Magic: The Gathering.
@@ -17,7 +17,7 @@ documentation.
 
 ## Start Up
 
-You can have a random game by executing the `magic.Runner` class.
+You can have a random game by executing the `Runner` class.
 Tweak its attributes to personalize your game instance. For instance:
 
  * Altering `Runner.N_CARDS` from `40` to `80` will result in all players
@@ -27,13 +27,13 @@ Tweak its attributes to personalize your game instance. For instance:
    cards to others.
 
 For more flexible behavior, check the constructors available at
-`magic.core.Game` class.
+`Game` class.
 
 ### Basic Mechanics
 
-A `magic.core.Game` represents a Game of magic. It contains the current state
-of the world (an instance of `magic.core.states.State`), the players in the
-game and observers (instances of `magic.core.observers.Observer`), which are
+A `Game` represents a Game of org.games.jorg.games.jmagic.org.games.jmagic. It contains the current state
+of the world (an instance of `State`), the players in the
+game and observers (instances of `Observer`), which are
 responsible for keeping the game consistent.
 
 At every iteration, the `Game` object will retrieve who's the active `Player`
@@ -44,19 +44,19 @@ in the current game state and ask them for an `Action` that can modify its
 
 Like in a real match, players are required to do ALL the work. That includes
 drawing, passing their turn and computing the damage. These actions can be
-performed by simply instantiating an object of `magic.core.actions.Action`
+performed by simply instantiating an object of `Action`
 and returning it to the Game object, which will pass it to its observers for
 validation and, finally, commit the action.
 
 To play a game using **your very own** player, simply create a class extending
-from `magic.core.Player` and implement the method
+from `Player` and implement the method
 `Action YourPlayerClass#act(State state)`. Be aware tough: this game requires
 your player to handle ALL actions, including drawing, passing, computing.
 
 ##### Basic Players
 
 If you want to make your life a little bit easier when creating your own
-player, just extend one of the classes in `magic.players` package and override
+player, just extend one of the classes in `org.games.jorg.games.jmagic.org.games.jmagic.players` package and override
 the `Player#act(State state)` method. With that, handle the game states you
 want and delegate the rest to the superior player. E.x.:
 
@@ -69,7 +69,7 @@ class MySimplePlayer extends RandomPlayer {
             Map<Creature, Creature> blockers;
             // Some fancy computation to declare blockers s.t. the number of
             // creatures killed is minimized...
-            return new magic.core.actions.DeclareBlockersAction(blockers);
+            return new DeclareBlockersAction(blockers);
         }
 
         // Don't know how to handle this state. Delegate to `RandomPlayer`.
@@ -80,7 +80,7 @@ class MySimplePlayer extends RandomPlayer {
 
 ##### Complete Player
 
-If you want to handle ALL cases, you can simply extend `magic.core.Player`.
+If you want to handle ALL cases, you can simply extend `Player`.
 
 Suppose `State current` is the current state of the game, `MyPlayer dylan` is
 the current turn's player and it's his drawing phase. The Game will ask
@@ -118,7 +118,7 @@ request the game to advance with `AdvanceGameAction`.
 
 **Note:** although this implementation correctly draws from the deck,
 it does not cover many other important actions. Read the implementations
-in [magic.players](src/magic/players) package for more insight.
+in [org.games.jorg.games.jmagic.org.games.jmagic.players](src/org.games.jorg.games.jmagic.magic/players) package for more insight.
 
 
 ## Docs
@@ -137,7 +137,7 @@ must implement this contract and act accordingly to the current state of the
 game, described by its parameter `State state`.
 
 For more information on how actions work, check out the many examples in
-[magic.core.actions](src/magic/core/actions).
+[org.games.jorg.games.jmagic.org.games.jmagic.actions](src/org.games.jorg.games.jmagic.magic/actions).
 
 ### Observers
 
@@ -160,7 +160,7 @@ This game will disqualify players that attempt to draw from an empty deck
 **and** the ones that failed to return with an Action in less than 3 seconds.
 
 For more information on how observers work, check out the many examples at
-[magic.core.observers](src/magic/core/observers).
+[org.games.jorg.games.jmagic.org.games.jmagic.observers](src/org.games.jorg.games.jmagic.magic/observers).
 
 ### Validation
 
@@ -220,11 +220,11 @@ If it's not, the player will either automatically pass or be disqualified.
 In the example above, `DrawAction` will only be valid during DRAW turn steps!
 
 Finally, you can compose rules using a few connectives in
-[magic.infrastructure.validation.basic](src/magic/infrastructure/validation/basic),
+[org.games.jorg.games.jmagic.org.games.jmagic.infrastructure.validation.basic](src/org.games.jorg.games.jmagic.magic/infrastructure/validation/basic),
 such as `And`, `Or` and `Not`:
 
 ```Java
-import static magic.infrastructure.validation.basic.Connectives.*;
+import static Connectives.*;
 
 public final class DrawAction extends Action {
 
