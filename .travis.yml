@@ -9,13 +9,12 @@ addons:
       - oracle-java9-installer
 jdk: oraclejdk9
 
-before_install:
- - chmod +x gradlew
+language: java
+sudo: false
 
-before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-cache:
-  directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
+install:
+  - mvn test-compile -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+script:
+  - mvn test jacoco:report
+after_success:
+  - mvn coveralls:report

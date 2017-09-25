@@ -1,6 +1,7 @@
 # JMagic: the Gathering
 
-[![Build Status](https://travis-ci.org/lucasdavid/jorg.games.jmagic.svg?branch=master)](https://travis-ci.org/lucasdavid/jmagic)
+[![Build Status](https://travis-ci.org/lucasdavid/jmagic.svg?branch=docs)](https://travis-ci.org/lucasdavid/jmagic)
+[![Coverage Status](https://coveralls.io/repos/github/lucasdavid/jmagic/badge.svg?branch=master)](https://coveralls.io/github/lucasdavid/jmagic?branch=master)
 
 A Java implementation for an environment which can play the game
 Magic: The Gathering.
