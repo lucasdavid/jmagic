@@ -52,7 +52,7 @@
                     </properties>
                     <forkCount>3</forkCount>
                     <reuseForks>true</reuseForks>
-                    <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
+                    <argLine>${argLine} -Xmx1024m -XX:MaxPermSize=256m</argLine>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -73,19 +73,21 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.6.201602180812</version>
                 <executions>
                     <execution>
-                        <id>prepare-agent</id>
+                        <id>jacoco-initialize</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
                 </executions>
-                <configuration>
-                    <format>xml</format>
-                    <aggregate>true</aggregate>
-                </configuration>
             </plugin>
         </plugins>
     </build>
