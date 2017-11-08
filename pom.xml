@@ -82,6 +82,10 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <format>xml</format>
+                    <aggregate>true</aggregate>
+                </configuration>
             </plugin>
         </plugins>
     </build>
