@@ -6,6 +6,7 @@ package org.jmagic.core.states;
  * @author ldavid
  */
 public enum TurnSteps {
+    INITIAL_DRAWING(Phase.BOOTSTRAPING),
     UNTAP(Phase.BEGINNING), UPKEEP(Phase.BEGINNING), DRAW(Phase.BEGINNING),
     MAIN_1(Phase.PRE_COMBAT),
     BEGINNING_OF_COMBAT(Phase.COMBAT), DECLARE_ATTACKERS(Phase.COMBAT), DECLARE_BLOCKERS(Phase.COMBAT),
@@ -32,11 +33,15 @@ public enum TurnSteps {
         return vals[(this.ordinal() + 1) % vals.length];
     }
 
+    public boolean isFirst() {
+        return this == UNTAP;
+    }
+
     public boolean isLast() {
         return this == CLEANUP;
     }
 
     public enum Phase {
-        BEGINNING, PRE_COMBAT, COMBAT, POST_COMBAT, END
+        BOOTSTRAPING, BEGINNING, PRE_COMBAT, COMBAT, POST_COMBAT, END
     }
 }

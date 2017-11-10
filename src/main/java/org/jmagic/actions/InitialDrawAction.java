@@ -64,7 +64,7 @@ public final class InitialDrawAction extends Action {
     public ValidationRule validationRules() {
         return And(
             new TurnIs(0),
-            new TurnsStepIs(TurnSteps.DRAW),
+            new TurnsStepIs(TurnSteps.INITIAL_DRAWING),
             new HasNotAlreadyInitiallyDrawnMoreThan(7),
             new HasNotAlreadyDrawnInThisTurn(),
             new CardsDrawnCountReflectsMulliganCount(n));

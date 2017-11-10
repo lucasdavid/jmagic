@@ -52,7 +52,7 @@ public class AdvanceGameAction extends Action {
                     turnsPlayer = (turnsPlayer + 1) % players.size();
                 } while (!state.playerState(turnsPlayer).isAlive());
 
-                return new State(players, state.turn + 1, TurnSteps.values()[0], state.done,
+                return new State(players, state.turn + 1, TurnSteps.UNTAP, state.done,
                     turnsPlayer, turnsPlayer);
             }
 
@@ -81,9 +81,9 @@ public class AdvanceGameAction extends Action {
                     new TurnIs(0),
                     new TurnsStepIs(TurnSteps.DRAW))),
                 new HasPerformedThisTurn(InitialDrawAction.class)),
-            And(
+            Or(
                 // Prevents advancing turn with more than 8 cards on a player's hand.
-                new TurnsStepIs(TurnSteps.CLEANUP),
+                Not(new TurnsStepIs(TurnSteps.CLEANUP)),
                 new HasFewerCardsInHandThan(8)));
     }
 }

@@ -39,7 +39,7 @@ public class BasicPlayer extends Player {
     public Action act(State state) {
         State.PlayerState myState = state.playerState(this);
 
-        if (state.step == TurnSteps.DRAW && state.turn == 0) {
+        if (state.step == TurnSteps.INITIAL_DRAWING) {
             final long cardsCount = myState.hand.size();
             final long landsCount = myState.hand.cards().stream()
                     .filter(c -> c instanceof Land)

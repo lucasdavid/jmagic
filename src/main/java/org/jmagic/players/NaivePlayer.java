@@ -15,13 +15,9 @@ import org.jmagic.core.cards.attachments.IAttachment;
 import org.jmagic.experts.IExpert;
 import org.jmagic.core.states.State;
 import org.jmagic.core.states.TurnSteps;
+import org.jmagic.experts.MulliganExpert;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -29,6 +25,10 @@ public class NaivePlayer extends BasicPlayer {
 
     public NaivePlayer(IExpert mulliganExpert) {
         super(mulliganExpert);
+    }
+
+    public NaivePlayer(String name) {
+        this(name, new MulliganExpert());
     }
 
     public NaivePlayer(String name, IExpert mulliganExpert) {

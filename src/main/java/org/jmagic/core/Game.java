@@ -44,8 +44,7 @@ public class Game {
 
     private State _currentState;
     private Player _activePlayer;
-    private final Callable<Action> actRoutine = () ->
-        _activePlayer.act(_currentState.playerViewModel(_activePlayer));
+    private final Callable<Action> actRoutine = () -> _activePlayer.act(_currentState.playerViewModel(_activePlayer));
     private ExecutorService exec;
 
     public Game(List<Player> players, List<Cards> playersCards, long playerActTimeout, List<Observer> observers) {

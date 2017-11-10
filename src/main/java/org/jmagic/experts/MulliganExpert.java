@@ -1,10 +1,9 @@
 package org.jmagic.experts;
 
-import org.jmagic.players.Player;
 import org.jmagic.actions.Action;
 import org.jmagic.actions.InitialDrawAction;
 import org.jmagic.core.states.State;
-import org.jmagic.core.states.TurnSteps;
+import org.jmagic.players.Player;
 
 /**
  * Mulligan Expert.
@@ -17,8 +16,6 @@ import org.jmagic.core.states.TurnSteps;
 public class MulliganExpert implements IExpert {
 
     public int count(State state, Player player) {
-        assert state.step == TurnSteps.DRAW;
-
         Action actionExecutedInPrevious = state.actionThatLedToThisState;
         State previous = state.parent;
         int initialDrawsCount = 0;

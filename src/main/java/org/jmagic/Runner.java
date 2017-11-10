@@ -6,9 +6,12 @@ import org.jmagic.core.GameBuilder;
 import org.jmagic.observers.*;
 import org.jmagic.players.RandomPlayer;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -21,6 +24,16 @@ import java.util.stream.IntStream;
 public class Runner {
 
     public static final Logger LOG = Logger.getLogger(Runner.class.getName());
+
+    static {
+        InputStream stream = Runner.class
+                .getClassLoader()
+                .getResourceAsStream("game-logging.properties");
+        try {
+            LogManager.getLogManager().readConfiguration(stream);
+        } catch (IOException e) {
+        }
+    }
 
     public static final int SEED = 48;
     public static final int N_MATCHES = 1;
@@ -53,7 +66,7 @@ public class Runner {
     private final long playerActTimeout;
     private final List<Observer> observers;
 
-    private Runner(int numberOfMatches, int numberOfPlayers, int numberOfCardsForEachPlayer,
+    public Runner(int numberOfMatches, int numberOfPlayers, int numberOfCardsForEachPlayer,
                    long playerActTimeout, List<Observer> observers, int seed) {
         this.numberOfMatches = numberOfMatches;
         this.numberOfPlayers = numberOfPlayers;
@@ -63,12 +76,7 @@ public class Runner {
         this.seed = seed;
     }
 
-    public static void main(String[] args) {
-        new Runner(N_MATCHES, N_PLAYERS, N_CARDS, PLAYER_ACT_TIMEOUT, OBSERVERS, SEED)
-            .run();
-    }
-
-    private void run() {
+    public void run() {
         Random random = new Random(seed);
 
         GameBuilder gameBuilder = new GameBuilder(
@@ -85,5 +93,10 @@ public class Runner {
             LOG.info(String.format("Game ran from %s to %s. Winners: %s\n",
                 game.startedAt(), game.finishedAt(), game.winners()));
         });
+    }
+
+    public static void main(String[] args) {
+        new Runner(N_MATCHES, N_PLAYERS, N_CARDS, PLAYER_ACT_TIMEOUT, OBSERVERS, SEED)
+                .run();
     }
 }

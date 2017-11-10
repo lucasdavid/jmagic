@@ -20,6 +20,7 @@ public class LooseOnIllegalActionAttempt extends Observer {
 
     private final Collection<Class<? extends Action>> allowed;
 
+    @SafeVarargs
     public LooseOnIllegalActionAttempt(Class<? extends Action>... allowed) {
         this(Set.of(allowed));
     }
