@@ -41,10 +41,10 @@ public class State {
      * @param players     a list of players that are in the game.
      * @param playerCards a list of cards for each player in the game.
      */
-    public State(List<Player> players, List<Cards> playerCards) {
+    public State(List<Player> players, List<Cards> playerCards, int playersInitialLife) {
         this(IntStream
                         .range(0, players.size())
-                        .mapToObj(i -> new PlayerState(players.get(i), playerCards.get(i)))
+                        .mapToObj(i -> new PlayerState(players.get(i), playerCards.get(i), playersInitialLife))
                         .collect(Collectors.toList()),
                 0,
                 TurnSteps.values()[0], false, 0, 0, null, null);
@@ -161,7 +161,6 @@ public class State {
      */
     public static class PlayerState implements IDamageable {
 
-        public static final int DEFAULT_INITIAL_LIFE = 20;
         public final Player player;
         public final Cards deck, hand, field, graveyard;
         public final boolean playing;
@@ -170,8 +169,8 @@ public class State {
         private final int life;
         private final int maxLife;
 
-        PlayerState(Player player, Cards deck) {
-            this(player, DEFAULT_INITIAL_LIFE, DEFAULT_INITIAL_LIFE, deck, Cards.EMPTY, Cards.EMPTY, Cards.EMPTY,
+        PlayerState(Player player, Cards deck, int initialLife) {
+            this(player, initialLife, initialLife, deck, Cards.EMPTY, Cards.EMPTY, Cards.EMPTY,
                     Collections.emptyMap(), Collections.emptyMap(), true);
         }
 

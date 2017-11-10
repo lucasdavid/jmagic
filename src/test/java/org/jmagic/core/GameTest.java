@@ -27,6 +27,7 @@ class GameTest {
                         new Cards(),
                         new Cards()
                 ),
+                20,
                 1000,
                 List.of(
                         new LooseIfDrawingFromEmptyDeck()
@@ -44,19 +45,19 @@ class GameTest {
         Collection<Game> games = Set.of(
                 new Game(
                         List.of(new TestPlayer("player-1"), new TestPlayer("player-2")),
-                        List.of(new Cards(), new Cards()), 1000,
+                        List.of(new Cards(), new Cards()), 20, 1000,
                         List.of(new LooseIfDrawingFromEmptyDeck())),
                 new Game(
                         List.of(new TestPlayer("player-1"), new TestPlayer("player-2")),
-                        List.of(new Cards(), new Cards()), 1000,
+                        List.of(new Cards(), new Cards()), 20, 1000,
                         Collections.emptyList()),
                 new Game(
                         List.of(new TestPlayer("player-1"), new TestPlayer("player-2")),
-                        List.of(new Cards(), new Cards()), 1000,
+                        List.of(new Cards(), new Cards()), 20, 1000,
                         List.of(new LooseIfDrawingFromEmptyDeck(), new WinIfLastPlayerAlive(3))),
                 new Game(
                         List.of(new TestPlayer("player-1"), new TestPlayer("player-2")),
-                        List.of(new Cards(), new Cards()), 1000,
+                        List.of(new Cards(), new Cards()), 20, 1000,
                         List.of(new LooseIfDrawingFromEmptyDeck(), new PassOrFinishIfLost(), new WinIfLastPlayerAlive(3)))
         );
 
@@ -77,7 +78,7 @@ class GameTest {
                     new NaivePlayer("player-2")),
             List.of(b.random(),
                     b.random()),
-            1000,
+            20, 1000,
             List.of(new LooseIfDrawingFromEmptyDeck(),
                     new LooseOnNullAction(),
                     new LooseOnActTimeout(1000),

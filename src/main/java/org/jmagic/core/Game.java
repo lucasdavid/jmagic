@@ -47,12 +47,12 @@ public class Game {
     private final Callable<Action> actRoutine = () -> _activePlayer.act(_currentState.playerViewModel(_activePlayer));
     private ExecutorService exec;
 
-    public Game(List<Player> players, List<Cards> playersCards, long playerActTimeout, List<Observer> observers) {
-        this(players, new State(players, playersCards), playerActTimeout, observers);
+    public Game(List<Player> players, List<Cards> playersCards, int playersInitialLife, long playerActTimeout,
+                List<Observer> observers) {
+        this(players, new State(players, playersCards, playersInitialLife), playerActTimeout, observers);
     }
 
-    public Game(List<Player> players, State initialState, long playerActTimeout,
-                List<Observer> observers) {
+    public Game(List<Player> players, State initialState, long playerActTimeout, List<Observer> observers) {
         this._currentState = initialState;
         this.playerActTimeout = playerActTimeout;
 

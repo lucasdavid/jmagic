@@ -38,13 +38,15 @@ class GameBuilderTest {
 
     @Test
     void build1() {
-        GameBuilder gb = new GameBuilder(players, 3, actTimeout, observers, r);
+        GameBuilder gb = new GameBuilder(players, 20, 3, actTimeout,
+            observers, r);
         testGameConsistency(gb.build());
     }
 
     @Test
     void build2() {
-        GameBuilder gb = new GameBuilder(players, deckColors, numberOfCards, actTimeout, observers, r);
+        GameBuilder gb = new GameBuilder(players, deckColors, 20,
+            numberOfCards, actTimeout, observers, r);
         testGameConsistency(gb.build());
     }
 

@@ -22,13 +22,15 @@ import java.util.stream.IntStream;
 public class GameBuilder {
 
     private final List<Player> players;
+    private final List<Set<BasicLands>> deckColors;
     private final List<Observer> observers;
+    private final int playersInitialLife;
     private final int numberOfCardsForEachPlayer;
     private final long playerActTimeout;
     private final Random random;
-    private final List<Set<BasicLands>> deckColors;
 
     public GameBuilder(List<Player> players,
+                       int playersInitialLife,
                        int numberOfCardsForEachPlayer, long playerActTimeout,
                        List<Observer> observers, Random random) {
         this(players,
@@ -39,17 +41,19 @@ public class GameBuilder {
                     .mapToObj(j -> BasicLands.values()[random.nextInt(BasicLands.values().length)])
                     .collect(Collectors.toSet()))
                 .collect(Collectors.toList()),
+            playersInitialLife,
             numberOfCardsForEachPlayer,
             playerActTimeout,
             observers,
             random);
     }
 
-    public GameBuilder(List<Player> players, List<Set<BasicLands>> deckColors,
+    public GameBuilder(List<Player> players, List<Set<BasicLands>> deckColors, int playersInitialLife,
                        int numberOfCardsForEachPlayer, long playerActTimeout,
                        List<Observer> observers, Random random) {
         this.players = players;
         this.deckColors = deckColors;
+        this.playersInitialLife = playersInitialLife;
         this.numberOfCardsForEachPlayer = numberOfCardsForEachPlayer;
         this.playerActTimeout = playerActTimeout;
         this.observers = observers;
@@ -69,6 +73,6 @@ public class GameBuilder {
         List<Cards> decks = deckColors.stream()
             .map(b::random)
             .collect(Collectors.toList());
-        return new Game(players, decks, playerActTimeout, observers);
+        return new Game(players, decks, playersInitialLife, playerActTimeout, observers);
     }
 }

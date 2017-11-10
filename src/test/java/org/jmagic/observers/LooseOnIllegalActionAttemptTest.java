@@ -19,7 +19,8 @@ class LooseOnIllegalActionAttemptTest {
 
     private final State INITIAL_STATE = new State(
             List.of(new RandomPlayer("test-1"), new RandomPlayer("test-2")),
-            List.of(Cards.EMPTY, Cards.EMPTY));
+            List.of(Cards.EMPTY, Cards.EMPTY),
+            0);
 
     @Test
     void afterPlayerAct() {

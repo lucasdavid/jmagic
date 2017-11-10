@@ -6,28 +6,28 @@ import org.jmagic.core.states.State;
 import org.jmagic.infrastructure.validation.rules.ValidationRule;
 
 /**
- * Has Valid Target Validation Rule.
+ * Is Attached Validation Rule.
  *
  * @author ldavid
  */
-public class IsAlreadyAttached extends ValidationRule {
+public class IsAttached extends ValidationRule {
 
     private final IAttachment attachment;
 
-    public IsAlreadyAttached(IAttachment attachment) {
+    public IsAttached(IAttachment attachment) {
         this.attachment = attachment;
     }
 
     @Override
     public void onValidate(State state) {
-        state.playerStates().stream()
+        boolean isNotAttached = state.playerStates().stream()
             .flatMap(p -> p.field.cards().stream())
             .filter(c -> c instanceof IAttachable)
             .map(c -> (IAttachable) c)
-            .filter(a -> a.attached(attachment))
-            .findAny()
-            .ifPresent(a ->
-                errors.add(String.format(
-                    "%s is already attached to a %s", attachment, a)));
+            .noneMatch(a -> a.attached(attachment));
+
+        if (isNotAttached) {
+            errors.add(String.format("%s is not attached to any card", attachment));
+        }
     }
 }

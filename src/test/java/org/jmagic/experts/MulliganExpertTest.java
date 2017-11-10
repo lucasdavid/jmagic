@@ -32,7 +32,7 @@ class MulliganExpertTest {
         this.first = new AdvanceGameAction().update(
                 new AdvanceGameAction().update(
                         new AdvanceGameAction().update(
-                                new AdvanceGameAction().update(new State(players, cards)))));
+                                new AdvanceGameAction().update(new State(players, cards, 20)))));
         this.second = new InitialDrawAction().update(first);
         this.third = new InitialDrawAction().update(second);
     }

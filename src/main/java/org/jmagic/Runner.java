@@ -38,9 +38,11 @@ public class Runner {
     public static final int SEED = 48;
     public static final int N_MATCHES = 1;
     public static final int N_PLAYERS = 2;
+    public static final int PLAYERS_INITIAL_LIFE = 20;
     public static final int N_CARDS = 40;
     public static final long PLAYER_ACT_TIMEOUT = 1000;
     public static final List<Observer> OBSERVERS = Arrays.asList(
+        new HumanObserver(1.0),
         new LooseIfDrawingFromEmptyDeck(),
         new LooseOnNullAction(),
         new LooseOnActTimeout(PLAYER_ACT_TIMEOUT),
@@ -77,13 +79,13 @@ public class Runner {
     }
 
     public void run() {
-        Random random = new Random(seed);
+        Random r = new Random(seed);
 
         GameBuilder gameBuilder = new GameBuilder(
             IntStream.range(0, numberOfPlayers)
-                .mapToObj(i -> new RandomPlayer(random))
+                .mapToObj(i -> new RandomPlayer(r))
                 .collect(Collectors.toList()),
-            numberOfCardsForEachPlayer, playerActTimeout, observers, random);
+            PLAYERS_INITIAL_LIFE, numberOfCardsForEachPlayer, playerActTimeout, observers, r);
 
         IntStream.range(0, numberOfMatches).forEach(matchId -> {
             Game game = gameBuilder.build();

@@ -77,9 +77,7 @@ public class AdvanceGameAction extends Action {
             new PlayersOtherThanActiveAreAlive(),
             Or(
                 // Prevents players from advancing without initially drawing 7 cards.
-                Not(And(
-                    new TurnIs(0),
-                    new TurnsStepIs(TurnSteps.DRAW))),
+                Not(new TurnsStepIs(TurnSteps.INITIAL_DRAWING)),
                 new HasPerformedThisTurn(InitialDrawAction.class)),
             Or(
                 // Prevents advancing turn with more than 8 cards on a player's hand.

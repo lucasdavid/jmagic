@@ -1,6 +1,6 @@
 package org.jmagic.actions;
 
-import org.jmagic.actions.validation.rules.cards.IsAlreadyAttached;
+import org.jmagic.actions.validation.rules.cards.IsAttached;
 import org.jmagic.actions.validation.rules.players.CardsAreInAnyField;
 import org.jmagic.actions.validation.rules.players.active.HasCardsInField;
 import org.jmagic.core.cards.ICard;
@@ -78,7 +78,7 @@ public class AttachAction extends Action {
     @Override
     public ValidationRule validationRules() {
         return And(
-            Not(new IsAlreadyAttached(card)),
+            Not(new IsAttached(card)),
             new HasCardsInField(card),
             new CardsAreInAnyField(new ArrayList<>(targets)));
     }
