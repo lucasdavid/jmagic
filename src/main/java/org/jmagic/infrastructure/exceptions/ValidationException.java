@@ -10,13 +10,6 @@ package org.jmagic.infrastructure.exceptions;
 public class ValidationException extends JMagicException {
 
     /**
-     * Creates a new instance of <code>JMagicException</code> without
-     * detail message.
-     */
-    public ValidationException() {
-    }
-
-    /**
      * Constructs an instance of <code>JMagicException</code> with the
      * specified detail message.
      *

@@ -10,13 +10,6 @@ package org.jmagic.infrastructure.exceptions;
 public class JMagicException extends Exception {
 
     /**
-     * Creates a new instance of <code>JMagicException</code> without
-     * detail message.
-     */
-    public JMagicException() {
-    }
-
-    /**
      * Constructs an instance of <code>JMagicException</code> with the
      * specified detail message.
      *

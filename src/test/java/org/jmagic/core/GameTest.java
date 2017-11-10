@@ -71,32 +71,31 @@ class GameTest {
     void testRunStress() {
         Random r = new Random();
         DeckBuilder b = new DeckBuilder(20, r);
-        Game g = new Game(
-                List.of(new NaivePlayer("player-1"),
-                        new NaivePlayer("player-2")),
-                List.of(b.random(),
-                        b.random()),
-                1000,
-                List.of(
-                        new LooseIfDrawingFromEmptyDeck(),
-                        new LooseOnNullAction(),
-                        new LooseOnActTimeout(1000),
-                        new LooseOnInvalidActionAttempt(),
-                        new LooseOnIllegalActionAttempt(
-                                DiscardAction.class,
-                                DrawAction.class,
-                                AdvanceGameAction.class,
-                                PlayAction.class,
-                                AttachAction.class,
-                                UntapAction.class,
-                                InitialDrawAction.class,
-                                DeclareAttackersAction.class,
-                                DeclareBlockersAction.class,
-                                ComputeDamageAction.class),
-                        new PassOrFinishIfLost(),
-                        new WinIfLastPlayerAlive()));
 
-        g.run();
+        new Game(
+            List.of(new NaivePlayer("player-1"),
+                    new NaivePlayer("player-2")),
+            List.of(b.random(),
+                    b.random()),
+            1000,
+            List.of(new LooseIfDrawingFromEmptyDeck(),
+                    new LooseOnNullAction(),
+                    new LooseOnActTimeout(1000),
+                    new LooseOnInvalidActionAttempt(),
+                    new LooseOnIllegalActionAttempt(
+                        DiscardAction.class,
+                        DrawAction.class,
+                        AdvanceGameAction.class,
+                        PlayAction.class,
+                        AttachAction.class,
+                        UntapAction.class,
+                        InitialDrawAction.class,
+                        DeclareAttackersAction.class,
+                        DeclareBlockersAction.class,
+                        ComputeDamageAction.class),
+                    new PassOrFinishIfLost(),
+                    new WinIfLastPlayerAlive()))
+            .run();
     }
 
     class TestPlayer extends Player {
