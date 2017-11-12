@@ -26,12 +26,13 @@ public class GameBuilder {
     private final List<Observer> observers;
     private final int playersInitialLife;
     private final int numberOfCardsForEachPlayer;
-    private final long playerActTimeout;
+    private final double playerActTimeout;
     private final Random random;
 
     public GameBuilder(List<Player> players,
                        int playersInitialLife,
-                       int numberOfCardsForEachPlayer, long playerActTimeout,
+                       int numberOfCardsForEachPlayer,
+                       double playerActTimeout,
                        List<Observer> observers, Random random) {
         this(players,
             IntStream
@@ -49,7 +50,7 @@ public class GameBuilder {
     }
 
     public GameBuilder(List<Player> players, List<Set<BasicLands>> deckColors, int playersInitialLife,
-                       int numberOfCardsForEachPlayer, long playerActTimeout,
+                       int numberOfCardsForEachPlayer, double playerActTimeout,
                        List<Observer> observers, Random random) {
         this.players = players;
         this.deckColors = deckColors;

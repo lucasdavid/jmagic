@@ -7,7 +7,6 @@ import org.jmagic.observers.*;
 import org.jmagic.players.RandomPlayer;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -25,24 +24,14 @@ public class Runner {
 
     public static final Logger LOG = Logger.getLogger(Runner.class.getName());
 
-    static {
-        InputStream stream = Runner.class
-                .getClassLoader()
-                .getResourceAsStream("game-logging.properties");
-        try {
-            LogManager.getLogManager().readConfiguration(stream);
-        } catch (IOException e) {
-        }
-    }
-
-    public static final int SEED = 48;
+    public static final int SEED = 42;
     public static final int N_MATCHES = 1;
     public static final int N_PLAYERS = 2;
     public static final int PLAYERS_INITIAL_LIFE = 20;
     public static final int N_CARDS = 40;
-    public static final long PLAYER_ACT_TIMEOUT = 1000;
+    public static final double PLAYER_ACT_TIMEOUT = 1.;
     public static final List<Observer> OBSERVERS = Arrays.asList(
-        new HumanObserver(1.0),
+        new HumanObserver(1.),
         new LooseIfDrawingFromEmptyDeck(),
         new LooseOnNullAction(),
         new LooseOnActTimeout(PLAYER_ACT_TIMEOUT),
@@ -65,11 +54,11 @@ public class Runner {
     private final int numberOfMatches;
     private final int numberOfPlayers;
     private final int numberOfCardsForEachPlayer;
-    private final long playerActTimeout;
+    private final double playerActTimeout;
     private final List<Observer> observers;
 
     public Runner(int numberOfMatches, int numberOfPlayers, int numberOfCardsForEachPlayer,
-                   long playerActTimeout, List<Observer> observers, int seed) {
+                  double playerActTimeout, List<Observer> observers, int seed) {
         this.numberOfMatches = numberOfMatches;
         this.numberOfPlayers = numberOfPlayers;
         this.numberOfCardsForEachPlayer = numberOfCardsForEachPlayer;
@@ -79,6 +68,12 @@ public class Runner {
     }
 
     public void run() {
+        try {
+            LogManager.getLogManager().readConfiguration(getClass()
+                .getClassLoader()
+                .getResourceAsStream("game-logging.properties"));
+        } catch (IOException ignored) { }
+
         Random r = new Random(seed);
 
         GameBuilder gameBuilder = new GameBuilder(
@@ -99,6 +94,6 @@ public class Runner {
 
     public static void main(String[] args) {
         new Runner(N_MATCHES, N_PLAYERS, N_CARDS, PLAYER_ACT_TIMEOUT, OBSERVERS, SEED)
-                .run();
+            .run();
     }
 }

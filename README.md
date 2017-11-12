@@ -21,20 +21,21 @@ documentation.
 You can have a random game by executing the `Runner` class.
 Tweak its attributes to personalize your game instance. For instance:
 
- * Altering `Runner.N_CARDS` from `40` to `80` will result in all players
-   starting the game with 80 cards on their decks.
- * Removing `AttachAction.class` entry from the `LooseOnIllegalActionAttempt`
-   instantiation in `Runner.OBSERVERS` will prevent all players from attaching
-   cards to others.
+ * change the parameter `seconds` in `HumanObserver` constructor to slow or
+   speed the game up
+ * modify `Runner.N_CARDS` from `40` to `80` to have all players
+   starting the game with 80 cards on their decks
+ * remove `AttachAction.class` entry from the `LooseOnIllegalActionAttempt`
+   instantiation in `Runner.OBSERVERS` to prevent all players from attaching
+   cards
 
-For more flexible behavior, check the constructors available at
-`Game` class.
+For more flexible behavior, check the constructors available at `Game` class.
 
 ### Basic Mechanics
 
-A `Game` represents a Game of org.games.jorg.games.jmagic.org.games.jmagic. It contains the current state
-of the world (an instance of `State`), the players in the
-game and observers (instances of `Observer`), which are
+A `Game` represents a Game of org.games.jorg.games.jmagic.org.games.jmagic.
+It contains the current state of the world (an instance of `State`), the
+players in the game and observers (instances of `Observer`), which are
 responsible for keeping the game consistent.
 
 At every iteration, the `Game` object will retrieve who's the active `Player`
