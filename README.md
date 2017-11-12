@@ -33,7 +33,7 @@ For more flexible behavior, check the constructors available at `Game` class.
 
 ### Basic Mechanics
 
-A `Game` represents a Game of org.games.jorg.games.jmagic.org.games.jmagic.
+A `Game` represents a game of Magic.
 It contains the current state of the world (an instance of `State`), the
 players in the game and observers (instances of `Observer`), which are
 responsible for keeping the game consistent.
@@ -45,20 +45,18 @@ in the current game state and ask them for an `Action` that can modify its
 #### Players
 
 Like in a real match, players are required to do ALL the work. That includes
-drawing, passing their turn and computing the damage. These actions can be
+drawing, passing their turn and even computing the damage. These actions can be
 performed by simply instantiating an object of `Action`
-and returning it to the Game object, which will pass it to its observers for
+and returning it to the `Game` object, which will pass it onto its observers for
 validation and, finally, commit the action.
 
 To play a game using **your very own** player, simply create a class extending
-from `Player` and implement the method
-`Action YourPlayerClass#act(State state)`. Be aware tough: this game requires
-your player to handle ALL actions, including drawing, passing, computing.
+from `Player` and implement the method `Action YourPlayerClass#act(State state)`.
 
 ##### Basic Players
 
 If you want to make your life a little bit easier when creating your own
-player, just extend one of the classes in `org.games.jorg.games.jmagic.org.games.jmagic.players` package and override
+player, just extend one of the classes in `jmagic.players` package and override
 the `Player#act(State state)` method. With that, handle the game states you
 want and delegate the rest to the superior player. E.x.:
 
@@ -85,7 +83,7 @@ class MySimplePlayer extends RandomPlayer {
 If you want to handle ALL cases, you can simply extend `Player`.
 
 Suppose `State current` is the current state of the game, `MyPlayer dylan` is
-the current turn's player and it's his drawing phase. The Game will ask
+the current turn's player and it's his drawing phase. The `Game` will ask
 `dylan` for an `Action` by calling the `dylan.act(current)` method.
 
 An implementation that would correctly draw a card from dylan's deck is this:
@@ -114,13 +112,13 @@ must, therefore, check if:
  3. He didn't draw already.
 
 If all of these conditions are true, he will return an instance of
-`DrawAction`, which will be read by the Game object and finally modify
+`DrawAction`, which will be read by the `Game` object and finally modify
 the game state. Otherwise, Dylan won't know what to do and will simply
 request the game to advance with `AdvanceGameAction`.
 
 **Note:** although this implementation correctly draws from the deck,
 it does not cover many other important actions. Read the implementations
-in [org.games.jorg.games.jmagic.org.games.jmagic.players](src/org.games.jorg.games.jmagic.magic/players) package for more insight.
+in the [players](src/main/java/org/jmagic/players) package for more insight.
 
 
 ## Docs
@@ -138,8 +136,8 @@ At every iteration of the `Game`, an action is requested from the active
 must implement this contract and act accordingly to the current state of the
 game, described by its parameter `State state`.
 
-For more information on how actions work, check out the many examples in
-[org.games.jorg.games.jmagic.org.games.jmagic.actions](src/org.games.jorg.games.jmagic.magic/actions).
+For more information on how actions work, check out the many examples in the
+[actions](src/main/java/org/jmagic/actions) package.
 
 ### Observers
 
@@ -148,7 +146,7 @@ Twice every iteration (before the active player's action and after it), the
 game will deliver the current state to each observer, which in turn will modify
 it at will.
 
-Passing a `List` of `Observers` to a `Game` construtor is a way to add
+Passing a `List` of `Observers` to a `Game` constructor is a way to add
 constrains to that game. For example:
 
 ```Java
@@ -161,8 +159,8 @@ Game game = new Game(players, playersCards, playerActTimeout, List.of(
 This game will disqualify players that attempt to draw from an empty deck
 **and** the ones that failed to return with an Action in less than 3 seconds.
 
-For more information on how observers work, check out the many examples at
-[org.games.jorg.games.jmagic.org.games.jmagic.observers](src/org.games.jorg.games.jmagic.magic/observers).
+For more information on how observers work, check out the many examples in the
+[observers](src/main/java/org/jmagic/observers) package.
 
 ### Validation
 
@@ -222,7 +220,7 @@ If it's not, the player will either automatically pass or be disqualified.
 In the example above, `DrawAction` will only be valid during DRAW turn steps!
 
 Finally, you can compose rules using a few connectives in
-[org.games.jorg.games.jmagic.org.games.jmagic.infrastructure.validation.basic](src/org.games.jorg.games.jmagic.magic/infrastructure/validation/basic),
+[infrastructure.validation.basic](src/main/java/org/jmagic/infrastructure/validation/basic),
 such as `And`, `Or` and `Not`:
 
 ```Java
@@ -244,5 +242,5 @@ public final class DrawAction extends Action {
 ```
 
 Notice that these connectives are merely sub-classes of `ValidationRule`, and
-the static methods in Connectives class are justs aliases to the construction
+the static methods in Connectives class are just aliases to the construction
 of a connective object.
