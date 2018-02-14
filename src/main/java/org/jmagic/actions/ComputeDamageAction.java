@@ -54,13 +54,13 @@ public final class ComputeDamageAction extends Action {
 
             Combat c = new Combat().execute();
 
-            ps.set(ps.indexOf(p), new State.PlayerState(p.player, p.life(), p.maxLife(),
+            ps.set(ps.indexOf(p), new State.PlayerState(p.player, p.life(), p.originalLife(),
                 p.deck, p.hand,
                 attacker.isAlive() ? p.field.update(attacker) : p.field.remove(attacker),
                 attacker.isAlive() ? p.graveyard : p.graveyard.add(attacker),
                 p.attackers, p.blockers, p.playing));
 
-            ps.set(ps.indexOf(t), new State.PlayerState(t.player, t.life(), t.maxLife(),
+            ps.set(ps.indexOf(t), new State.PlayerState(t.player, t.life(), t.originalLife(),
                 t.deck, t.hand,
                 t.field
                     .update(new ArrayList<>(blockers))

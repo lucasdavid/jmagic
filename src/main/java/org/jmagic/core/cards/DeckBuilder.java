@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 /**
  * Deck Builder.
  * <p>
- * Build randomState decks for players.
+ * Build random decks for players.
  *
  * @author ldavid
  */

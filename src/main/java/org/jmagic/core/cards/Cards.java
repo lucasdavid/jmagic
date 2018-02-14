@@ -9,8 +9,22 @@ import java.util.stream.Collectors;
 /**
  * Cards.
  * <p>
- * Hides a collection of cards. Can be used to represent
- * decks, hands, fields and graveyards.
+ * Hides an ordered collection of cards.
+ * Can be used to represent decks, hands, fields and graveyards.
+ *
+ * Usage:
+ *
+ * <pre>
+ * {@code
+ * Cards deck = new Cards(new Land(...), new Creature(...), new Boost(...), ...);
+ * Cards hand = new Cards(new Land(...), new Creature(...), new Boost(...));
+ *
+ * State.PlayerState p = new State.PlayerState(
+ *     new RandomPlayer("jane"), 20, 20,
+ *     deck, hand, Cards.EMPTY, Cards.EMPTY,
+ *     ...);
+ * }
+ * </pre>
  */
 public class Cards {
 
@@ -22,7 +36,7 @@ public class Cards {
         this(new ArrayList<>());
     }
 
-    public Cards(ICard[] cards) {
+    public Cards(ICard... cards) {
         this(Arrays.asList(cards));
     }
 

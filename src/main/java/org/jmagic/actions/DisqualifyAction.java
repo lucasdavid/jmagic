@@ -28,7 +28,7 @@ public class DisqualifyAction extends Action {
 
         players.set(
             players.indexOf(p),
-            new State.PlayerState(p.player, p.life(), p.maxLife(), p.deck,
+            new State.PlayerState(p.player, p.life(), p.originalLife(), p.deck,
                 p.hand, p.field, p.graveyard, p.attackers, p.blockers, false));
 
         return new State(players, state.turn, state.step, state.done,

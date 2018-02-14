@@ -49,7 +49,7 @@ public final class DrawAction extends Action {
         hand.add(deck.remove(0));
 
         ps.set(ps.indexOf(p),
-                new State.PlayerState(p.player, p.life(), p.maxLife(),
+                new State.PlayerState(p.player, p.life(), p.originalLife(),
                         new Cards(deck), new Cards(hand), p.field, p.graveyard,
                         p.attackers, p.blockers, p.playing));
 

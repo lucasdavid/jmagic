@@ -42,7 +42,7 @@ public class HasPerformedThisTurn extends ValidationRule {
 
     @Override
     public String toString() {
-        return String.format("%s(%s, %s)", super.toString(), actionClass,
+        return String.format("%s(%s, %s)", super.toString(), actionClass.getSimpleName(),
             player == null ? "active" : player);
     }
 }

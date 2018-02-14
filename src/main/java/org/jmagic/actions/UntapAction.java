@@ -35,7 +35,7 @@ public class UntapAction extends Action {
     public State update(State state) {
         List<State.PlayerState> players = state.playerStates().stream()
             .map(s -> s.isAlive() && s.player.equals(this.player)
-                ? new State.PlayerState(s.player, s.life(), s.maxLife(),
+                ? new State.PlayerState(s.player, s.life(), s.originalLife(),
                 s.deck, s.hand,
                 new Cards(s.field.cards().stream()
                     .map(c -> c instanceof ITappable ? ((ITappable) c).untap() : c)

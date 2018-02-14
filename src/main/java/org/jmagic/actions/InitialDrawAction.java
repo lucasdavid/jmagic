@@ -51,7 +51,7 @@ public final class InitialDrawAction extends Action {
         for (int i = 0; i < n; i++) hand.add(deck.remove(0));
 
         List<State.PlayerState> ps = state.playerStates();
-        ps.set(ps.indexOf(p), new State.PlayerState(p.player, p.life(), p.maxLife(),
+        ps.set(ps.indexOf(p), new State.PlayerState(p.player, p.life(), p.originalLife(),
             new Cards(deck), new Cards(hand), p.field, p.graveyard,
             p.attackers, p.blockers, p.playing));
 

@@ -27,25 +27,12 @@ public class RandomPlayer extends NaivePlayer {
 
     private final Random random;
 
-    public RandomPlayer() {
-        this(new MulliganExpert());
-    }
-
-    public RandomPlayer(Random random) {
-        this(new MulliganExpert(), random);
-    }
-
     public RandomPlayer(String name) {
-        this(name, new MulliganExpert(), new Random());
+        this(name, new Random());
     }
 
-    public RandomPlayer(IExpert mulliganExpert) {
-        this(mulliganExpert, new Random());
-    }
-
-    public RandomPlayer(IExpert mulliganExpert, Random random) {
-        super(mulliganExpert);
-        this.random = random;
+    public RandomPlayer(String name, Random random) {
+        this(name, new MulliganExpert(), random);
     }
 
     public RandomPlayer(String name, IExpert mulliganExpert, Random random) {

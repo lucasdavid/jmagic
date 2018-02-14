@@ -15,7 +15,7 @@ public interface IDamageable extends ITargetable {
      */
     int effectiveLife();
 
-    int maxLife();
+    int originalLife();
 
     /**
      * @return the base max-life plus any increase/decrease

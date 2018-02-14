@@ -42,7 +42,7 @@ public final class DiscardAction extends Action {
         graveyard.add(hand.remove(hand.indexOf(card)));
 
         playersInfo.add(state.turnsPlayerIndex,
-            new PlayerState(p.player, p.life(), p.maxLife(),
+            new PlayerState(p.player, p.life(), p.originalLife(),
                 p.deck, new Cards(hand), p.field, new Cards(graveyard),
                 p.attackers, p.blockers, p.playing));
 

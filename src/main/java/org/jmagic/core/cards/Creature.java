@@ -53,7 +53,7 @@ public class Creature extends Damager implements IDamageable, IAttachable, ITapp
     }
 
     @Override
-    public int maxLife() {
+    public int originalLife() {
         return originalLife;
     }
 
@@ -73,7 +73,7 @@ public class Creature extends Damager implements IDamageable, IAttachable, ITapp
      */
     @Override
     public int effectiveOriginalLife() {
-        return maxLife() + attachments.stream()
+        return originalLife() + attachments.stream()
                 .filter(a -> a instanceof ILifeBoost)
                 .mapToInt(a -> ((ILifeBoost) a).lifeIncrease())
                 .sum();

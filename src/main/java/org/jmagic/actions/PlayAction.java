@@ -63,7 +63,7 @@ public class PlayAction extends Action {
         field.removeAll(landsUsed);
         field.addAll(landsUsed);
 
-        p = new State.PlayerState(p.player, p.life(), p.maxLife(),
+        p = new State.PlayerState(p.player, p.life(), p.originalLife(),
             p.deck, new Cards(hand), new Cards(field), p.graveyard,
             p.attackers, p.blockers, p.playing);
         playerStates.add(state.turnsPlayerIndex, p);

@@ -167,18 +167,18 @@ public class State {
         public final Map<Creature, Player> attackers;
         public final Map<Creature, Creature> blockers;
         private final int life;
-        private final int maxLife;
+        private final int originalLife;
 
         PlayerState(Player player, Cards deck, int initialLife) {
             this(player, initialLife, initialLife, deck, Cards.EMPTY, Cards.EMPTY, Cards.EMPTY,
                     Collections.emptyMap(), Collections.emptyMap(), true);
         }
 
-        public PlayerState(Player player, int life, int maxLife, Cards deck, Cards hand, Cards field, Cards graveyard,
+        public PlayerState(Player player, int life, int originalLife, Cards deck, Cards hand, Cards field, Cards graveyard,
                            Map<Creature, Player> attackers, Map<Creature, Creature> blockers, boolean playing) {
             this.player = player;
             this.life = life;
-            this.maxLife = maxLife;
+            this.originalLife = originalLife;
             this.deck = deck;
             this.hand = hand;
             this.field = field;
@@ -191,7 +191,7 @@ public class State {
 
         @Override
         public PlayerState takeDamage(int damage) {
-            return new PlayerState(player, life - damage, maxLife,
+            return new PlayerState(player, life - damage, originalLife,
                     deck, hand, field, graveyard, attackers, blockers, playing);
         }
 
@@ -206,13 +206,13 @@ public class State {
         }
 
         @Override
-        public int maxLife() {
-            return maxLife;
+        public int originalLife() {
+            return originalLife;
         }
 
         @Override
         public int effectiveOriginalLife() {
-            return maxLife();
+            return originalLife();
         }
 
         @Override
@@ -221,12 +221,12 @@ public class State {
         }
 
         private PlayerState playerViewModel() {
-            return new PlayerState(player, life, maxLife, null,
+            return new PlayerState(player, life, originalLife, null,
                     hand, field, graveyard, attackers, blockers, playing);
         }
 
         private PlayerState opponentViewModel() {
-            return new PlayerState(player, life, maxLife, null, null,
+            return new PlayerState(player, life, originalLife, null, null,
                     field, graveyard, attackers, blockers, playing);
         }
 

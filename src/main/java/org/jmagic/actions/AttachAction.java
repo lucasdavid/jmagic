@@ -58,7 +58,7 @@ public class AttachAction extends Action {
                 .get();
 
             ps.set(ps.indexOf(p),
-                new State.PlayerState(p.player, p.life(), p.maxLife(),
+                new State.PlayerState(p.player, p.life(), p.originalLife(),
                     p.deck, p.hand,
                     p.field.update(((IAttachable) t).attach(validatedCard)),
                     p.graveyard, p.attackers, p.blockers, p.playing)
@@ -66,7 +66,7 @@ public class AttachAction extends Action {
         }
 
         ps.set(ps.indexOf(a),
-            new State.PlayerState(a.player, a.life(), a.maxLife(), a.deck,
+            new State.PlayerState(a.player, a.life(), a.originalLife(), a.deck,
                 a.hand, a.field.remove(validatedCard), a.graveyard,
                 a.attackers, a.blockers, a.playing));
 

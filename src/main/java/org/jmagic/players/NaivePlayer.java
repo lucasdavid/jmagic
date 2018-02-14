@@ -23,10 +23,6 @@ import java.util.stream.Stream;
 
 public class NaivePlayer extends BasicPlayer {
 
-    public NaivePlayer(IExpert mulliganExpert) {
-        super(mulliganExpert);
-    }
-
     public NaivePlayer(String name) {
         this(name, new MulliganExpert());
     }

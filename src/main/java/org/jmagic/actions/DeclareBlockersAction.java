@@ -41,7 +41,7 @@ public final class DeclareBlockersAction extends Action {
         State.PlayerState p = state.activePlayerState();
 
         ps.set(ps.indexOf(p), new State.PlayerState(p.player,
-                p.life(), p.maxLife(),
+                p.life(), p.originalLife(),
                 p.deck, p.hand, p.field, p.graveyard,
                 p.attackers, this.blockers, p.playing));
 

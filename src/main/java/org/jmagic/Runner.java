@@ -25,13 +25,15 @@ public class Runner {
     public static final Logger LOG = Logger.getLogger(Runner.class.getName());
 
     public static final int SEED = 42;
-    public static final int N_MATCHES = 1;
-    public static final int N_PLAYERS = 2;
+
+    public static final int MATCHES = 1;
     public static final int PLAYERS_INITIAL_LIFE = 20;
-    public static final int N_CARDS = 40;
+    public static final int CARDS = 40;
     public static final double PLAYER_ACT_TIMEOUT = 1.;
+
+    public static final List<String> PLAYERS = List.of("Lucas", "Karen");
     public static final List<Observer> OBSERVERS = Arrays.asList(
-        new HumanObserver(1.),
+        new HumanObserver(.5),
         new LooseIfDrawingFromEmptyDeck(),
         new LooseOnNullAction(),
         new LooseOnActTimeout(PLAYER_ACT_TIMEOUT),
@@ -52,17 +54,17 @@ public class Runner {
 
     private final int seed;
     private final int numberOfMatches;
-    private final int numberOfPlayers;
     private final int numberOfCardsForEachPlayer;
     private final double playerActTimeout;
+    private final List<String> players;
     private final List<Observer> observers;
 
-    public Runner(int numberOfMatches, int numberOfPlayers, int numberOfCardsForEachPlayer,
-                  double playerActTimeout, List<Observer> observers, int seed) {
+    public Runner(int numberOfMatches, int numberOfCardsForEachPlayer,
+                  double playerActTimeout, List<String> players, List<Observer> observers, int seed) {
         this.numberOfMatches = numberOfMatches;
-        this.numberOfPlayers = numberOfPlayers;
         this.numberOfCardsForEachPlayer = numberOfCardsForEachPlayer;
         this.playerActTimeout = playerActTimeout;
+        this.players = players;
         this.observers = observers;
         this.seed = seed;
     }
@@ -77,8 +79,8 @@ public class Runner {
         Random r = new Random(seed);
 
         GameBuilder gameBuilder = new GameBuilder(
-            IntStream.range(0, numberOfPlayers)
-                .mapToObj(i -> new RandomPlayer(r))
+            players.stream()
+                .map(name -> new RandomPlayer(name, r))
                 .collect(Collectors.toList()),
             PLAYERS_INITIAL_LIFE, numberOfCardsForEachPlayer, playerActTimeout, observers, r);
 
@@ -93,7 +95,7 @@ public class Runner {
     }
 
     public static void main(String[] args) {
-        new Runner(N_MATCHES, N_PLAYERS, N_CARDS, PLAYER_ACT_TIMEOUT, OBSERVERS, SEED)
+        new Runner(MATCHES, CARDS, PLAYER_ACT_TIMEOUT, PLAYERS, OBSERVERS, SEED)
             .run();
     }
 }

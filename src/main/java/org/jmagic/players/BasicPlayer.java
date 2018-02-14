@@ -25,11 +25,6 @@ public class BasicPlayer extends Player {
 
     private final IExpert mulliganExpert;
 
-    public BasicPlayer(IExpert mulliganExpert) {
-        super();
-        this.mulliganExpert = mulliganExpert;
-    }
-
     public BasicPlayer(String name, IExpert mulliganExpert) {
         super(name);
         this.mulliganExpert = mulliganExpert;

@@ -101,7 +101,7 @@ class GameTest {
 
     class TestPlayer extends Player {
 
-        public TestPlayer(String name) {
+        TestPlayer(String name) {
             super(name);
         }
 
