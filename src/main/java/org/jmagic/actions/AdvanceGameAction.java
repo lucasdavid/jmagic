@@ -1,6 +1,5 @@
 package org.jmagic.actions;
 
-import org.jmagic.actions.validation.rules.game.TurnIs;
 import org.jmagic.actions.validation.rules.game.TurnsStepIs;
 import org.jmagic.actions.validation.rules.players.HasPerformedThisTurn;
 import org.jmagic.actions.validation.rules.players.PlayersOtherThanActiveAreAlive;
@@ -11,7 +10,7 @@ import org.jmagic.infrastructure.validation.rules.ValidationRule;
 
 import java.util.List;
 
-import static org.jmagic.infrastructure.validation.basic.Connectives.*;
+import static org.jmagic.infrastructure.validation.rules.BasicRules.*;
 
 /**
  * Advance Turn Action.

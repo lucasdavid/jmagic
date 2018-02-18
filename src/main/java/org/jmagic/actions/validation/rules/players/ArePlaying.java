@@ -1,19 +1,19 @@
 package org.jmagic.actions.validation.rules.players;
 
-import org.jmagic.players.Player;
 import org.jmagic.core.states.State;
 import org.jmagic.infrastructure.validation.rules.ValidationRule;
+import org.jmagic.players.Player;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Set;
 
 
 public class ArePlaying extends ValidationRule {
 
     private final Collection<Player> players;
 
-    public ArePlaying(Player player) {
-        this(Set.of(player));
+    public ArePlaying(Player... players) {
+        this(Arrays.asList(players));
     }
 
     public ArePlaying(Collection<Player> players) {

@@ -178,14 +178,8 @@ public class Creature extends Damager implements IDamageable, IAttachable, ITapp
                 ? String.format(" d:%d l:%d", effectiveDamage(), effectiveLife())
                 : String.format(" d:%d l:%d/%d", effectiveDamage(), effectiveLife(), effectiveOriginalLife()));
 
-        if (detailed) {
-            if (!properties().isEmpty()) {
-                description += String.format(" p:{%s}", properties());
-            }
-
-            if (!attachments.isEmpty()) {
-                description += String.format(" a:{%s}", attachments);
-            }
+        if (detailed && !attachments.isEmpty()) {
+                description += String.format(" a:%s", attachments);
         }
 
         return description;

@@ -1,12 +1,13 @@
-package org.jmagic.infrastructure.validation.basic;
-
-import org.jmagic.infrastructure.validation.rules.ValidationRule;
+package org.jmagic.infrastructure.validation.rules;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * Connective Base Class.
+ *
+ * Defines a composed validation rule.
+ * Check its subclasses for examples.
  *
  * @author ldavid
  */
@@ -21,13 +22,13 @@ abstract class Connective extends ValidationRule {
     public boolean equals(Object o) {
         try {
             return this == o || this.innerRules.equals(((Connective) o).innerRules);
-        } catch (ClassCastException ex) {
+        } catch (NullPointerException | ClassCastException ex) {
             return false;
         }
     }
 
     @Override
     public String toString() {
-        return String.format("%s(%s)", getClass().getSimpleName(), innerRules);
+        return String.format("%s%s", getClass().getSimpleName(), innerRules);
     }
 }

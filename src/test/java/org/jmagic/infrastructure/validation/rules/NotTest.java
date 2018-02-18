@@ -1,6 +1,7 @@
-package org.jmagic.infrastructure.validation.basic;
+package org.jmagic.infrastructure.validation.rules;
 
 import org.jmagic.core.states.State;
+import org.jmagic.infrastructure.validation.rules.Not;
 import org.jmagic.infrastructure.validation.rules.ValidationRule;
 import org.junit.jupiter.api.Test;
 

@@ -18,11 +18,11 @@ public class LooseOnInvalidActionAttempt extends Observer {
     public State afterPlayerAct(State state, Action action, long actStartedAt, long actEndedAt) {
         try {
             action.raiseForErrors(state);
-        } catch (ValidationException ex) {
-            LOG.warning(String.format("%s lost because they are attempting an invalid action: %s (details: %s)",
-                state.activePlayerState().player, action, ex.getMessage()));
+        } catch (ValidationException e) {
+            LOG.warning(String.format("%s lost because they are attempting an invalid action `%s` (%s)",
+                state.activePlayerState().player, action, e.getMessage()));
 
-            return _disqualify(state);
+            return disqualify(state);
         }
 
         return state;

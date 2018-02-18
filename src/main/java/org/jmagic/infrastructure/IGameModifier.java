@@ -47,4 +47,5 @@ public interface IGameModifier {
     default boolean isValid(State state) {
         return validationRules().isValid(state);
     }
+
 }

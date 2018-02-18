@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import static org.jmagic.infrastructure.validation.basic.Connectives.*;
+import static org.jmagic.infrastructure.validation.rules.BasicRules.*;
 
 /**
  * Play Action.

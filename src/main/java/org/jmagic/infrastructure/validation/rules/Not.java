@@ -1,11 +1,18 @@
-package org.jmagic.infrastructure.validation.basic;
+package org.jmagic.infrastructure.validation.rules;
 
 import org.jmagic.core.states.State;
-import org.jmagic.infrastructure.validation.rules.ValidationRule;
 
 /**
- * Not Validation Rule Base.
+ * Not Validation Rule.
  * <p>
+ * Define the logical-not basic rule.
+ *
+ * Usage example:
+ * <pre>
+ * {@code
+ * ValidationRule r = new Not(new HasNotPlayedALandThisTurn());
+ * }
+ * </pre>
  *
  * @author ldavid
  */
@@ -21,4 +28,5 @@ public class Not extends Connective {
             errors.add(String.format("Not(%s) failed", innerRules.get(0)));
         }
     }
+
 }

@@ -1,14 +1,19 @@
-package org.jmagic.infrastructure.validation.basic;
+package org.jmagic.infrastructure.validation.rules;
 
 import org.jmagic.core.states.State;
-import org.jmagic.infrastructure.validation.rules.ValidationRule;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
- * And Validation Rule Base.
+ * And Validation Rule.
  * <p>
+ * Define the logical-and connective.
+ *
+ * Usage example:
+ * <pre>
+ * {@code
+ * ValidationRule r = new And(new HasCardInHand(card),
+ *                            new HasLandsToPlayIt(card));
+ * }
+ * </pre>
  *
  * @author ldavid
  */

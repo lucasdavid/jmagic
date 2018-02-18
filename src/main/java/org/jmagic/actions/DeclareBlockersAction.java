@@ -16,8 +16,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static org.jmagic.infrastructure.validation.basic.Connectives.And;
-import static org.jmagic.infrastructure.validation.basic.Connectives.Not;
+import static org.jmagic.infrastructure.validation.rules.BasicRules.And;
+import static org.jmagic.infrastructure.validation.rules.BasicRules.Not;
 
 /**
  * Declare Defenders Action.

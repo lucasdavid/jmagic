@@ -68,10 +68,10 @@ public class Game {
             observers.add(new LooseOnInvalidActionAttempt());
         }
 
-        // Place `PassOrFinishIfLost` and `WinIfLastPlayerAlive` as the observers.
+        // Place `PassOrFinishIfLost` and `FinishIfLastPlayersAlive` as the observers.
         // This is important to the game logic, which must first kill players and then
         // check whether or not they are alive.
-        for (Class<? extends Observer> c : List.of(PassOrFinishIfLost.class, WinIfLastPlayerAlive.class)) {
+        for (Class<? extends Observer> c : List.of(PassOrFinishIfLost.class, FinishIfLastPlayersAlive.class)) {
             try {
                 Observer o = observers.stream()
                     .filter(c::isInstance).findFirst().orElse(c.getConstructor().newInstance());

@@ -1,15 +1,21 @@
-package org.jmagic.infrastructure.validation.basic;
+package org.jmagic.infrastructure.validation.rules;
 
 import org.jmagic.core.states.State;
-import org.jmagic.infrastructure.validation.rules.ValidationRule;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Or Validation Rule Base.
+ * Or Validation Rule.
  * <p>
+ * Define the logical-or connective.
+ *
+ * Usage example:
+ * <pre>
+ * {@code
+ * ValidationRule r = new Or(new HasCardInHand(card),
+ *                           new HasLandsToPlayIt(card));
+ * }
+ * </pre>
  *
  * @author ldavid
  */

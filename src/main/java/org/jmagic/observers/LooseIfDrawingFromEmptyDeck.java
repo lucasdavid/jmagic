@@ -24,7 +24,7 @@ public class LooseIfDrawingFromEmptyDeck extends Observer {
                     "%s lost because `LooseIfDrawingFromEmptyDeck` rule is active",
                     p.player));
 
-            return _disqualify(state, p.player);
+            return disqualify(state, p.player);
         }
 
         return state;

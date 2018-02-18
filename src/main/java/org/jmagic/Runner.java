@@ -50,7 +50,7 @@ public class Runner {
             DeclareBlockersAction.class,
             ComputeDamageAction.class),
         new PassOrFinishIfLost(),
-        new WinIfLastPlayerAlive());
+        new FinishIfLastPlayersAlive());
 
     private final int seed;
     private final int numberOfMatches;

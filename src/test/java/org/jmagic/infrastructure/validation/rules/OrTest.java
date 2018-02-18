@@ -1,6 +1,7 @@
-package org.jmagic.infrastructure.validation.basic;
+package org.jmagic.infrastructure.validation.rules;
 
 import org.jmagic.core.states.State;
+import org.jmagic.infrastructure.validation.rules.Or;
 import org.jmagic.infrastructure.validation.rules.ValidationRule;
 import org.junit.jupiter.api.Test;
 
@@ -8,28 +9,25 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * AndTest.
+ * OrTest.
  *
  * @author ldavid
  */
-class AndTest {
+class OrTest {
     @Test
     void onValidate() {
         ValidationRule rule;
 
-        rule = new And(new TestTrueRule());
+        rule = new Or(new TestTrueRule(), new TestTrueRule());
         assertTrue(rule.isValid(null));
 
-        rule = new And(new TestTrueRule(), new TestTrueRule());
+        rule = new Or(new TestTrueRule(), new TestTrueRule(), new TestFalseRule());
         assertTrue(rule.isValid(null));
 
-        rule = new And(new TestTrueRule(), new TestTrueRule(), new TestFalseRule());
+        rule = new Or(new TestFalseRule());
         assertFalse(rule.isValid(null));
 
-        rule = new And(new TestFalseRule());
-        assertFalse(rule.isValid(null));
-
-        rule = new And(new TestFalseRule(), new TestFalseRule(), new TestFalseRule());
+        rule = new Or(new TestFalseRule(), new TestFalseRule(), new TestFalseRule());
         assertFalse(rule.isValid(null));
     }
 

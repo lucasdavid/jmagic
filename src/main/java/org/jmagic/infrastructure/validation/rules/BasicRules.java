@@ -1,7 +1,6 @@
-package org.jmagic.infrastructure.validation.basic;
+package org.jmagic.infrastructure.validation.rules;
 
 import org.jmagic.core.states.State;
-import org.jmagic.infrastructure.validation.rules.ValidationRule;
 
 import java.util.function.Predicate;
 
@@ -10,7 +9,7 @@ import java.util.function.Predicate;
  *
  * @author ldavid
  */
-public abstract class Connectives {
+public abstract class BasicRules {
 
     public static ValidationRule Or(ValidationRule... innerRules) {
         return new Or(innerRules);

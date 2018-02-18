@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Vector;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * CustomCollectorsTest.
@@ -39,8 +39,18 @@ class CustomCollectorsTest {
     }
 
     @Test
-    void toImmutableList1() {
+    void toShuffledList() {
+        List<String> shuffled = originalList.stream().collect(CustomCollectors.toShuffledList());
+        assertNotNull(shuffled);
+        assertEquals(shuffled.size(), originalList.size());
+    }
 
+    @Test
+    void toShuffledList1() {
+        Random r = new Random(42);
+        List<String> shuffled = originalList.stream().collect(CustomCollectors.toShuffledList(r));
+        assertNotNull(shuffled);
+        assertEquals(shuffled.size(), originalList.size());
     }
 
 }

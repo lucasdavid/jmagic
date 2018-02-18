@@ -1,7 +1,7 @@
 package org.jmagic.infrastructure.validation.rules;
 
-import org.jmagic.infrastructure.exceptions.ValidationException;
 import org.jmagic.core.states.State;
+import org.jmagic.infrastructure.exceptions.ValidationException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +10,11 @@ import java.util.Optional;
 /**
  * Validation Rule Base.
  * <p>
- * Note: look for its subclasses.
+ * Defines base for rule-validation during a game execution. Rules can
+ * be defined by subclassing {@link ValidationRule} and overriding the
+ * {@link ValidationRule#onValidate(State)} method.
+ *
+ * Look for its subclasses for examples.
  *
  * @author ldavid
  */

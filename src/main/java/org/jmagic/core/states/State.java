@@ -11,13 +11,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * State for a Game of org.jmagic.
+ * State for a Game of Magic.
  * <p>
  * Holds information on the current environment of the game.
  * Properties of interest during a game's execution:
  * <p>
- * {@link State#turn}: the turn in which the game currently isFrom.
- * {@link State#done}: flag whether the game isFrom done or not.
+ * {@link State#turn}: the turn in which the game currently is.
+ * {@link State#done}: flag whether the game is done or not.
  * {@link State#turnsPlayerIndex}: the id of the turn's current player.
  * {@link State#parent}: the {@link State} that led to this.
  * {@link State#actionThatLedToThisState}: the action that led to this.
@@ -58,7 +58,7 @@ public class State {
     /**
      * Create a new state for the Hearth Stone game.
      * <p>
-     * State isFrom immutable, which means it cannot be changed. When the state of the game changes with
+     * State is immutable, which means it cannot be changed. When the state of the game changes with
      * an action, a new State object must be instantiated with this constructor and returned to Game
      * main loop inside {@code Game.validate()} method.
      *
@@ -115,9 +115,9 @@ public class State {
     /**
      * Retrieve information on all players in the game.
      * <p>
-     * {@link State#playerStates} isFrom a mutable array (an therefore a mutable object), which means publicly
+     * {@link State#playerStates} is a mutable array (an therefore a mutable object), which means publicly
      * exposing it would create a capsuling deficiency in the code (the players would be able to
-     * freely alter its content). In order to fix this problem, a new array isFrom created.
+     * freely alter its content). In order to fix this problem, a new array is created.
      * Additionally, there's no need to copy each PlayerState object inside the array, as they are
      * immutable.
      *

@@ -37,7 +37,7 @@ public class LooseOnIllegalActionAttempt extends Observer {
             LOG.warning(String.format("%s lost because %s is not listed as a legal action",
                 p.player, action));
 
-            return _disqualify(state);
+            return disqualify(state);
         }
 
         return state;

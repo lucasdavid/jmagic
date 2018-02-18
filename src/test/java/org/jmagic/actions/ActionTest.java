@@ -1,7 +1,7 @@
 package org.jmagic.actions;
 
 import org.jmagic.core.states.State;
-import org.jmagic.infrastructure.validation.basic.IsTrue;
+import org.jmagic.infrastructure.validation.rules.IsTrue;
 import org.jmagic.infrastructure.validation.rules.ValidationRule;
 import org.junit.jupiter.api.Test;
 

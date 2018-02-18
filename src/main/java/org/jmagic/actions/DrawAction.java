@@ -15,7 +15,7 @@ import org.jmagic.players.Player;
 import java.util.List;
 import java.util.Objects;
 
-import static org.jmagic.infrastructure.validation.basic.Connectives.And;
+import static org.jmagic.infrastructure.validation.rules.BasicRules.And;
 
 /**
  * Draw Action.

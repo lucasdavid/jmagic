@@ -1,7 +1,6 @@
-package org.jmagic.infrastructure.validation.basic;
+package org.jmagic.infrastructure.validation.rules;
 
 import org.jmagic.core.states.State;
-import org.jmagic.infrastructure.validation.rules.ValidationRule;
 
 import java.util.function.Predicate;
 
@@ -22,7 +21,7 @@ public class IsTrue extends ValidationRule {
     @Override
     public void onValidate(State state) {
         if (!this.predicate.test(state)) {
-            errors.add("predicate is not true: " + predicate.toString());
+            errors.add("predicate is not true: " + predicate.getClass().getSimpleName());
         }
     }
 
@@ -37,6 +36,7 @@ public class IsTrue extends ValidationRule {
 
     @Override
     public String toString() {
-        return String.format("IsTrue(%s) failed", predicate);
+        return String.format("%s(Predicate)",
+            getClass().getSimpleName());
     }
 }

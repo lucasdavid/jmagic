@@ -1,20 +1,20 @@
-package org.jmagic.infrastructure.validation.basic;
+package org.jmagic.infrastructure.validation.rules;
 
 import org.jmagic.core.states.State;
-import org.jmagic.infrastructure.validation.rules.ValidationRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * ConnectivesTest.
+ * BasicRulesTest.
  *
  * @author ldavid
  */
-class ConnectivesTest {
+class BasicRulesTest {
 
     private ValidationRule t1;
     private ValidationRule t2;
@@ -45,9 +45,16 @@ class ConnectivesTest {
     }
 
     @Test
+    void testSanity() {
+        assertNotNull(BasicRules.And());
+        assertNotNull(BasicRules.Or());
+        assertNotNull(BasicRules.Not(BasicRules.IsTrue(state -> false)));
+    }
+
+    @Test
     void or() {
         ValidationRule expected = new Or(t1, t2);
-        ValidationRule actual = Connectives.Or(t1, t2);
+        ValidationRule actual = BasicRules.Or(t1, t2);
 
         assertEquals(expected, actual);
     }
@@ -55,7 +62,7 @@ class ConnectivesTest {
     @Test
     void and() {
         ValidationRule expected = new And(t1, t2);
-        ValidationRule actual = Connectives.And(t1, t2);
+        ValidationRule actual = BasicRules.And(t1, t2);
 
         assertEquals(expected, actual);
     }
@@ -63,7 +70,7 @@ class ConnectivesTest {
     @Test
     void not() {
         ValidationRule expected = new Not(t1);
-        ValidationRule actual = Connectives.Not(t1);
+        ValidationRule actual = BasicRules.Not(t1);
 
         assertEquals(expected, actual);
     }
@@ -72,7 +79,7 @@ class ConnectivesTest {
     void isTrue() {
         Predicate<State> r = state -> true;
         ValidationRule expected = new IsTrue(r);
-        ValidationRule actual = Connectives.IsTrue(r);
+        ValidationRule actual = BasicRules.IsTrue(r);
 
         assertEquals(expected, actual);
     }

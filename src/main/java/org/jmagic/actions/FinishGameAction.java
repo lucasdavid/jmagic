@@ -4,7 +4,7 @@ import org.jmagic.infrastructure.validation.rules.ValidationRule;
 import org.jmagic.actions.validation.rules.game.GameIsFinished;
 import org.jmagic.core.states.State;
 
-import static org.jmagic.infrastructure.validation.basic.Connectives.Not;
+import static org.jmagic.infrastructure.validation.rules.BasicRules.Not;
 
 /**
  * Finish A Game Action.

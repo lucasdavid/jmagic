@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * @author ldavid
  */
-public class CustomCollectors {
+public abstract class CustomCollectors {
 
     public static <T, A extends List<T>> Collector<T, A, List<T>> toImmutableList(Supplier<A> collectionFactory) {
         return Collector.of(collectionFactory, List::add, (left, right) -> {
@@ -26,16 +26,20 @@ public class CustomCollectors {
 
     @SuppressWarnings("unchecked")
     public static <T> Collector<T, ?, List<T>> toShuffledList() {
-        return toShuffledList(new Random());
+        return toShuffledList(null);
     }
 
     public static <T> Collector<T, ?, List<T>> toShuffledList(Random random) {
         return Collectors.collectingAndThen(
-                Collectors.toList(),
-                list -> {
+            Collectors.toList(),
+            list -> {
+                if (random == null)
+                    Collections.shuffle(list);
+                else
                     Collections.shuffle(list, random);
-                    return list;
-                }
+
+                return list;
+            }
         );
     }
 }

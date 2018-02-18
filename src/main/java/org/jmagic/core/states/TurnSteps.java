@@ -14,7 +14,6 @@ public enum TurnSteps {
     MAIN_2(Phase.POST_COMBAT),
     END(Phase.END), CLEANUP(Phase.END);
 
-    private static TurnSteps[] vals = values();
     private Phase phase;
 
     TurnSteps(Phase phase) {
@@ -25,12 +24,13 @@ public enum TurnSteps {
         return this.phase;
     }
 
-    public boolean isFrom(Phase phase) {
+    public boolean in(Phase phase) {
         return this.phase == phase;
     }
 
     public TurnSteps next() {
-        return vals[(this.ordinal() + 1) % vals.length];
+        TurnSteps[] v = values();
+        return v[(this.ordinal() + 1) % v.length];
     }
 
     public boolean isFirst() {

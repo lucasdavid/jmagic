@@ -23,7 +23,7 @@ public class LooseOnNullAction extends Observer {
                     "(try `AdvanceGameAction` if your intention is to perform no actions)",
                 p.player));
 
-            return _disqualify(state);
+            return disqualify(state);
         }
 
         return state;

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static org.jmagic.infrastructure.validation.basic.Connectives.*;
+import static org.jmagic.infrastructure.validation.rules.BasicRules.*;
 
 /**
  * Declare Attackers Action.

@@ -65,8 +65,14 @@ public abstract class Card implements ICard {
     }
 
     public String toString(boolean detailed) {
-        return detailed
+        String description = detailed
             ? String.format("\"%s\" c:%s", name, cost)
             : String.format("\"%s\"", name);
+
+        if (detailed && !properties().isEmpty()) {
+            description += String.format(" p:%s", properties());
+        }
+
+        return description;
     }
 }

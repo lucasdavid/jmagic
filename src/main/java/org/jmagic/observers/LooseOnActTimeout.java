@@ -30,7 +30,7 @@ public class LooseOnActTimeout extends Observer {
                 "%s lost because they exceeded the allowed act time-frame of %f",
                 p.player, this.seconds));
 
-            return _disqualify(state);
+            return disqualify(state);
         }
 
         return state;

@@ -14,7 +14,7 @@ import org.jmagic.core.states.TurnSteps;
 import java.util.Collections;
 import java.util.List;
 
-import static org.jmagic.infrastructure.validation.basic.Connectives.And;
+import static org.jmagic.infrastructure.validation.rules.BasicRules.And;
 
 /**
  * Initial Draw Action.

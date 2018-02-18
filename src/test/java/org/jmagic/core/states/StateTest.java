@@ -156,7 +156,6 @@ class StateTest {
         State.PlayerState ps = state.activePlayerState();
         int damage = 5;
 
-
         assertEquals(20, ps.life());
         assertEquals(ps.originalLife(), ps.life());
 
