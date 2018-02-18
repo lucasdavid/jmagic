@@ -1,6 +1,6 @@
 package org.jmagic.actions;
 
-import org.jmagic.actions.validation.rules.game.TurnsStepIs;
+import org.jmagic.actions.validation.rules.game.TurnStepIs;
 import org.jmagic.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
 import org.jmagic.actions.validation.rules.players.CardsAreInAnyField;
 import org.jmagic.actions.validation.rules.players.active.HasCardsInField;
@@ -53,7 +53,7 @@ public final class DeclareBlockersAction extends Action {
     @Override
     public ValidationRule validationRules() {
         return And(
-                new TurnsStepIs(TurnSteps.DECLARE_BLOCKERS),
+                new TurnStepIs(TurnSteps.DECLARE_BLOCKERS),
                 // Because the turn's player only declares attackers.
                 Not(new ActiveAndTurnsPlayersAreTheSame()),
                 // All blockers are in this player's field.

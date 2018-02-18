@@ -35,7 +35,7 @@ class StateTest {
             new TestPlayer("test-player-1"),
             new TestPlayer("test-player-2"));
 
-        this.state = new State(players, List.of(
+        state = new State(players, List.of(
             new Cards(List.of(
                 new Creature("test-creature-1", 2, 3, List.of(BasicLands.FOREST)),
                 new Creature("test-creature-2", 1, 1, List.of(BasicLands.MOUNTAIN))
@@ -167,4 +167,8 @@ class StateTest {
         assertEquals(updatedPs.originalLife() - damage, updatedPs.life());
     }
 
+    @Test
+    void testToString() {
+        assertTrue(state.toString().startsWith("turn: 0, INITIAL_DRAWING"));
+    }
 }

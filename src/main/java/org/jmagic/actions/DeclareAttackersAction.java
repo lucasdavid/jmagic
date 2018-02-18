@@ -1,6 +1,6 @@
 package org.jmagic.actions;
 
-import org.jmagic.actions.validation.rules.game.TurnsStepIs;
+import org.jmagic.actions.validation.rules.game.TurnStepIs;
 import org.jmagic.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
 import org.jmagic.actions.validation.rules.players.ArePlaying;
 import org.jmagic.actions.validation.rules.players.PlayerIs;
@@ -52,7 +52,7 @@ public final class DeclareAttackersAction extends Action {
     @Override
     public ValidationRule validationRules() {
         return And(
-            new TurnsStepIs(TurnSteps.DECLARE_ATTACKERS),
+            new TurnStepIs(TurnSteps.DECLARE_ATTACKERS),
             new ActiveAndTurnsPlayersAreTheSame(),
             // All attackers are in player's field.
             new HasCardsInField(attackers.keySet()

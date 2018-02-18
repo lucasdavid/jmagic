@@ -2,7 +2,7 @@ package org.jmagic.actions;
 
 import org.jmagic.infrastructure.validation.rules.ValidationRule;
 import org.jmagic.actions.validation.rules.game.TurnIs;
-import org.jmagic.actions.validation.rules.game.TurnsStepIs;
+import org.jmagic.actions.validation.rules.game.TurnStepIs;
 import org.jmagic.actions.validation.rules.players.CardsDrawnCountReflectsMulliganCount;
 import org.jmagic.actions.validation.rules.players.HasNotAlreadyInitiallyDrawnMoreThan;
 import org.jmagic.actions.validation.rules.players.active.HasNotAlreadyDrawnInThisTurn;
@@ -64,7 +64,7 @@ public final class InitialDrawAction extends Action {
     public ValidationRule validationRules() {
         return And(
             new TurnIs(0),
-            new TurnsStepIs(TurnSteps.INITIAL_DRAWING),
+            new TurnStepIs(TurnSteps.INITIAL_DRAWING),
             new HasNotAlreadyInitiallyDrawnMoreThan(7),
             new HasNotAlreadyDrawnInThisTurn(),
             new CardsDrawnCountReflectsMulliganCount(n));

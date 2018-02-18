@@ -29,4 +29,5 @@ public abstract class Action implements IGameModifier {
     public String toString() {
         return getClass().getSimpleName();
     }
+
 }

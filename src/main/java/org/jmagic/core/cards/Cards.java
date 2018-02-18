@@ -108,7 +108,7 @@ public class Cards {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.cards);
+        hash = 137 * hash + Objects.hashCode(this.cards);
         return hash;
     }
 

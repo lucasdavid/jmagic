@@ -1,6 +1,6 @@
 package org.jmagic.actions;
 
-import org.jmagic.actions.validation.rules.game.TurnsStepIs;
+import org.jmagic.actions.validation.rules.game.TurnStepIs;
 import org.jmagic.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
 import org.jmagic.actions.validation.rules.players.active.HasCardsInTheirDeck;
 import org.jmagic.actions.validation.rules.players.active.HasNotAlreadyDrawnInThisTurn;
@@ -77,7 +77,7 @@ public final class DrawAction extends Action {
     public ValidationRule validationRules() {
         return And(
                 new HasCardsInTheirDeck(),
-                new TurnsStepIs(TurnSteps.DRAW),
+                new TurnStepIs(TurnSteps.DRAW),
                 new ActiveAndTurnsPlayersAreTheSame(),
                 new HasNotAlreadyDrawnInThisTurn());
     }

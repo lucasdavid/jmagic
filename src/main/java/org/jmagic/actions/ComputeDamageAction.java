@@ -1,6 +1,6 @@
 package org.jmagic.actions;
 
-import org.jmagic.actions.validation.rules.game.TurnsStepIs;
+import org.jmagic.actions.validation.rules.game.TurnStepIs;
 import org.jmagic.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
 import org.jmagic.actions.validation.rules.players.HasPerformedThisTurn;
 import org.jmagic.core.cards.Creature;
@@ -77,7 +77,7 @@ public final class ComputeDamageAction extends Action {
     @Override
     public ValidationRule validationRules() {
         return And(
-            new TurnsStepIs(TurnSteps.COMBAT_DAMAGE),
+            new TurnStepIs(TurnSteps.COMBAT_DAMAGE),
             new ActiveAndTurnsPlayersAreTheSame(),
             Not(new HasPerformedThisTurn(ComputeDamageAction.class)));
     }

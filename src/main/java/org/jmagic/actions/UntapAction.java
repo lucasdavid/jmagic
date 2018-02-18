@@ -1,6 +1,6 @@
 package org.jmagic.actions;
 
-import org.jmagic.actions.validation.rules.game.TurnsStepIs;
+import org.jmagic.actions.validation.rules.game.TurnStepIs;
 import org.jmagic.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
 import org.jmagic.actions.validation.rules.players.active.HasNotAlreadyUntappedInThisTurn;
 import org.jmagic.core.cards.Cards;
@@ -50,7 +50,7 @@ public class UntapAction extends Action {
     @Override
     public ValidationRule validationRules() {
         return And(
-            new TurnsStepIs(TurnSteps.UNTAP),
+            new TurnStepIs(TurnSteps.UNTAP),
             new ActiveAndTurnsPlayersAreTheSame(),
             new HasNotAlreadyUntappedInThisTurn());
     }

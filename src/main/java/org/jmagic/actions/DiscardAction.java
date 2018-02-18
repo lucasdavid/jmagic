@@ -1,6 +1,6 @@
 package org.jmagic.actions;
 
-import org.jmagic.actions.validation.rules.game.TurnsStepIs;
+import org.jmagic.actions.validation.rules.game.TurnStepIs;
 import org.jmagic.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
 import org.jmagic.actions.validation.rules.players.active.HasFewerCardsInHandThan;
 import org.jmagic.core.cards.Cards;
@@ -54,7 +54,7 @@ public final class DiscardAction extends Action {
     public ValidationRule validationRules() {
         return And(
             new ActiveAndTurnsPlayersAreTheSame(),
-            new TurnsStepIs(TurnSteps.CLEANUP),
+            new TurnStepIs(TurnSteps.CLEANUP),
             Not(new HasFewerCardsInHandThan(8)));
     }
 

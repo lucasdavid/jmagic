@@ -28,6 +28,6 @@ public class Burn extends Damager {
     @Override
     public String toString(boolean detailed) {
         return String.format("%s d:%d (%d enemies)",
-            super.toString(detailed), maxTargetCount(), effectiveDamage());
+            super.toString(detailed), effectiveDamage(), maxTargetCount());
     }
 }

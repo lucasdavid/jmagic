@@ -31,14 +31,17 @@ public abstract class Card implements ICard {
         return name;
     }
 
+    @Override
     public Collection<Properties> properties() {
         return new ArrayList<>(properties);
     }
 
+    @Override
     public Collection<Properties> effectiveProperties() {
         return properties();
     }
 
+    @Override
     public Collection<BasicLands> cost() {
         return new ArrayList<>(cost);
     }
@@ -64,6 +67,7 @@ public abstract class Card implements ICard {
         return toString(false);
     }
 
+    @Override
     public String toString(boolean detailed) {
         String description = detailed
             ? String.format("\"%s\" c:%s", name, cost)

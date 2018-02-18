@@ -1,7 +1,7 @@
 package org.jmagic.actions;
 
 import org.jmagic.infrastructure.validation.rules.ValidationRule;
-import org.jmagic.actions.validation.rules.game.TurnsStepIs;
+import org.jmagic.actions.validation.rules.game.TurnStepIs;
 import org.jmagic.actions.validation.rules.cards.CardHasAbility;
 import org.jmagic.actions.validation.rules.cards.CardIsOfType;
 import org.jmagic.actions.validation.rules.players.ActiveAndTurnsPlayersAreTheSame;
@@ -84,8 +84,8 @@ public class PlayAction extends Action {
                 And(
                     new ActiveAndTurnsPlayersAreTheSame(),
                     Or(
-                        new TurnsStepIs(TurnSteps.MAIN_1),
-                        new TurnsStepIs(TurnSteps.MAIN_2)
+                        new TurnStepIs(TurnSteps.MAIN_1),
+                        new TurnStepIs(TurnSteps.MAIN_2)
                     )
                 ),
                 new CardHasAbility(card, Properties.FLASH)

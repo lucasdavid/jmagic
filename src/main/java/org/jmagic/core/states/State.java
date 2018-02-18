@@ -169,7 +169,7 @@ public class State {
         private final int life;
         private final int originalLife;
 
-        PlayerState(Player player, Cards deck, int initialLife) {
+        public PlayerState(Player player, Cards deck, int initialLife) {
             this(player, initialLife, initialLife, deck, Cards.EMPTY, Cards.EMPTY, Cards.EMPTY,
                     Collections.emptyMap(), Collections.emptyMap(), true);
         }

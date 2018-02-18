@@ -5,11 +5,11 @@ import org.jmagic.core.states.TurnSteps;
 import org.jmagic.infrastructure.validation.rules.ValidationRule;
 
 
-public class TurnsStepIs extends ValidationRule {
+public class TurnStepIs extends ValidationRule {
 
     private final TurnSteps step;
 
-    public TurnsStepIs(TurnSteps step) {
+    public TurnStepIs(TurnSteps step) {
         this.step = step;
     }
 
@@ -25,4 +25,5 @@ public class TurnsStepIs extends ValidationRule {
     public String toString() {
         return String.format("%s(%s)", super.toString(), step);
     }
+
 }

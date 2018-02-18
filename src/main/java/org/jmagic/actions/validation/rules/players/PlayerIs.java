@@ -31,4 +31,5 @@ public class PlayerIs extends ValidationRule {
             }
         }
     }
+
 }

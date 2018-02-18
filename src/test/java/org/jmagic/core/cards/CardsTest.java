@@ -6,10 +6,7 @@ import org.jmagic.core.cards.lands.Land;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -74,51 +71,70 @@ class CardsTest {
 
     @Test
     void update() {
-    }
+        Creature creature = ((Creature) c.cards().get(2)).takeDamage(1);
+        Cards updatedCards = c.update(creature);
 
-    @Test
-    void update1() {
+        assertEquals(
+            ((Creature) c.cards().get(2)).effectiveLife() - 1,
+            ((Creature) updatedCards.cards().get(2)).effectiveLife());
     }
 
     @Test
     void add() {
-    }
+        Cards updatedCards = c.add(new Land(BasicLands.PLAINS),
+            new Burn("test-burn-a", 2, Collections.emptyList()));
 
-    @Test
-    void add1() {
+        assertEquals(c.size() + 2, updatedCards.size());
+        assertTrue(updatedCards.cards().get(3) instanceof Land);
+        assertTrue(updatedCards.cards().get(4) instanceof Burn);
     }
 
     @Test
     void remove() {
-    }
+        Cards updatedCards = c.remove(c.cards().get(0), c.cards().get(1));
 
-    @Test
-    void remove1() {
+        assertEquals(1, updatedCards.size());
+        assertEquals(c.cards().get(2), updatedCards.cards().get(0));
     }
 
     @Test
     void testEquals() {
         Land l = new Land(BasicLands.SWAMP);
         Cards c1 = new Cards(l),
-              c2 = new Cards(l),
-              c3 = new Cards(l, new Boost("test-boost", 1, 2, Collections.emptyList()));
+            c2 = new Cards(l),
+            c3 = new Cards(l, new Boost("test-boost", 1, 2, Collections.emptyList()));
 
-        assertTrue(c1.equals(c2));
-        assertFalse(c1.equals(c3));
-        assertFalse(c2.equals(c3));
-        assertFalse(c1.equals(null));
+        assertEquals(c1, c2);
+        assertNotEquals(c1, c3);
+        assertNotEquals(c2, c3);
+        assertNotEquals(c1, null);
+        assertNotEquals(c1, l);
     }
 
     @Test
     void testHashCode() {
+        List<ICard> source = List.of(new Land(BasicLands.PLAINS),
+            new Burn("burn-test", 2, Collections.emptyList()),
+            new Creature("creature-test", 2, 2, List.of(BasicLands.PLAINS)));
+
+        Cards c2 = new Cards(source);
+        Set<Cards> cardSet = new HashSet<>(Set.of(c, c2));
+
+        assertEquals(2, cardSet.size());
+        assertTrue(cardSet.contains(c));
+        assertTrue(cardSet.contains(c2));
+        assertTrue(cardSet.contains(new Cards(source)));
+        assertFalse(cardSet.add(new Cards(source)));
     }
 
     @Test
     void testToString() {
+        assertEquals("[\"swamp\", \"boost-test\" d+:3 l+: 4, \"test-creature\" d:1 l:2]", c.toString());
     }
 
     @Test
     void testToString1() {
+        assertEquals("[\"swamp\", \"boost-test\" c:[] d+:3 l+: 4, \"test-creature\" c:[SWAMP] d:1 l:2]", c.toString(true));
     }
 
 }

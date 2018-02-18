@@ -18,11 +18,6 @@ public class Boost extends Card implements IDamageBoost, ILifeBoost {
         this(UUID.randomUUID(), name, damageIncrease, lifeIncrease, Collections.emptySet(), cost);
     }
 
-    public Boost(String name, int damageIncrease, int lifeIncrease,
-                 Collection<Properties> properties, Collection<BasicLands> cost) {
-        this(UUID.randomUUID(), name, damageIncrease, lifeIncrease, properties, cost);
-    }
-
     public Boost(UUID id, String name, int damageIncrease, int lifeIncrease,
                  Collection<Properties> properties, Collection<BasicLands> cost) {
         super(id, name, properties, cost);

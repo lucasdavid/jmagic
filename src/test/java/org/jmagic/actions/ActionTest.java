@@ -5,6 +5,9 @@ import org.jmagic.infrastructure.validation.rules.IsTrue;
 import org.jmagic.infrastructure.validation.rules.ValidationRule;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -31,6 +34,16 @@ public class ActionTest {
         assertFalse(i.equals(null));
         assertFalse(i.equals(new DrawAction()));
         assertTrue(i.equals(new AdvanceGameAction()));
+    }
+
+    @Test
+    void testHashCode() {
+        Action a = new TestAction();
+        Set actions = new HashSet<>(Set.of(a));
+
+        assertTrue(actions.contains(a));
+        assertTrue(actions.contains(new TestAction()));
+        assertFalse(actions.add(new TestAction()));
     }
 
     private class TestAction extends Action {

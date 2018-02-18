@@ -1,6 +1,6 @@
 package org.jmagic.actions;
 
-import org.jmagic.actions.validation.rules.game.TurnsStepIs;
+import org.jmagic.actions.validation.rules.game.TurnStepIs;
 import org.jmagic.actions.validation.rules.players.HasPerformedThisTurn;
 import org.jmagic.actions.validation.rules.players.PlayersOtherThanActiveAreAlive;
 import org.jmagic.actions.validation.rules.players.active.HasFewerCardsInHandThan;
@@ -76,11 +76,11 @@ public class AdvanceGameAction extends Action {
             new PlayersOtherThanActiveAreAlive(),
             Or(
                 // Prevents players from advancing without initially drawing 7 cards.
-                Not(new TurnsStepIs(TurnSteps.INITIAL_DRAWING)),
+                Not(new TurnStepIs(TurnSteps.INITIAL_DRAWING)),
                 new HasPerformedThisTurn(InitialDrawAction.class)),
             Or(
                 // Prevents advancing turn with more than 8 cards on a player's hand.
-                Not(new TurnsStepIs(TurnSteps.CLEANUP)),
+                Not(new TurnStepIs(TurnSteps.CLEANUP)),
                 new HasFewerCardsInHandThan(8)));
     }
 }

@@ -9,30 +9,77 @@ import org.jmagic.observers.Observer;
 import org.jmagic.players.NaivePlayer;
 import org.jmagic.players.Player;
 import org.junit.Ignore;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
+    private Game game;
+    private List<Player> players;
+
+    @BeforeEach
+    void setUp() {
+        players = List.of(new TestPlayer("player-1"), new TestPlayer("player-2"));
+        game = new Game(players,
+            List.of(new Cards(), new Cards()), 20, 1000,
+            List.of(new LooseIfDrawingFromEmptyDeck()));
+    }
+
+
+    @Test
+    void testToString() {
+        assertEquals("Game's players: [player-1, player-2]", game.toString());
+    }
+
+    @Test
+    void startedAt() {
+        assertNull(game.startedAt());
+    }
+
+    @Test
+    void finishedAt() {
+        assertNull(game.finishedAt());
+    }
+
+    @Test
+    void running() {
+        assertFalse(game.running());
+    }
+
+    @Test
+    void players() {
+        assertEquals(players, game.players());
+    }
+
+    @Test
+    void winners() {
+        assertNull(game.winners());
+    }
+
+    @Test
+    void observers() {
+        assertEquals("[LooseIfDrawingFromEmptyDeck, LooseOnNullAction, LooseOnInvalidActionAttempt, PassOrFinishIfLost, FinishIfLastPlayersAlive]",
+            game.observers().toString());
+    }
 
     @Test
     void sanity() {
         Game game = new Game(
-                List.of(
-                        new TestPlayer("player-1"),
-                        new TestPlayer("player-2")),
-                List.of(
-                        new Cards(),
-                        new Cards()
-                ),
-                20,
-                1000,
-                List.of(
-                        new LooseIfDrawingFromEmptyDeck()
-                ));
+            List.of(
+                new TestPlayer("player-1"),
+                new TestPlayer("player-2")),
+            List.of(
+                new Cards(),
+                new Cards()
+            ),
+            20,
+            1000,
+            List.of(
+                new LooseIfDrawingFromEmptyDeck()
+            ));
 
         assertNotNull(game);
     }
@@ -44,22 +91,22 @@ class GameTest {
     @Test
     void testObservers() {
         Collection<Game> games = Set.of(
-                new Game(
-                        List.of(new TestPlayer("player-1"), new TestPlayer("player-2")),
-                        List.of(new Cards(), new Cards()), 20, 1000,
-                        List.of(new LooseIfDrawingFromEmptyDeck())),
-                new Game(
-                        List.of(new TestPlayer("player-1"), new TestPlayer("player-2")),
-                        List.of(new Cards(), new Cards()), 20, 1000,
-                        Collections.emptyList()),
-                new Game(
-                        List.of(new TestPlayer("player-1"), new TestPlayer("player-2")),
-                        List.of(new Cards(), new Cards()), 20, 1000,
-                        List.of(new LooseIfDrawingFromEmptyDeck(), new FinishIfLastPlayersAlive(3))),
-                new Game(
-                        List.of(new TestPlayer("player-1"), new TestPlayer("player-2")),
-                        List.of(new Cards(), new Cards()), 20, 1000,
-                        List.of(new LooseIfDrawingFromEmptyDeck(), new PassOrFinishIfLost(), new FinishIfLastPlayersAlive(3)))
+            new Game(
+                List.of(new TestPlayer("player-1"), new TestPlayer("player-2")),
+                List.of(new Cards(), new Cards()), 20, 1000,
+                List.of(new LooseIfDrawingFromEmptyDeck())),
+            new Game(
+                List.of(new TestPlayer("player-1"), new TestPlayer("player-2")),
+                List.of(new Cards(), new Cards()), 20, 1000,
+                Collections.emptyList()),
+            new Game(
+                List.of(new TestPlayer("player-1"), new TestPlayer("player-2")),
+                List.of(new Cards(), new Cards()), 20, 1000,
+                List.of(new LooseIfDrawingFromEmptyDeck(), new FinishIfLastPlayersAlive(3))),
+            new Game(
+                List.of(new TestPlayer("player-1"), new TestPlayer("player-2")),
+                List.of(new Cards(), new Cards()), 20, 1000,
+                List.of(new LooseIfDrawingFromEmptyDeck(), new PassOrFinishIfLost(), new FinishIfLastPlayersAlive(3)))
         );
 
         for (Game g : games) {
@@ -76,27 +123,27 @@ class GameTest {
 
         new Game(
             List.of(new NaivePlayer("player-1"),
-                    new NaivePlayer("player-2")),
+                new NaivePlayer("player-2")),
             List.of(b.random(),
-                    b.random()),
+                b.random()),
             20, 1000,
             List.of(new LooseIfDrawingFromEmptyDeck(),
-                    new LooseOnNullAction(),
-                    new LooseOnActTimeout(1000),
-                    new LooseOnInvalidActionAttempt(),
-                    new LooseOnIllegalActionAttempt(
-                        DiscardAction.class,
-                        DrawAction.class,
-                        AdvanceGameAction.class,
-                        PlayAction.class,
-                        AttachAction.class,
-                        UntapAction.class,
-                        InitialDrawAction.class,
-                        DeclareAttackersAction.class,
-                        DeclareBlockersAction.class,
-                        ComputeDamageAction.class),
-                    new PassOrFinishIfLost(),
-                    new FinishIfLastPlayersAlive()))
+                new LooseOnNullAction(),
+                new LooseOnActTimeout(1000),
+                new LooseOnInvalidActionAttempt(),
+                new LooseOnIllegalActionAttempt(
+                    DiscardAction.class,
+                    DrawAction.class,
+                    AdvanceGameAction.class,
+                    PlayAction.class,
+                    AttachAction.class,
+                    UntapAction.class,
+                    InitialDrawAction.class,
+                    DeclareAttackersAction.class,
+                    DeclareBlockersAction.class,
+                    ComputeDamageAction.class),
+                new PassOrFinishIfLost(),
+                new FinishIfLastPlayersAlive()))
             .run();
     }
 
