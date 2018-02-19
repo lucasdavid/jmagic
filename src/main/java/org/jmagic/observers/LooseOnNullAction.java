@@ -20,7 +20,7 @@ public class LooseOnNullAction extends Observer {
 
             LOG.warning(String.format(
                 "%s lost because `LooseOnNullAction` rule is active " +
-                    "(try `AdvanceGameAction` if your intention is to perform no actions)",
+                    "(try `AdvanceGame` if your intention is to perform no actions)",
                 p.player));
 
             return disqualify(state);

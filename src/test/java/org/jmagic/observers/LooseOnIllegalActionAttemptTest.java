@@ -1,8 +1,8 @@
 package org.jmagic.observers;
 
 import org.jmagic.actions.Action;
-import org.jmagic.actions.AdvanceGameAction;
-import org.jmagic.actions.DisqualifyAction;
+import org.jmagic.actions.AdvanceGame;
+import org.jmagic.actions.Disqualify;
 import org.jmagic.core.cards.Cards;
 import org.jmagic.core.states.State;
 import org.jmagic.infrastructure.validation.rules.ValidationRule;
@@ -25,7 +25,7 @@ class LooseOnIllegalActionAttemptTest {
     @Test
     void afterPlayerAct() {
         Observer o = new LooseOnIllegalActionAttempt(
-                AdvanceGameAction.class,
+                AdvanceGame.class,
                 LegalAction.class);
 
         State actual = o.afterPlayerAct(INITIAL_STATE, new LegalAction(), 0, 100);
@@ -33,7 +33,7 @@ class LooseOnIllegalActionAttemptTest {
 
         actual = o.afterPlayerAct(INITIAL_STATE, new IllegalAction(), 0, 100);
         assertNotEquals(INITIAL_STATE, actual);
-        assertTrue(actual.actionThatLedToThisState instanceof DisqualifyAction);
+        assertTrue(actual.actionThatLedToThisState instanceof Disqualify);
     }
 
     private static class LegalAction extends Action {

@@ -1,11 +1,11 @@
 package org.jmagic.players;
 
 import org.jmagic.actions.Action;
-import org.jmagic.actions.AttachAction;
-import org.jmagic.actions.DeclareAttackersAction;
-import org.jmagic.actions.DeclareBlockersAction;
-import org.jmagic.actions.PlayAction;
-import org.jmagic.actions.validation.rules.players.active.HasLandsToPlayIt;
+import org.jmagic.actions.Attach;
+import org.jmagic.actions.DeclareAttackers;
+import org.jmagic.actions.DeclareBlockers;
+import org.jmagic.actions.Play;
+import org.jmagic.actions.rules.players.active.HasLandsToPlayIt;
 import org.jmagic.core.cards.ICard;
 import org.jmagic.core.cards.Creature;
 import org.jmagic.core.cards.lands.Land;
@@ -47,14 +47,15 @@ public class NaivePlayer extends BasicPlayer {
                     .anyMatch(c -> c instanceof IAttachable);
 
                 if (!(any.get() instanceof IAttachment) || hasAttachablesInField) {
-                    return new PlayAction(any.get());
+                    return new Play(any.get());
                 }
             }
         }
 
         if (state.step == TurnSteps.DECLARE_ATTACKERS
             && state.activePlayerIndex == state.turnsPlayerIndex
-            && !(state.actionThatLedToThisState instanceof DeclareAttackersAction)) {
+            && !(state.actionThatLedToThisState instanceof DeclareAttackers)
+            && myState.field.any(c -> c instanceof Creature && !((Creature) c).tapped())) {
 
             Map<Creature, Player> attackers = new HashMap<>();
             List<Player> enemies = state.playerStates().stream()
@@ -67,11 +68,11 @@ public class NaivePlayer extends BasicPlayer {
                 .map(c -> (Creature) c)
                 .forEach(attacker -> attackers.put(attacker, enemies.get(0)));
 
-            return new DeclareAttackersAction(attackers);
+            return new DeclareAttackers(attackers);
         }
 
         if (state.step == TurnSteps.DECLARE_BLOCKERS
-            && !(state.actionThatLedToThisState instanceof DeclareBlockersAction)) {
+            && !(state.actionThatLedToThisState instanceof DeclareBlockers)) {
             List<Creature> attackers = state
                 .turnsPlayerState()
                 .attackers.entrySet().stream()
@@ -95,7 +96,7 @@ public class NaivePlayer extends BasicPlayer {
                         }
                     });
 
-                return new DeclareBlockersAction(blockers);
+                return new DeclareBlockers(blockers);
             }
         }
 
@@ -126,7 +127,7 @@ public class NaivePlayer extends BasicPlayer {
                 .findAny()
                 .get();
 
-            return new AttachAction(detached.get(), List.of(target));
+            return new Attach(detached.get(), List.of(target));
         }
 
         // Don't know what to do. Ask for the superclass.

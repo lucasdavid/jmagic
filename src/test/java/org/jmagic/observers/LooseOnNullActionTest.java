@@ -1,7 +1,7 @@
 package org.jmagic.observers;
 
 import org.jmagic.actions.Action;
-import org.jmagic.actions.DisqualifyAction;
+import org.jmagic.actions.Disqualify;
 import org.jmagic.core.cards.Cards;
 import org.jmagic.core.states.State;
 import org.jmagic.infrastructure.validation.rules.ValidationRule;
@@ -42,6 +42,6 @@ class LooseOnNullActionTest {
 
         actual = new LooseOnNullAction().afterPlayerAct(state, null, 0, 100);
         assertNotEquals(state, actual);
-        assertTrue(actual.actionThatLedToThisState instanceof DisqualifyAction, "Didn't disqualified player as expected");
+        assertTrue(actual.actionThatLedToThisState instanceof Disqualify, "Didn't disqualified player as expected");
     }
 }

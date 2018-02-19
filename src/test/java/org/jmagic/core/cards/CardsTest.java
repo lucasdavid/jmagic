@@ -58,7 +58,7 @@ class CardsTest {
 
         Land untrusted = new Land(l.id(), l.kind(), l.tapped());
 
-        ICard validated = c.getValidated(untrusted);
+        ICard validated = c.validated(untrusted);
         assertEquals(l, validated);
 
     }

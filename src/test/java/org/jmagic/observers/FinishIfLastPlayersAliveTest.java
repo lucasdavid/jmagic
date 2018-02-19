@@ -1,6 +1,6 @@
 package org.jmagic.observers;
 
-import org.jmagic.actions.FinishGameAction;
+import org.jmagic.actions.FinishGame;
 import org.jmagic.core.cards.Cards;
 import org.jmagic.core.states.State;
 import org.jmagic.core.states.TurnSteps;
@@ -30,7 +30,7 @@ class FinishIfLastPlayersAliveTest {
         Observer o = new FinishIfLastPlayersAlive();
         State actual = o.beforePlayerAct(s);
         assertNotEquals(s, actual);
-        assertTrue(actual.actionThatLedToThisState instanceof FinishGameAction);
+        assertTrue(actual.actionThatLedToThisState instanceof FinishGame);
         assertTrue(actual.done);
     }
 
@@ -66,7 +66,7 @@ class FinishIfLastPlayersAliveTest {
         Observer o = new FinishIfLastPlayersAlive();
         State actual = o.afterPlayerAct(s, null, 0, 0);
         assertNotEquals(s, actual);
-        assertTrue(actual.actionThatLedToThisState instanceof FinishGameAction);
+        assertTrue(actual.actionThatLedToThisState instanceof FinishGame);
         assertTrue(actual.done);
     }
 

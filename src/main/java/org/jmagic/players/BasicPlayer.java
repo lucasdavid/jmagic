@@ -1,10 +1,10 @@
 package org.jmagic.players;
 
 import org.jmagic.actions.*;
-import org.jmagic.actions.validation.rules.players.HasPerformedThisTurn;
-import org.jmagic.actions.validation.rules.players.active.HasNotAlreadyDrawnInThisTurn;
-import org.jmagic.actions.validation.rules.players.active.HasNotAlreadyUntappedInThisTurn;
-import org.jmagic.actions.validation.rules.players.active.HasNotPlayedALandThisTurn;
+import org.jmagic.actions.rules.players.HasPerformedThisTurn;
+import org.jmagic.actions.rules.players.active.HasNotAlreadyDrawnInThisTurn;
+import org.jmagic.actions.rules.players.active.HasNotAlreadyUntappedInThisTurn;
+import org.jmagic.actions.rules.players.active.HasNotPlayedALandThisTurn;
 import org.jmagic.core.cards.ICard;
 import org.jmagic.core.cards.lands.Land;
 import org.jmagic.core.states.State;
@@ -43,30 +43,30 @@ public class BasicPlayer extends Player {
             // I either haven't drawn yet or I've got a bad initial hand -- not (or too) many lands.
             // The good thing is that I can draw again.
             if ((cardsCount == 0 || landsCount < 2 || cardsCount - landsCount < 2)
-                    && new InitialDrawAction().isValid(state)) {
+                    && new InitialDraw().isValid(state)) {
 
                 // Only draw `7 - mulliganCount`, as the game rules state.
                 int mulliganCount = mulliganExpert.count(state, this);
-                return new InitialDrawAction(7 - mulliganCount);
+                return new InitialDraw(7 - mulliganCount);
             }
         }
 
         if (state.activePlayerIndex != state.turnsPlayerIndex) {
             // BasicPlayer doesn't intercept other people's turns.
-            return new AdvanceGameAction();
+            return new AdvanceGame();
         }
 
         if (state.step == TurnSteps.DRAW && new HasNotAlreadyDrawnInThisTurn().isValid(state)) {
-            return new DrawAction();
+            return new Draw();
         }
 
         if (state.step == TurnSteps.UNTAP && new HasNotAlreadyUntappedInThisTurn().isValid(state)) {
-            return new UntapAction(this);
+            return new Untap(this);
         }
 
         if (state.step.isLast() && myState.hand.size() > 7) {
             // Needs to get rid of a card.
-            return new DiscardAction(myState.hand.cards().get(0));
+            return new Discard(myState.hand.cards().get(0));
         }
 
         if (state.step == TurnSteps.MAIN_1 && new HasNotPlayedALandThisTurn().isValid(state)) {
@@ -75,17 +75,17 @@ public class BasicPlayer extends Player {
                     .findFirst();
 
             if (land.isPresent()) {
-                return new PlayAction(land.get());
+                return new Play(land.get());
             }
         }
 
         if (state.step == TurnSteps.COMBAT_DAMAGE
-                && !new HasPerformedThisTurn(ComputeDamageAction.class).isValid(state)
+                && !new HasPerformedThisTurn(ComputeDamage.class).isValid(state)
                 && !myState.attackers.isEmpty()) {
-            return new ComputeDamageAction();
+            return new ComputeDamage();
         }
 
         // Can't do anything else right now.
-        return new AdvanceGameAction();
+        return new AdvanceGame();
     }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -48,6 +49,10 @@ public class Cards {
         return new ArrayList<>(cards);
     }
 
+    public boolean any(Predicate<? super ICard> predicate) {
+        return this.cards.stream().anyMatch(predicate);
+    }
+
     public boolean isEmpty() {
         return cards.isEmpty();
     }
@@ -56,7 +61,7 @@ public class Cards {
         return cards.contains(card);
     }
 
-    public ICard getValidated(ICard card) {
+    public ICard validated(ICard card) {
         return cards.get(cards.indexOf(card));
     }
 

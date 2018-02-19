@@ -142,6 +142,21 @@ public class State {
                 parent == null ? null : parent.playerViewModel(playerState));
     }
 
+    public State forgetPast(int remembering) {
+        return forgetPast(this, remembering);
+    }
+
+    private State forgetPast(State s, int remembering) {
+        if (remembering == 0 || s.parent == null) {
+            return new State(s.playerStates(), s.turn, s.step,
+                s.done, s.turnsPlayerIndex, s.activePlayerIndex);
+        }
+
+        return new State(s.playerStates(), s.turn, s.step,
+            s.done, s.turnsPlayerIndex, s.activePlayerIndex,
+            s.actionThatLedToThisState, forgetPast(s.parent, remembering - 1));
+    }
+
     @Override
     public String toString() {
         return String.format("turn: %d%s, %s, players:\n%s",

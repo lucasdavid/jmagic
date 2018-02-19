@@ -1,7 +1,7 @@
 package org.jmagic.experts;
 
 import org.jmagic.actions.Action;
-import org.jmagic.actions.InitialDrawAction;
+import org.jmagic.actions.InitialDraw;
 import org.jmagic.core.states.State;
 import org.jmagic.players.Player;
 
@@ -21,7 +21,7 @@ public class MulliganExpert implements IExpert {
         int initialDrawsCount = 0;
         while (previous != null && previous.step == state.step) {
             if (player.equals(previous.activePlayerState().player)
-                && actionExecutedInPrevious instanceof InitialDrawAction) {
+                && actionExecutedInPrevious instanceof InitialDraw) {
                 initialDrawsCount++;
             }
 

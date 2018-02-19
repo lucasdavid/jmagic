@@ -23,17 +23,17 @@ public class ActionTest {
     public void testEquals() {
         Action i;
 
-        i = new DrawAction();
+        i = new Draw();
 
         assertFalse(i.equals(null));
-        assertTrue(i.equals(new DrawAction()));
-        assertFalse(i.equals(new AdvanceGameAction()));
+        assertTrue(i.equals(new Draw()));
+        assertFalse(i.equals(new AdvanceGame()));
 
-        i = new AdvanceGameAction();
+        i = new AdvanceGame();
 
         assertFalse(i.equals(null));
-        assertFalse(i.equals(new DrawAction()));
-        assertTrue(i.equals(new AdvanceGameAction()));
+        assertFalse(i.equals(new Draw()));
+        assertTrue(i.equals(new AdvanceGame()));
     }
 
     @Test

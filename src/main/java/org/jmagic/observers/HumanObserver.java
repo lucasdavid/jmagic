@@ -1,7 +1,7 @@
 package org.jmagic.observers;
 
 import org.jmagic.actions.Action;
-import org.jmagic.actions.AdvanceGameAction;
+import org.jmagic.actions.AdvanceGame;
 import org.jmagic.core.states.State;
 
 /**
@@ -25,7 +25,7 @@ public class HumanObserver extends Observer {
 
     @Override
     public State afterPlayerAct(State state, Action action, long actStartedAt, long actEndedAt) {
-        if (!(action instanceof AdvanceGameAction)) {
+        if (!(action instanceof AdvanceGame)) {
             try {
                 Thread.sleep(Math.round(1000 * seconds));
             } catch (InterruptedException e) {

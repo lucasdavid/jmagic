@@ -1,7 +1,7 @@
 package org.jmagic.observers;
 
-import org.jmagic.actions.DisqualifyAction;
-import org.jmagic.actions.DrawAction;
+import org.jmagic.actions.Disqualify;
+import org.jmagic.actions.Draw;
 import org.jmagic.core.cards.Cards;
 import org.jmagic.core.cards.Creature;
 import org.jmagic.core.cards.lands.BasicLands;
@@ -33,9 +33,9 @@ class LooseIfDrawingFromEmptyDeckTest {
 
         Observer o = new LooseIfDrawingFromEmptyDeck();
 
-        State actual = o.afterPlayerAct(drawing, new DrawAction(), 0, 100);
+        State actual = o.afterPlayerAct(drawing, new Draw(), 0, 100);
 
-        assertTrue(actual.actionThatLedToThisState instanceof DisqualifyAction);
+        assertTrue(actual.actionThatLedToThisState instanceof Disqualify);
         assertFalse(actual.playerStates().get(0).playing);
         assertTrue(actual.playerStates().get(1).playing);
     }
@@ -55,7 +55,7 @@ class LooseIfDrawingFromEmptyDeckTest {
 
         Observer o = new LooseIfDrawingFromEmptyDeck();
 
-        State actual = o.afterPlayerAct(drawing, new DrawAction(), 0, 100);
+        State actual = o.afterPlayerAct(drawing, new Draw(), 0, 100);
 
         assertSame(drawing, actual);
         assertTrue(actual.playerStates().get(0).playing);

@@ -30,7 +30,14 @@ public enum TurnSteps {
 
     public TurnSteps next() {
         TurnSteps[] v = values();
-        return v[(this.ordinal() + 1) % v.length];
+        int currentOrdinal = (this.ordinal() + 1);
+
+        if (currentOrdinal / v.length > 0 && currentOrdinal == 0) {
+            // TurnSteps.INITIAL_DRAWING should only be visited once.
+            currentOrdinal = 1;
+        }
+
+        return v[currentOrdinal % v.length];
     }
 
     public boolean isFirst() {

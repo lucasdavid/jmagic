@@ -1,8 +1,8 @@
 package org.jmagic.observers;
 
 import org.jmagic.actions.Action;
-import org.jmagic.actions.DisqualifyAction;
-import org.jmagic.actions.FinishGameAction;
+import org.jmagic.actions.Disqualify;
+import org.jmagic.actions.FinishGame;
 import org.jmagic.core.Game;
 import org.jmagic.core.states.State;
 import org.jmagic.infrastructure.exceptions.ValidationException;
@@ -35,11 +35,11 @@ public abstract class Observer {
     }
 
     protected State disqualify(State state, Player player) {
-        return applyAction(state, new DisqualifyAction(player));
+        return applyAction(state, new Disqualify(player));
     }
 
     protected State finish(State state) {
-        return applyAction(state, new FinishGameAction());
+        return applyAction(state, new FinishGame());
     }
 
     private State applyAction(State state, Action action) {

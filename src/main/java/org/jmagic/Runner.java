@@ -31,24 +31,25 @@ public class Runner {
     public static final int CARDS = 40;
     public static final double PLAYER_ACT_TIMEOUT = 1.;
 
-    public static final List<String> PLAYERS = List.of("Lucas", "Karen");
+    public static final List<String> PLAYERS = List.of("Lucas", "Karen", "Juan", "Pedro");
+
     public static final List<Observer> OBSERVERS = Arrays.asList(
-        new HumanObserver(.5),
+//        new HumanObserver(.1),
         new LooseIfDrawingFromEmptyDeck(),
         new LooseOnNullAction(),
         new LooseOnActTimeout(PLAYER_ACT_TIMEOUT),
         new LooseOnInvalidActionAttempt(),
         new LooseOnIllegalActionAttempt(
-            DiscardAction.class,
-            DrawAction.class,
-            AdvanceGameAction.class,
-            PlayAction.class,
-            AttachAction.class,
-            UntapAction.class,
-            InitialDrawAction.class,
-            DeclareAttackersAction.class,
-            DeclareBlockersAction.class,
-            ComputeDamageAction.class),
+            Discard.class,
+            Draw.class,
+            AdvanceGame.class,
+            Play.class,
+            Attach.class,
+            Untap.class,
+            InitialDraw.class,
+            DeclareAttackers.class,
+            DeclareBlockers.class,
+            ComputeDamage.class),
         new PassOrFinishIfLost(),
         new FinishIfLastPlayersAlive());
 

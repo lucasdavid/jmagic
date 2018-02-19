@@ -1,9 +1,9 @@
 package org.jmagic.players;
 
 import org.jmagic.actions.Action;
-import org.jmagic.actions.AdvanceGameAction;
-import org.jmagic.actions.ComputeDamageAction;
-import org.jmagic.actions.DiscardAction;
+import org.jmagic.actions.AdvanceGame;
+import org.jmagic.actions.ComputeDamage;
+import org.jmagic.actions.Discard;
 import org.jmagic.core.cards.Cards;
 import org.jmagic.core.cards.Creature;
 import org.jmagic.core.cards.lands.BasicLands;
@@ -50,7 +50,7 @@ class BasicPlayerTest {
         Action action = jane.act(state);
 
         // Jane should necessarily discard.
-        assertThat(action, instanceOf(DiscardAction.class));
+        assertThat(action, instanceOf(Discard.class));
     }
 
     @Test
@@ -68,16 +68,16 @@ class BasicPlayerTest {
 
         // Jane should necessarily compute the damage dealt this turn.
         Action action = jane.act(state);
-        assertThat(action, instanceOf(ComputeDamageAction.class));
+        assertThat(action, instanceOf(ComputeDamage.class));
 
         // Let's say Jane computed the damage.
         state = new State(playerStates, 0, TurnSteps.COMBAT_DAMAGE,
             false, 0, 0,
-            new ComputeDamageAction(), state);
+            new ComputeDamage(), state);
 
         // Jane should necessarily advance the game.
         action = jane.act(state);
-        assertThat(action, instanceOf(AdvanceGameAction.class));
+        assertThat(action, instanceOf(AdvanceGame.class));
     }
 
 }

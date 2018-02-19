@@ -1,6 +1,6 @@
 package org.jmagic.observers;
 
-import org.jmagic.actions.DisqualifyAction;
+import org.jmagic.actions.Disqualify;
 import org.jmagic.core.cards.Cards;
 import org.jmagic.core.states.State;
 import org.jmagic.players.RandomPlayer;
@@ -32,7 +32,7 @@ class LooseOnActTimeoutTest {
 
         actual = o.afterPlayerAct(INITIAL_STATE, null, ACTION_STARTED_AT, INVALID_ACTION_ENDED_AT);
         assertNotEquals(INITIAL_STATE, actual);
-        assertTrue(actual.actionThatLedToThisState instanceof DisqualifyAction);
+        assertTrue(actual.actionThatLedToThisState instanceof Disqualify);
     }
 
 }

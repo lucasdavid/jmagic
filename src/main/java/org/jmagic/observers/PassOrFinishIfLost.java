@@ -1,6 +1,6 @@
 package org.jmagic.observers;
 
-import org.jmagic.actions.AdvanceGameAction;
+import org.jmagic.actions.AdvanceGame;
 import org.jmagic.infrastructure.exceptions.ValidationException;
 import org.jmagic.core.states.State;
 
@@ -17,7 +17,7 @@ public class PassOrFinishIfLost extends Observer {
     public State beforePlayerAct(State state) {
         if (!state.activePlayerState().isAlive()) {
             try {
-                return new AdvanceGameAction()
+                return new AdvanceGame()
                     .raiseForErrors(state)
                     .update(state);
             } catch (ValidationException ex) {

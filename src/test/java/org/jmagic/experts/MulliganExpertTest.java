@@ -1,7 +1,7 @@
 package org.jmagic.experts;
 
-import org.jmagic.actions.AdvanceGameAction;
-import org.jmagic.actions.InitialDrawAction;
+import org.jmagic.actions.AdvanceGame;
+import org.jmagic.actions.InitialDraw;
 import org.jmagic.core.cards.Cards;
 import org.jmagic.core.cards.DeckBuilder;
 import org.jmagic.core.states.State;
@@ -29,12 +29,12 @@ class MulliganExpertTest {
         DeckBuilder b = new DeckBuilder(40, r);
         List<Cards> cards = List.of(b.random(), b.random());
 
-        this.first = new AdvanceGameAction().update(
-                new AdvanceGameAction().update(
-                        new AdvanceGameAction().update(
-                                new AdvanceGameAction().update(new State(players, cards, 20)))));
-        this.second = new InitialDrawAction().update(first);
-        this.third = new InitialDrawAction().update(second);
+        this.first = new AdvanceGame().update(
+                new AdvanceGame().update(
+                        new AdvanceGame().update(
+                                new AdvanceGame().update(new State(players, cards, 20)))));
+        this.second = new InitialDraw().update(first);
+        this.third = new InitialDraw().update(second);
     }
 
     @Test

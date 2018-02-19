@@ -27,7 +27,7 @@ public abstract class Action implements IGameModifier {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName();
+        return getClass().getSimpleName().toLowerCase();
     }
 
 }

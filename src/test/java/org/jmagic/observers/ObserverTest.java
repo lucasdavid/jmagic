@@ -1,7 +1,7 @@
 package org.jmagic.observers;
 
-import org.jmagic.actions.DisqualifyAction;
-import org.jmagic.actions.FinishGameAction;
+import org.jmagic.actions.Disqualify;
+import org.jmagic.actions.FinishGame;
 import org.jmagic.core.cards.Cards;
 import org.jmagic.core.states.State;
 import org.jmagic.core.states.TurnSteps;
@@ -50,7 +50,7 @@ class ObserverTest {
         Observer o = new TestObserver();
 
         State d = o.disqualify(s);
-        assertTrue(d.actionThatLedToThisState instanceof DisqualifyAction);
+        assertTrue(d.actionThatLedToThisState instanceof Disqualify);
         assertFalse(d.playerStates().get(0).playing);
     }
 
@@ -64,7 +64,7 @@ class ObserverTest {
         Observer o = new TestObserver();
 
         State d = o.finish(s);
-        assertTrue(d.actionThatLedToThisState instanceof FinishGameAction);
+        assertTrue(d.actionThatLedToThisState instanceof FinishGame);
         assertTrue(d.done);
     }
 

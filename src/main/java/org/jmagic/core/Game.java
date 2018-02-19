@@ -1,7 +1,7 @@
 package org.jmagic.core;
 
 import org.jmagic.actions.Action;
-import org.jmagic.actions.AdvanceGameAction;
+import org.jmagic.actions.AdvanceGame;
 import org.jmagic.core.cards.Cards;
 import org.jmagic.observers.*;
 import org.jmagic.core.states.State;
@@ -118,8 +118,8 @@ public class Game {
 
             _currentState = action.update(_currentState);
 
-            if (!AdvanceGameAction.class.isInstance(action)) {
-                LOG.info(String.format("%s performed %s", _activePlayer, action));
+            if (!AdvanceGame.class.isInstance(action)) {
+                LOG.info(String.format("%s %s", _activePlayer, action));
             }
         }
 
@@ -144,7 +144,8 @@ public class Game {
                 : f.get(this.playerActTimeout, TimeUnit.MILLISECONDS);
         } catch (TimeoutException | InterruptedException ignored) {
         } catch (ExecutionException ex) {
-            LOG.log(Level.SEVERE, null, ex);
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            ex.printStackTrace();
         } finally {
             if (f != null) f.cancel(true);
         }

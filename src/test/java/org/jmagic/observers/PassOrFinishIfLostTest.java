@@ -1,7 +1,7 @@
 package org.jmagic.observers;
 
-import org.jmagic.actions.AdvanceGameAction;
-import org.jmagic.actions.FinishGameAction;
+import org.jmagic.actions.AdvanceGame;
+import org.jmagic.actions.FinishGame;
 import org.jmagic.core.cards.Cards;
 import org.jmagic.core.states.State;
 import org.jmagic.core.states.TurnSteps;
@@ -31,7 +31,7 @@ class PassOrFinishIfLostTest {
 
         State actual = o.beforePlayerAct(s);
         assertNotEquals(s, actual);
-        assertTrue(actual.actionThatLedToThisState instanceof AdvanceGameAction);
+        assertTrue(actual.actionThatLedToThisState instanceof AdvanceGame);
         assertFalse(actual.done);
     }
 
@@ -51,7 +51,7 @@ class PassOrFinishIfLostTest {
 
         State actual = o.beforePlayerAct(s);
         assertNotEquals(s, actual);
-        assertTrue(actual.actionThatLedToThisState instanceof AdvanceGameAction);
+        assertTrue(actual.actionThatLedToThisState instanceof AdvanceGame);
         assertFalse(actual.done);
     }
 
@@ -88,7 +88,7 @@ class PassOrFinishIfLostTest {
         Observer o = new PassOrFinishIfLost();
         State actual = o.beforePlayerAct(s);
         assertNotEquals(s, actual);
-        assertTrue(actual.actionThatLedToThisState instanceof FinishGameAction);
+        assertTrue(actual.actionThatLedToThisState instanceof FinishGame);
         assertTrue(actual.done);
     }
 
