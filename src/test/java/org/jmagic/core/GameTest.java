@@ -116,7 +116,7 @@ class GameTest {
         }
     }
 
-    @Ignore
+    @Test
     void testRunStress() {
         Random r = new Random();
         DeckBuilder b = new DeckBuilder(20, r);

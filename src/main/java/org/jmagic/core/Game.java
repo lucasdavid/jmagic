@@ -45,7 +45,7 @@ public class Game {
     private State _currentState;
     private Player _activePlayer;
     private final Callable<Action> actRoutine = () -> _activePlayer.act(_currentState.playerViewModel(_activePlayer));
-    private ExecutorService exec;
+    private ExecutorService executor;
 
     public Game(List<Player> players, List<Cards> playersCards, int playersInitialLife, double playerActTimeout,
                 List<Observer> observers) {
@@ -90,7 +90,7 @@ public class Game {
         }
 
         this.startedAt = new Date();
-        exec = Executors.newSingleThreadExecutor();
+        executor = Executors.newSingleThreadExecutor();
 
         LOG.log(Level.INFO, "Initial state: {0}", _currentState);
 
@@ -130,7 +130,7 @@ public class Game {
 
         LOG.info("final game state: " + _currentState);
 
-        exec.shutdown();
+        executor.shutdown();
         this.finishedAt = new Date();
         return this;
     }
@@ -138,7 +138,7 @@ public class Game {
     private Action requestActivePlayerAction() {
         Future<Action> f = null;
         try {
-            f = exec.submit(actRoutine);
+            f = executor.submit(actRoutine);
             return this.playerActTimeout <= 0
                 ? f.get()
                 : f.get(this.playerActTimeout, TimeUnit.MILLISECONDS);

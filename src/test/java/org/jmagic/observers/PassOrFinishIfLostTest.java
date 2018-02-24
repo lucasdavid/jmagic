@@ -31,8 +31,9 @@ class PassOrFinishIfLostTest {
 
         State actual = o.beforePlayerAct(s);
         assertNotEquals(s, actual);
-        assertTrue(actual.actionThatLedToThisState instanceof AdvanceGame);
-        assertFalse(actual.done);
+        assertTrue((actual.actionThatLedToThisState instanceof AdvanceGame)
+            || (actual.actionThatLedToThisState instanceof FinishGame));
+        assertTrue(actual.done);
     }
 
     @Test
@@ -51,8 +52,9 @@ class PassOrFinishIfLostTest {
 
         State actual = o.beforePlayerAct(s);
         assertNotEquals(s, actual);
-        assertTrue(actual.actionThatLedToThisState instanceof AdvanceGame);
-        assertFalse(actual.done);
+        assertTrue((actual.actionThatLedToThisState instanceof AdvanceGame)
+            || (actual.actionThatLedToThisState instanceof FinishGame));
+        assertTrue(actual.done);
     }
 
     @Test
